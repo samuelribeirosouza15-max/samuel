@@ -3,46 +3,78 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Minha Primeira Página</title>
+    <title>Carta Online</title>
 
     <style>
         /* Estilos gerais */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f0f8ff; /* Cor de fundo suave */
-            color: #333; /* Cor do texto */
+            font-family: 'Arial', sans-serif;
+            background-color: #fafafa; /* Cor de fundo suave */
+            color: #333;
             margin: 0;
             padding: 0;
         }
 
-        /* Estilo para o título (h1) */
-        h1 {
-            text-align: center;
-            color: #007bff; /* Cor azul */
-            margin-top: 50px;
-            font-size: 2.5em;
-        }
-
-        /* Estilo para o parágrafo (p) */
-        p {
-            text-align: center;
-            font-size: 1.2em;
-            color: #555;
-        }
-
-        /* Adicionando uma borda ao redor do conteúdo */
-        body > h1, body > p {
-            border: 2px solid #007bff;
+        /* Estilo para o container da carta */
+        .carta {
+            background-color: #fff;
+            width: 80%;
+            margin: 50px auto;
             padding: 20px;
-            margin: 20px;
+            border: 2px solid #007bff;
             border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 700px;
+        }
+
+        /* Título da carta */
+        .carta h1 {
+            font-size: 2.5em;
+            color: #007bff;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        /* Data da carta */
+        .data {
+            font-size: 1.2em;
+            text-align: right;
+            color: #666;
+            margin-bottom: 20px;
+        }
+
+        /* Corpo da carta */
+        .conteudo {
+            font-size: 1.1em;
+            line-height: 1.6;
+            color: #444;
+        }
+
+        /* Assinatura da carta */
+        .assinatura {
+            font-size: 1.2em;
+            font-weight: bold;
+            margin-top: 40px;
+            text-align: center;
         }
     </style>
 </head>
 <body>
 
-    <h1>Olá, Mundo!</h1>
-    <p>Este é o meu primeiro código HTML com CSS.</p>
+    <div class="carta">
+        <h1>Querido Amigo</h1>
+        <p class="data">São Paulo, 26 de fevereiro de 2026</p>
+        
+        <div class="conteudo">
+            <p>Espero que esteja tudo bem com você! Queria te escrever para contar como estou aqui e como a vida tem sido interessante ultimamente. As coisas estão indo bem, apesar de alguns desafios, mas eu continuo seguindo em frente. Estou ansioso para nos encontrarmos em breve!</p>
+            
+            <p>Gostaria de saber mais sobre o que você tem feito e como você tem se sentido. Vamos marcar de conversar logo, sentiria falta de nossos bate-papos!</p>
+            
+            <p>Abraços e até breve.</p>
+        </div>
+        
+        <p class="assinatura">Com carinho, João</p>
+    </div>
 
 </body>
 </html>

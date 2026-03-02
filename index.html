@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora</title>
+    <title>Calculadora com Teclado</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -71,6 +71,14 @@
         .botão-clear:hover {
             background-color: #c0392b;
         }
+
+        .botão-apagar {
+            background-color: #f39c12;
+        }
+
+        .botão-apagar:hover {
+            background-color: #e67e22;
+        }
     </style>
 </head>
 <body>
@@ -95,18 +103,22 @@
             <button class="botão" onclick="appendToDisplay('.')">.</button>
             <button class="botão botão-igual" onclick="calculate()">=</button>
             <button class="botão" onclick="appendToDisplay('+')">+</button>
+            <button class="botão-apagar" onclick="backspace()">←</button>
         </div>
     </div>
 
     <script>
+        // Adiciona valores ao visor
         function appendToDisplay(value) {
             document.getElementById('display').value += value;
         }
 
+        // Limpa o visor
         function clearDisplay() {
             document.getElementById('display').value = '';
         }
 
+        // Realiza o cálculo
         function calculate() {
             let display = document.getElementById('display');
             try {
@@ -115,6 +127,37 @@
                 display.value = 'Erro';
             }
         }
+
+        // Apaga o último número/valor do visor
+        function backspace() {
+            let display = document.getElementById('display');
+            display.value = display.value.slice(0, -1); // Remove o último caractere
+        }
+
+        // Permite a interação com o teclado
+        document.addEventListener('keydown', function(event) {
+            const key = event.key;
+
+            if (key >= 0 && key <= 9) {
+                appendToDisplay(key);  // Digita números de 0 a 9
+            } else if (key === '+') {
+                appendToDisplay('+');
+            } else if (key === '-') {
+                appendToDisplay('-');
+            } else if (key === '*') {
+                appendToDisplay('*');
+            } else if (key === '/') {
+                appendToDisplay('/');
+            } else if (key === '.') {
+                appendToDisplay('.');
+            } else if (key === 'Enter') {
+                calculate();  // Calcula com a tecla Enter
+            } else if (key === 'Backspace') {
+                backspace();  // Apaga o último número com Backspace
+            } else if (key === 'Escape') {
+                clearDisplay();  // Limpa a tela com a tecla Escape
+            }
+        });
     </script>
 
 </body>

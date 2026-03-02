@@ -3,82 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora com Teclado</title>
+    <title>Calculadora Repulsiva</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
+            font-family: 'Comic Sans MS', cursive, sans-serif;
             display: flex;
             justify-content: center;
             align-items: center;
             height: 100vh;
             margin: 0;
-            background-color: #f4f4f4;
+            background-color: #FF5733; /* cor de fundo exagerada */
         }
 
         .calculadora {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 280px;
+            background-color: #FFF000; /* Cor muito chamativa */
+            padding: 50px;
+            border-radius: 0px; /* Sem bordas arredondadas */
+            box-shadow: 10px 10px 30px #000000;
+            width: 350px;
+            border: 5px solid #FF0000; /* Borda vermelha grossa */
         }
 
         .display {
             width: 100%;
-            height: 50px;
-            font-size: 2em;
-            text-align: right;
-            padding: 10px;
-            margin-bottom: 10px;
-            background-color: #f1f1f1;
-            border: 1px solid #ddd;
-            border-radius: 5px;
+            height: 80px;
+            font-size: 3em; /* Tamanho de fonte excessivo */
+            text-align: center;
+            padding: 20px;
+            margin-bottom: 20px;
+            background-color: #FFFF00; /* Amarelo neon */
+            border: 2px dashed #FF0000; /* Borda vermelha e pontilhada */
+            border-radius: 15px;
         }
 
         .botões {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
+            gap: 15px;
         }
 
         .botão {
-            background-color: #3498db;
-            color: white;
+            background-color: #00FF00; /* Verde neon */
+            color: black;
             border: none;
-            padding: 20px;
-            font-size: 1.5em;
-            border-radius: 5px;
+            padding: 30px;
+            font-size: 2.5em; /* Fonte maior e desconfortável */
+            border-radius: 20px; /* Borda bem arredondada */
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: transform 0.2s;
         }
 
         .botão:hover {
-            background-color: #2980b9;
+            background-color: #FF00FF; /* Mudança para rosa neon */
+            transform: scale(1.2); /* Efeito de zoom exagerado */
         }
 
         .botão-igual {
-            background-color: #2ecc71;
+            background-color: #FF00FF; /* Neon Pink */
         }
 
         .botão-igual:hover {
-            background-color: #27ae60;
+            background-color: #00FFFF; /* Neon Azul */
         }
 
         .botão-clear {
-            background-color: #e74c3c;
+            background-color: #FF0000; /* Vermelho forte */
         }
 
         .botão-clear:hover {
-            background-color: #c0392b;
+            background-color: #FF9900; /* Laranja forte */
         }
 
-        /* Tecla de Apagar em verde */
+        /* Tecla de Apagar em uma cor berrante */
         .botão-apagar {
-            background-color: #2ecc71;
+            background-color: #FF1493; /* Rosa intenso */
         }
 
         .botão-apagar:hover {
-            background-color: #27ae60;
+            background-color: #8A2BE2; /* Roxo brilhante */
+        }
+
+        /* Pequenos ajustes para o teclado ser "desagradável" */
+        button:active {
+            transform: scale(0.8);
+            background-color: #0000FF;
         }
     </style>
 </head>

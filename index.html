@@ -1,165 +1,192 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Calculadora com Teclado</title>
-    <style> 
-        body {
-            font-family: Arial, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            background-color: #f4f4f4;
-        }
-
-        .calculadora {
-            background-color: #fff;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            width: 280px;
-        }
-
-        .display {
-            width: 100%;
-            height: 50px;
-            font-size: 2em;
-            text-align: right;
-            padding: 10px;
-            margin-bottom: 10px;
-            background-color: #f1f1f1;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-
-        .botões {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 10px;
-        }
-
-        .botão {
-            background-color: #3498db;
-            color: white;
-            border: none;
-            padding: 20px;
-            font-size: 1.5em;
-            border-radius: 5px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-        }
-
-        .botão:hover {
-            background-color: #2980b9;
-        }
-
-        .botão-igual {
-            background-color: #2ecc71;
-        }
-
-        .botão-igual:hover {
-            background-color: #27ae60;
-        }
-
-        .botão-clear {
-            background-color: #e74c3c;
-        }
-
-        .botão-clear:hover {
-            background-color: #c0392b;
-        }
-
-        /* Tecla de Apagar em verde */
-        .botão-apagar {
-            background-color: #2ecc71;
-        }
-
-        .botão-apagar:hover {
-            background-color: #27ae60;
-        }
-    </style>
+<meta charset="UTF-8">
+<title>Zombie Shooter PRO</title>
+<style>
+    body {
+        margin: 0;
+        overflow: hidden;
+        background: #111;
+        color: white;
+        font-family: Arial, sans-serif;
+        text-align: center;
+    }
+    canvas {
+        background: #1a1a1a;
+        display: block;
+        margin: 0 auto;
+        border: 3px solid white;
+        cursor: crosshair;
+    }
+</style>
 </head>
 <body>
 
-    <div class="calculadora">
-        <input type="text" class="display" id="display" disabled>
-        <div class="botões">
-            <button class="botão botão-clear" onclick="clearDisplay()">C</button>
-            <button class="botão" onclick="appendToDisplay('7')">7</button>
-            <button class="botão" onclick="appendToDisplay('8')">8</button>
-            <button class="botão" onclick="appendToDisplay('9')">9</button>
-            <button class="botão" onclick="appendToDisplay('/')">/</button>
-            <button class="botão" onclick="appendToDisplay('4')">4</button>
-            <button class="botão" onclick="appendToDisplay('5')">5</button>
-            <button class="botão" onclick="appendToDisplay('6')">6</button>
-            <button class="botão" onclick="appendToDisplay('*')">*</button>
-            <button class="botão" onclick="appendToDisplay('1')">1</button>
-            <button class="botão" onclick="appendToDisplay('2')">2</button>
-            <button class="botão" onclick="appendToDisplay('3')">3</button>
-            <button class="botão" onclick="appendToDisplay('-')">-</button>
-            <button class="botão" onclick="appendToDisplay('0')">0</button>
-            <button class="botão" onclick="appendToDisplay('.')">.</button>
-            <button class="botão botão-igual" onclick="calculate()">=</button>
-            <button class="botão" onclick="appendToDisplay('+')">+</button>
-            <button class="botão-apagar" onclick="backspace()">←</button>
-        </div>
-    </div>
+<h1>Zombie Shooter PRO</h1>
+<p>WASD mover | Clique atirar | 1-2-3 trocar arma</p>
+<canvas id="gameCanvas" width="900" height="550"></canvas>
 
-    <script>
-        // Adiciona valores ao visor
-        function appendToDisplay(value) {
-            document.getElementById('display').value += value;
+<script>
+const canvas = document.getElementById("gameCanvas");
+const ctx = canvas.getContext("2d");
+
+let player = {
+    x: canvas.width/2,
+    y: canvas.height/2,
+    size: 20,
+    speed: 4,
+    life: 100
+};
+
+let bullets = [];
+let zombies = [];
+let keys = {};
+let mouse = {x:0,y:0};
+let score = 0;
+let gameOver = false;
+let currentWeapon = 1;
+
+const weapons = {
+    1: {name:"Pistola", spread:0, bullets:1, speed:8},
+    2: {name:"Shotgun", spread:0.3, bullets:5, speed:7},
+    3: {name:"Metralhadora", spread:0.1, bullets:1, speed:10}
+};
+
+// Sons
+const shootSound = new Audio("https://actions.google.com/sounds/v1/impacts/wood_plank_flicks.ogg");
+const hitSound = new Audio("https://actions.google.com/sounds/v1/cartoon/clang_and_wobble.ogg");
+
+// Controles
+document.addEventListener("keydown", e => {
+    keys[e.key.toLowerCase()] = true;
+    if(["1","2","3"].includes(e.key)) currentWeapon = parseInt(e.key);
+});
+document.addEventListener("keyup", e => keys[e.key.toLowerCase()] = false);
+
+canvas.addEventListener("mousemove", e => {
+    const rect = canvas.getBoundingClientRect();
+    mouse.x = e.clientX - rect.left;
+    mouse.y = e.clientY - rect.top;
+});
+
+canvas.addEventListener("click", () => shoot());
+
+function shoot(){
+    const weapon = weapons[currentWeapon];
+    const baseAngle = Math.atan2(mouse.y - player.y, mouse.x - player.x);
+
+    for(let i=0;i<weapon.bullets;i++){
+        const angle = baseAngle + (Math.random()-0.5)*weapon.spread;
+        bullets.push({
+            x: player.x,
+            y: player.y,
+            dx: Math.cos(angle)*weapon.speed,
+            dy: Math.sin(angle)*weapon.speed,
+            size: 5
+        });
+    }
+    shootSound.currentTime = 0;
+    shootSound.play();
+}
+
+function spawnZombie(){
+    const side = Math.floor(Math.random()*4);
+    let x,y;
+
+    if(side===0){x=0;y=Math.random()*canvas.height;}
+    if(side===1){x=canvas.width;y=Math.random()*canvas.height;}
+    if(side===2){x=Math.random()*canvas.width;y=0;}
+    if(side===3){x=Math.random()*canvas.width;y=canvas.height;}
+
+    zombies.push({x,y,size:20,speed:1+Math.random()*1.5});
+}
+
+function drawLifeBar(){
+    ctx.fillStyle="red";
+    ctx.fillRect(20,canvas.height-30,200,15);
+    ctx.fillStyle="lime";
+    ctx.fillRect(20,canvas.height-30,200*(player.life/100),15);
+    ctx.strokeStyle="white";
+    ctx.strokeRect(20,canvas.height-30,200,15);
+}
+
+function update(){
+    if(gameOver){
+        ctx.fillStyle="white";
+        ctx.font="50px Arial";
+        ctx.fillText("GAME OVER",300,250);
+        return;
+    }
+
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+
+    // Movimento
+    if(keys["w"]) player.y-=player.speed;
+    if(keys["s"]) player.y+=player.speed;
+    if(keys["a"]) player.x-=player.speed;
+    if(keys["d"]) player.x+=player.speed;
+
+    // Jogador
+    ctx.fillStyle="cyan";
+    ctx.beginPath();
+    ctx.arc(player.x,player.y,player.size,0,Math.PI*2);
+    ctx.fill();
+
+    // Balas
+    bullets.forEach((b,bi)=>{
+        b.x+=b.dx;
+        b.y+=b.dy;
+        ctx.fillStyle="yellow";
+        ctx.beginPath();
+        ctx.arc(b.x,b.y,b.size,0,Math.PI*2);
+        ctx.fill();
+    });
+
+    // Zumbis
+    zombies.forEach((z,zi)=>{
+        const angle=Math.atan2(player.y-z.y,player.x-z.x);
+        z.x+=Math.cos(angle)*z.speed;
+        z.y+=Math.sin(angle)*z.speed;
+
+        ctx.fillStyle="green";
+        ctx.beginPath();
+        ctx.arc(z.x,z.y,z.size,0,Math.PI*2);
+        ctx.fill();
+
+        const distPlayer=Math.hypot(player.x-z.x,player.y-z.y);
+        if(distPlayer<player.size+z.size){
+            player.life-=0.5;
+            hitSound.currentTime=0;
+            hitSound.play();
+            if(player.life<=0) gameOver=true;
         }
 
-        // Limpa o visor
-        function clearDisplay() {
-            document.getElementById('display').value = '';
-        }
-
-        // Realiza o cálculo
-        function calculate() {
-            let display = document.getElementById('display');
-            try {
-                display.value = eval(display.value);
-            } catch (error) {
-                display.value = 'Erro';
-            }
-        }
-
-        // Apaga o último número/valor do visor
-        function backspace() {
-            let display = document.getElementById('display');
-            display.value = display.value.slice(0, -1); // Remove o último caractere
-        }
-
-        // Permite a interação com o teclado
-        document.addEventListener('keydown', function(event) {
-            const key = event.key;
-
-            if (key >= 0 && key <= 9) {
-                appendToDisplay(key);  // Digita números de 0 a 9
-            } else if (key === '+') {
-                appendToDisplay('+');
-            } else if (key === '-') {
-                appendToDisplay('-');
-            } else if (key === '*') {
-                appendToDisplay('*');
-            } else if (key === '/') {
-                appendToDisplay('/');
-            } else if (key === '.') {
-                appendToDisplay('.');
-            } else if (key === 'Enter') {
-                calculate();  // Calcula com a tecla Enter
-            } else if (key === 'Backspace') {
-                backspace();  // Apaga o último número com Backspace
-            } else if (key === 'Escape') {
-                clearDisplay();  // Limpa a tela com a tecla Escape
+        bullets.forEach((b,bi)=>{
+            const dist=Math.hypot(b.x-z.x,b.y-z.y);
+            if(dist<b.size+z.size){
+                zombies.splice(zi,1);
+                bullets.splice(bi,1);
+                score++;
             }
         });
-    </script>
+    });
+
+    // HUD
+    ctx.fillStyle="white";
+    ctx.font="20px Arial";
+    ctx.fillText("Pontuação: "+score,20,30);
+    ctx.fillText("Arma: "+weapons[currentWeapon].name,20,60);
+
+    drawLifeBar();
+
+    if(Math.random()<0.02) spawnZombie();
+
+    requestAnimationFrame(update);
+}
+
+update();
+</script>
 
 </body>
 </html>

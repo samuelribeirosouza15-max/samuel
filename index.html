@@ -190,3 +190,12 @@ update();
 
 </body>
 </html>
+document.addEventListener("keydown", e => {
+    keys[e.key.toLowerCase()] = true;
+
+    if(["1","2","3"].includes(e.key))
+        currentWeapon = parseInt(e.key);
+
+    if(e.key.toLowerCase() === "r" && gameOver)
+        restartGame();
+});

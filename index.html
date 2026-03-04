@@ -3,94 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Globo Terrestre Interativo 3D</title>
+    <title>Meu Satélite Particular</title>
+    
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
     <style>
-        body { margin: 0; background-color: #000; overflow: hidden; }
-        canvas { display: block; }
-        #instrucoes {
+        body, html { margin: 0; padding: 0; height: 100%; width: 100%; }
+        #map { height: 100vh; width: 100vw; }
+        
+        .controles {
             position: absolute;
             top: 10px;
-            left: 10px;
-            color: white;
-            font-family: sans-serif;
-            background: rgba(0, 0, 0, 0.5);
+            right: 10px;
+            z-index: 1000;
+            background: white;
             padding: 10px;
-            border-radius: 5px;
-            pointer-events: none;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            font-family: sans-serif;
         }
+        button { cursor: pointer; padding: 5px 10px; background: #007bff; color: white; border: none; border-radius: 4px; }
     </style>
 </head>
 <body>
 
-    <div id="instrucoes">Use o mouse para girar e o scroll para dar zoom</div>
+    <div class="controles">
+        <strong>Modo Satélite</strong><br>
+        <small>Use o mouse para navegar</small><br><br>
+        <button onclick="localizarMe()">Minha Localização</button>
+    </div>
 
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-            }
-        }
-    </script>
+    <div id="map"></div>
 
-    <script type="module">
-        import * as THREE from 'three';
-        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
-        // 1. Configuração da Cena
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(renderer.domElement);
+    <script>
+        // 1. Inicializa o mapa focado no Brasil (ou mude as coordenadas)
+        const map = L.map('map').setView([-15.7801, -47.9292], 4);
 
-        // 2. Criação do Globo (Esfera)
-        const geometry = new THREE.SphereGeometry(5, 64, 64);
-        const textureLoader = new THREE.TextureLoader();
-        
-        // Textura do mapa-múndi
-        const earthTexture = textureLoader.load('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg');
-        
-        const material = new THREE.MeshStandardMaterial({
-            map: earthTexture,
-            roughness: 1,
-        });
-        
-        const earth = new THREE.Mesh(geometry, material);
-        scene.add(earth);
+        // 2. Camada de Satélite (Usando provedor Esri World Imagery)
+        const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
+        }).addTo(map);
 
-        // 3. Iluminação
-        const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
-        scene.add(ambientLight);
+        // 3. Adiciona nomes de ruas por cima do satélite (Opcional)
+        const labelsLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png', {
+            pane: 'shadowPane'
+        }).addTo(map);
 
-        const pointLight = new THREE.PointLight(0xffffff, 1.5);
-        pointLight.position.set(10, 10, 10);
-        scene.add(pointLight);
-
-        // 4. Controles Interativos
-        const controls = new OrbitControls(camera, renderer.domElement);
-        camera.position.z = 12;
-        controls.enableDamping = true; // Suaviza o movimento
-
-        // 5. Animação
-        function animate() {
-            requestAnimationFrame(animate);
-            
-            // Rotação automática bem lenta (opcional)
-            earth.rotation.y += 0.001;
-            
-            controls.update();
-            renderer.render(scene, camera);
+        // Função para encontrar sua casa via GPS do navegador
+        function localizarMe() {
+            map.locate({setView: true, maxZoom: 18});
         }
 
-        // Ajuste de janela responsivo
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
+        map.on('locationfound', function(e) {
+            L.marker(e.latlng).addTo(map).bindPopup("Você está aqui!").openPopup();
         });
 
-        animate();
+        map.on('locationerror', function() {
+            alert("Não foi possível acessar sua localização. Tente buscar manualmente.");
+        });
     </script>
 </body>
 </html>

@@ -3,66 +3,100 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Satélite Particular</title>
-    
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    
+    <title>Globo Satélite 3D Interativo</title>
     <style>
-        body, html { margin: 0; padding: 0; height: 100%; width: 100%; }
-        #map { height: 100vh; width: 100vw; }
-        
-        .controles {
+        body { margin: 0; background-color: #000; overflow: hidden; font-family: sans-serif; }
+        canvas { display: block; }
+        #ui {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            z-index: 1000;
-            background: white;
-            padding: 10px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            font-family: sans-serif;
+            top: 20px;
+            left: 20px;
+            color: white;
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px;
+            border-radius: 10px;
+            pointer-events: none;
+            border: 1px solid #444;
         }
-        button { cursor: pointer; padding: 5px 10px; background: #007bff; color: white; border: none; border-radius: 4px; }
+        h1 { margin: 0 0 10px 0; font-size: 18px; color: #4af; }
     </style>
 </head>
 <body>
 
-    <div class="controles">
-        <strong>Modo Satélite</strong><br>
-        <small>Use o mouse para navegar</small><br><br>
-        <button onclick="localizarMe()">Minha Localização</button>
+    <div id="ui">
+        <h1>Navegador de Satélite 3D</h1>
+        <p>• Arraste para girar o globo<br>
+           • Use o scroll para buscar sua casa (Zoom)<br>
+           • Clique com o botão direito para mover</p>
     </div>
 
-    <div id="map"></div>
-
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
-    <script>
-        // 1. Inicializa o mapa focado no Brasil (ou mude as coordenadas)
-        const map = L.map('map').setView([-15.7801, -47.9292], 4);
-
-        // 2. Camada de Satélite (Usando provedor Esri World Imagery)
-        const satelliteLayer = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-            attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community'
-        }).addTo(map);
-
-        // 3. Adiciona nomes de ruas por cima do satélite (Opcional)
-        const labelsLayer = L.tileLayer('https://{s}.basemaps.cartocdn.com/light_only_labels/{z}/{x}/{y}{r}.png', {
-            pane: 'shadowPane'
-        }).addTo(map);
-
-        // Função para encontrar sua casa via GPS do navegador
-        function localizarMe() {
-            map.locate({setView: true, maxZoom: 18});
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+            }
         }
-
-        map.on('locationfound', function(e) {
-            L.marker(e.latlng).addTo(map).bindPopup("Você está aqui!").openPopup();
-        });
-
-        map.on('locationerror', function() {
-            alert("Não foi possível acessar sua localização. Tente buscar manualmente.");
-        });
     </script>
-</body>
-</html>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        // Cenário básico
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+        document.body.appendChild(renderer.domElement);
+
+        // Criando a Terra com textura de Satélite de alta resolução
+        const geometry = new THREE.SphereGeometry(5, 128, 128); // Alta definição na esfera
+        const loader = new THREE.TextureLoader();
+        
+        // Usando o servidor de mapas da Esri para a textura do globo
+        const satelliteTexture = loader.load('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/0/0/0.jpg', (texture) => {
+            // Tentativa de carregar uma versão de maior escala após o carregamento inicial
+            texture.anisotropy = renderer.capabilities.getMaxAnisotropy();
+        });
+
+        const material = new THREE.MeshStandardMaterial({ 
+            map: loader.load('https://unpkg.com/three-globe/example/img/earth-blue-marble.jpg'), // Base
+            bumpScale: 0.05
+        });
+
+        // Aplicando a textura de satélite real
+        // Nota: Em globos 3D simples, usamos uma imagem estática de alta resolução. 
+        // Para zoom infinito nível "casa", o ideal é o mapa plano, mas este globo usa foto real da NASA.
+        material.map = loader.load('https://worldwind25.arc.nasa.gov/tiles/curtain.jpg?lastUpdate=1614742415522'); 
+        
+        const earth = new THREE.Mesh(geometry, material);
+        scene.add(earth);
+
+        // Adicionando uma leve atmosfera (brilho azul)
+        const atmoGeom = new THREE.SphereGeometry(5.05, 128, 128);
+        const atmoMat = new THREE.MeshBasicMaterial({
+            color: 0x4488ff,
+            transparent: true,
+            opacity: 0.1,
+            side: THREE.BackSide
+        });
+        const atmosphere = new THREE.Mesh(atmoGeom, atmoMat);
+        scene.add(atmosphere);
+
+        // Luzes
+        const ambientLight = new THREE.AmbientLight(0xffffff, 1.2);
+        scene.add(ambientLight);
+
+        // Estrelas ao fundo
+        const starGeometry = new THREE.BufferGeometry();
+        const starMaterial = new THREE.PointsMaterial({ color: 0xffffff });
+        const starVertices = [];
+        for (let i = 0; i < 5000; i++) {
+            const x = (Math.random() - 0.5) * 1000;
+            const y = (Math.random() - 0.5) * 1000;
+            const z = (Math.random() - 0.5) * 1000;
+            starVertices.push(x, y, z);
+        }
+        starGeometry.setAttribute('position', new THREE.Float3

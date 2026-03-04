@@ -3,34 +3,62 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Imagem do Globo Mundo</title>
+    <title>Globo Terrestre 3D CSS</title>
     <style>
         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
+            background-color: #050505;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
             margin: 0;
-            background-color: #f0f0f0;
+            overflow: hidden;
         }
 
-        img {
-            width: 80%; /* Ajuste a largura da imagem */
-            max-width: 600px; /* Limita o tamanho máximo */
-            height: auto;
-            border: 5px solid #333; /* Adiciona uma borda */
-            margin-top: 50px;
+        /* Container do Globo */
+        .globo {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            position: relative;
+            
+            /* Imagem do Mapa */
+            background: url('https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Earthmap1000x500compac.jpg/1024px-Earthmap1000x500compac.jpg');
+            background-size: cover;
+            
+            /* Sombra interna para dar efeito de volume */
+            box-shadow: inset 20px -20px 50px rgba(0,0,0,0.8), 
+                        inset -5px 5px 20px rgba(255,255,255,0.2),
+                        0 0 50px rgba(0, 80, 255, 0.2);
+            
+            /* Animação de rotação */
+            animation: rodar 15s linear infinite;
         }
 
-        h1 {
-            margin-top: 20px;
-            color: #333;
+        /* Brilho atmosférico ao redor */
+        .globo::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            border-radius: 50%;
+            box-shadow: 0 0 40px rgba(70, 130, 255, 0.3);
+            pointer-events: none;
+        }
+
+        @keyframes rodar {
+            from {
+                background-position: 0 0;
+            }
+            to {
+                background-position: 630px 0; /* Ajuste baseado na largura do mapa */
+            }
         }
     </style>
 </head>
 <body>
 
-    <h1>Globo Terrestre</h1>
-    <!-- https://br.images.search.yahoo.com/images/view;_ylt=AwrFGPNOI6hp_608wzP16Qt.;_ylu=c2VjA3NyBHNsawNpbWcEb2lkA2RkMGU3NTNlODVlYWNjYjE3YzI4NmZlZDdmOGVjZDI5BGdwb3MDMTkEaXQDYmluZw--?back=https%3A%2F%2Fbr.images.search.yahoo.com%2Fsearch%2Fimages%3Fp%3Dimagem%2Bde%2Bum%2Bglobo%26type%3DE210BR91199G0%26fr%3Dmcafee%26tt%3Dimagem%2Bde%2Bum%2Bglobo2%26imgurl%3Dhttps%253A%252F%252Fwww.bing.com%252Fimages%252Fsearch%253Fview%253DdetailV2%2526ccid%253DCd5PeF8c%2526id%253DD9959B765D1CE0368EA09CCE479C5053CF6421C7%2526thid%253DOIP.Cd5PeF8cDzqqUqOPHVxq3gHaHa%2526mediaurl%253Dhttps%253A%252F%252Fimg.freepik.com%252Ffotos-gratis%252Frenderizacao-3d-do-planeta-terra_23-2150498436.jpg%2526exph%253D626%2526expw%253D626%2526q%253Dimagem%252520de%252520um%252520globo%2526ck%253DDA9F0C46D9D601589EF568354893EF02%2526idpp%253Drc%2526idpview%253Dsingleimage%2526form%253Drc2idp%26turl%3Dhttps%253A%252F%252Fsp.yimg.com%252Fib%252Fth%252Fid%252FOIP.Cd5PeF8cDzqqUqOPHVxq3gHaHa%253Fpid%253DApi%2526w%253D148%2526h%253D148%2526c%253D7%2526dpr%253D2%2526rs%253D1%26sigi%3DAymmzRTMCwbh%26sigt%3DowU0K5zpHJiH%26sigit%3DIsRdb2UZlQSO%26tab%3Dorganic%26ri%3D19&w=800&h=800&imgurl=thumbs.dreamstime.com%2Fb%2Fglobo-da-terra-9277255.jpg&rurl=https%3A%2F%2Ffdp.aau.edu.et%2Fipa%2Ffoto-de-um-globo-terrestre.html&size=76KB&p=imagem+de+um+globo&oid=dd0e753e85eaccb17c286fed7f8ecd29&fr2=&fr=mcafee&tt=Foto+De+Um+Globo+Terrestre+-+FDPLEARN&b=0&ni=21&no=19&ts=&tab=organic&sigr=aKSrgMrOCXb5&sigb=Uyjd5Brv0tj5&sigi=5yPtlsbZdLtF&sigt=P1rIkLDR4bub&.crumb=tswERzVGzZn&fr=mcafee&type=E210BR91199G0 -->
-    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Globe_icon_2.svg" alt="Globo Mundo">
+    <div class="globo"></div>
 
 </body>
 </html>

@@ -3,95 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Globo 3D Particular</title>
-    
-    <script src="https://cesium.com/downloads/cesiumjs/releases/1.108/Build/Cesium/Cesium.js"></script>
-    <link href="https://cesium.com/downloads/cesiumjs/releases/1.108/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
-
+    <title>Globo 3D Orbital</title>
     <style>
-        body, html { margin: 0; padding: 0; height: 100%; width: 100%; overflow: hidden; }
-        #cesiumContainer { height: 100vh; width: 100vw; }
-        
-        .controles {
+        body { margin: 0; background-color: #000; overflow: hidden; }
+        canvas { display: block; }
+        #info {
             position: absolute;
-            top: 10px;
-            right: 10px;
-            z-index: 1000;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            top: 20px;
+            left: 20px;
+            color: white;
             font-family: sans-serif;
+            pointer-events: none;
+            text-shadow: 1px 1px 2px black;
         }
-        button { 
-            cursor: pointer; 
-            padding: 8px 12px; 
-            background: #007bff; 
-            color: white; 
-            border: none; 
-            border-radius: 4px; 
-            width: 100%;
-            font-weight: bold;
-        }
-        button:hover { background: #0056b3; }
     </style>
 </head>
 <body>
 
-    <div class="controles">
-        <strong>Globo Satélite 3D</strong><br><br>
-        <small>Botão esquerdo: Girar</small><br>
-        <small>Botão direito: Zoom / Inclinar</small><br><br>
-        <button onclick="localizarMe()">Minha Localização</button>
+    <div id="info">
+        <h1>Globo Terrestre 3D</h1>
+        <p>Arraste para girar | Scroll para Zoom</p>
     </div>
 
-    <div id="cesiumContainer"></div>
-
-    <script>
-        // 1. Inicializa o visualizador do Globo
-        const viewer = new Cesium.Viewer('cesiumContainer', {
-            imageryProvider: new Cesium.ArcGisMapServerImageryProvider({
-                url: 'https://services.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer'
-            }),
-            terrainProvider: Cesium.createWorldTerrain(), // Adiciona relevo (montanhas)
-            baseLayerPicker: false,
-            geocoder: true,
-            timeline: false,
-            animation: false,
-            sceneModePicker: true, // Permite alternar entre 3D e 2D
-            navigationHelpButton: false
-        });
-
-        // 2. Focar inicialmente no Brasil
-        viewer.camera.flyTo({
-            destination: Cesium.Cartesian3.fromDegrees(-47.9292, -15.7801, 10000000)
-        });
-
-        // Função para encontrar localização via GPS
-        function localizarMe() {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(function(position) {
-                    const lat = position.coords.latitude;
-                    const lon = position.coords.longitude;
-
-                    // Voar até a localização com zoom próximo
-                    viewer.camera.flyTo({
-                        destination: Cesium.Cartesian3.fromDegrees(lon, lat, 2000), // 2km de altura
-                        orientation: {
-                            pitch: Cesium.Math.toRadians(-35) // Inclinação para ver o horizonte
-                        }
-                    });
-
-                    // Adicionar um marcador
-                    viewer.entities.add({
-                        position: Cesium.Cartesian3.fromDegrees(lon, lat),
-                        point: { pixelSize: 10, color: Cesium.Color.RED }
-                    });
-                }, function() {
-                    alert("Erro ao obter localização.");
-                });
+    <script type="importmap">
+        {
+            "imports": {
+                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
             }
         }
     </script>
-</body>
-</html>
+
+    <script type="module">
+        import * as THREE from 'three';
+        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+
+        // 1. Configuração da Cena
+        const scene = new THREE.Scene();
+        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        const renderer = new THREE.WebGLRenderer({ antialias: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        document.body.appendChild(renderer.domElement);
+
+        // 2. Criando o Globo (Esfera)
+        const geometry = new THREE.SphereGeometry(5, 64, 64);
+        const textureLoader = new THREE.TextureLoader();
+        
+        // Textura de Satélite (Blue Marble da NASA)
+        const earthTexture = textureLoader.load('https://unpkg.com/threejs-earth@1.0.3/images/earth_color_map.jpg');
+        
+        const material = new THREE.MeshPhongMaterial({
+            map: earthTexture,
+            bumpScale: 0.05,
+        });
+
+        const earth = new THREE.Mesh(geometry, material);
+        scene.add(earth);
+
+        // 3. Iluminação (Simulando o Sol)
+        const light = new THREE.DirectionalLight(0xffffff, 1.5);
+        light.position.set(5, 3, 5);
+        scene.add(light);
+        scene.add(new THREE.AmbientLight(0x333333));
+
+        // 4. Estrelas de Fundo
+        const starGeometry = new THREE.BufferGeometry();
+        const starMaterial = new THREE.PointsMaterial({ color: 0xffffff });
+        const starVertices = [];
+        for (let i = 0; i < 5000; i++) {
+            starVertices.push((Math.random() - 0.5) * 1000, (Math.random() - 0.5) * 1000, (Math.random() - 0.5) * 1000);
+        }
+        starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
+        const stars = new THREE.Points

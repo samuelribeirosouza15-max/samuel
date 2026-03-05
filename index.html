@@ -3,92 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Olá Mundo - Satélite Zoom</title>
+    <title>Meu Google Maps Dinâmico</title>
     
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-    
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.css" />
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
     <style>
-        /* Reset básico para não ter erro de tela */
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-            background-color: #000;
-            overflow: hidden;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        body { margin: 0; padding: 0; }
+        #map { height: 100vh; width: 100vw; }
+
+        /* Estilo da Barra de Busca */
+        .leaflet-control-geocoder {
+            border-radius: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2) !important;
+            border: none !important;
+            padding: 5px;
         }
 
-        #map {
-            width: 100%;
-            height: 100vh;
-            z-index: 1;
-        }
-
-        /* Interface por cima do mapa */
-        #ui-overlay {
+        /* Painel flutuante de "Olá Mundo" */
+        #search-container {
             position: absolute;
             top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
+            left: 20px;
             z-index: 1000;
-            text-align: center;
-            pointer-events: none; /* Deixa você clicar no mapa por baixo */
-        }
-
-        h1 {
-            color: #00d4ff;
-            text-transform: uppercase;
-            letter-spacing: 5px;
-            margin: 0;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.8);
-            font-size: 2.5rem;
-        }
-
-        .status {
-            background: rgba(0, 0, 0, 0.7);
-            color: #00ff00;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-family: monospace;
-            display: inline-block;
-            margin-top: 10px;
-            border: 1px solid #00ff00;
+            background: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            font-family: Arial, sans-serif;
         }
     </style>
 </head>
 <body>
 
-    <div id="ui-overlay">
-        <h1>Olá, Mundo!</h1>
-        <div class="status">SISTEMA DE SATÉLITE ONLINE</div>
+    <div id="search-container">
+        <h3 style="margin:0; color: #4285F4;">Olá Mundo Maps</h3>
+        <small>Digite um endereço na lupa ao lado →</small>
     </div>
 
     <div id="map"></div>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-
     <script>
-        // 1. Inicializa o mapa focado em uma área com casas (Ex: Copacabana, Rio)
-        // [Latitude, Longitude], Zoom (18 é bem perto)
-        var map = L.map('map', {
-            zoomControl: false // Remove os botões de + e - para ficar mais limpo
-        }).setView([-22.9711, -43.1845], 18);
+        // 1. Configuração das camadas (IGUAL GOOGLE MAPS)
+        var camadaRua = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© OpenStreetMap'
+        });
 
-        // 2. Adiciona a camada de satélite de ALTA RESOLUÇÃO (Esri)
-        L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-            maxZoom: 19,
-            attribution: 'Imagery © Esri'
+        var camadaSatelite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: '© Esri Satellite',
+            maxZoom: 19
+        });
+
+        // 2. Inicializa o mapa
+        var map = L.map('map', {
+            center: [-23.5505, -46.6333], // Começa em São Paulo
+            zoom: 12,
+            layers: [camadaSatelite] // Começa com satélite para ver as casas
+        });
+
+        // 3. Adiciona controle para alternar entre Rua e Satélite
+        var mapasBase = {
+            "Visualizar Ruas": camadaRua,
+            "Visualizar Satélite": camadaSatelite
+        };
+        L.control.layers(mapasBase).addTo(map);
+
+        // 4. Adiciona a BARRA DE BUSCA (A mágica do Google Maps)
+        L.Control.geocoder({
+            defaultMarkGeocode: true,
+            placeholder: "Pesquisar lugar ou rua...",
+            errorMessage: "Local não encontrado."
         }).addTo(map);
 
-        // 3. Adiciona um marcador no centro
-        L.marker([-22.9711, -43.1845]).addTo(map)
-            .bindPopup('<b>Foco do Satélite</b><br>Arraste para explorar as ruas.')
-            .openPopup();
-
-        // 4. Correção de bug de carregamento inicial
-        setTimeout(function(){ 
-            map.invalidateSize(); 
-        }, 500);
+        // Ajuste de tamanho para evitar bugs
+        setTimeout(() => { map.invalidateSize(); }, 300);
     </script>
 </body>
 </html>

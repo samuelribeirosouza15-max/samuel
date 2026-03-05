@@ -2,106 +2,76 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Globo 3D Interativo</title>
-  <script src="https://cesium.com/downloads/cesiumjs/releases/1.111/Build/Cesium/Cesium.js"></script>
-  <link href="https://cesium.com/downloads/cesiumjs/releases/1.111/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+  <title>Globo Terrestre 3D</title>
   <style>
-    html, body, #cesiumContainer {
-      width: 100%; 
-      height: 100%; 
-      margin: 0; 
-      padding: 0; 
-      overflow: hidden;
-    }
-  </style>
-</head>
-<body>
-  <div id="cesiumContainer"></div>
-  <script>
-    // Criando o globo
-    const viewer = new Cesium.Viewer('cesiumContainer', {
-      terrainProvider: Cesium.createWorldTerrain(),
-      imageryProvider: new Cesium.IonImageryProvider({ assetId: 3 }), // imagens de satélite
-      baseLayerPicker: true
-    });
-
-    // Coordenadas da sua casa (exemplo: latitude e longitude)
-    const latitude = -23.55052;   // substitua pela sua latitude
-    const longitude = -46.633308; // substitua pela sua longitude
-    const height = 500; // altura inicial da câmera em metros
-
-    // Move a câmera para a sua casa
-    viewer.camera.flyTo({
-      destination: Cesium.Cartesian3.fromDegrees(longitude, latitude, height),
-      duration: 3
-    });
-
-    // Marcador para sua casa
-    viewer.entities.add({
-      name: "Minha Casa",
-      position: Cesium.Cartesian3.fromDegrees(longitude, latitude, 0),
-      point: { pixelSize: 10, color: Cesium.Color.RED }
-    });
-  </script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <title>Globo 3D da Minha Casa</title>
-  <!-- CesiumJS -->
-  <script src="https://cdn.jsdelivr.net/npm/cesium@1.111/Build/Cesium/Cesium.js"></script>
-  <link href="https://cdn.jsdelivr.net/npm/cesium@1.111/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
-  <style>
-    html, body, #cesiumContainer {
-      width: 100%;
-      height: 100%;
+    body {
       margin: 0;
-      padding: 0;
       overflow: hidden;
+      background-color: #000; /* fundo preto para destaque do globo */
     }
-    #credits {
-      position: absolute;
-      bottom: 10px;
-      right: 10px;
-      color: white;
-      font-family: sans-serif;
-      background: rgba(0,0,0,0.3);
-      padding: 5px 10px;
-      border-radius: 5px;
+    canvas {
+      display: block;
     }
   </style>
 </head>
 <body>
-  <div id="cesiumContainer"></div>
-  <div id="credits">Globo 3D com satélite - CesiumJS</div>
+  <!-- Three.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/examples/js/controls/OrbitControls.js"></script>
 
   <script>
-    // Inicializa o globo
-    const viewer = new Cesium.Viewer('cesiumContainer', {
-      terrainProvider: Cesium.createWorldTerrain(),
-      imageryProvider: new Cesium.IonImageryProvider({ assetId: 3 }), // Satélite
-      baseLayerPicker: true,   // permite trocar camadas
-      geocoder: true,          // permite buscar endereços
-    });
+    // Cena, câmera e renderizador
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(
+      45, 
+      window.innerWidth / window.innerHeight, 
+      0.1, 
+      1000
+    );
+    camera.position.z = 3;
 
-    // Substitua pela latitude e longitude da sua casa
-    const latitude = -23.55052;   // exemplo: São Paulo
-    const longitude = -46.633308; // exemplo: São Paulo
-    const height = 500;           // altura inicial da câmera em metros
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
 
-    // Posiciona a câmera na sua casa
-    viewer.camera.flyTo({
-      destination: Cesium.Cartesian3.fromDegrees(longitude, latitude, height),
-      duration: 3
-    });
+    // Controle de órbita (rotacionar e dar zoom com mouse)
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
 
-    // Adiciona marcador para sua casa
-    viewer.entities.add({
-      name: "Minha Casa",
-      position: Cesium.Cartesian3.fromDegrees(longitude, latitude, 0),
-      point: { pixelSize: 12, color: Cesium.Color.RED }
+    // Luz
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.6);
+    scene.add(ambientLight);
+    const directionalLight = new THREE.DirectionalLight(0xffffff, 0.8);
+    directionalLight.position.set(5, 3, 5);
+    scene.add(directionalLight);
+
+    // Geometria do globo
+    const geometry = new THREE.SphereGeometry(1, 64, 64);
+
+    // Textura do planeta (imagem do globo)
+    const textureLoader = new THREE.TextureLoader();
+    const earthTexture = textureLoader.load('https://upload.wikimedia.org/wikipedia/commons/8/83/Earthmap1000x500compac.jpg');
+
+    const material = new THREE.MeshStandardMaterial({ map: earthTexture });
+    const earth = new THREE.Mesh(geometry, material);
+    scene.add(earth);
+
+    // Animação
+    function animate() {
+      requestAnimationFrame(animate);
+      earth.rotation.y += 0.001; // rotação automática do globo
+      controls.update();
+      renderer.render(scene, camera);
+    }
+
+    animate();
+
+    // Ajuste de tamanho ao redimensionar a janela
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
     });
   </script>
 </body>

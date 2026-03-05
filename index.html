@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meu Google Maps Dinâmico</title>
+    <title>Olá Mundo - Satélite com Nomes</title>
     
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -12,74 +12,65 @@
     <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 
     <style>
-        body { margin: 0; padding: 0; }
+        body { margin: 0; padding: 0; background: #000; }
         #map { height: 100vh; width: 100vw; }
 
-        /* Estilo da Barra de Busca */
-        .leaflet-control-geocoder {
-            border-radius: 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2) !important;
-            border: none !important;
-            padding: 5px;
-        }
-
-        /* Painel flutuante de "Olá Mundo" */
-        #search-container {
+        /* Estilo da caixa de título */
+        #status-bar {
             position: absolute;
             top: 20px;
             left: 20px;
             z-index: 1000;
-            background: white;
-            padding: 10px 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
-            font-family: Arial, sans-serif;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 10px 15px;
+            border-radius: 12px;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border-left: 5px solid #4285F4;
         }
     </style>
 </head>
 <body>
 
-    <div id="search-container">
-        <h3 style="margin:0; color: #4285F4;">Olá Mundo Maps</h3>
-        <small>Digite um endereço na lupa ao lado →</small>
+    <div id="status-bar">
+        <h2 style="margin:0; font-size: 1.2rem; color: #333;">Olá Mundo Maps</h2>
+        <span style="font-size: 0.8rem; color: #666;">Modo: Satélite + Etiquetas</span>
     </div>
 
     <div id="map"></div>
 
     <script>
-        // 1. Configuração das camadas (IGUAL GOOGLE MAPS)
-        var camadaRua = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap'
+        // 1. Camada de Satélite (Só as fotos)
+        var sateliteImg = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Esri Satellite'
         });
 
-        var camadaSatelite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-            attribution: '© Esri Satellite',
-            maxZoom: 19
+        // 2. Camada de Etiquetas (Nomes de cidades, ruas e estados)
+        var etiquetas = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Esri Labels'
         });
 
-        // 2. Inicializa o mapa
+        // 3. Inicializa o mapa com as DUAS camadas juntas (Híbrido)
         var map = L.map('map', {
-            center: [-23.5505, -46.6333], // Começa em São Paulo
+            center: [-23.5505, -46.6333], // São Paulo
             zoom: 12,
-            layers: [camadaSatelite] // Começa com satélite para ver as casas
+            layers: [sateliteImg, etiquetas] // Ativa ambas ao carregar
         });
 
-        // 3. Adiciona controle para alternar entre Rua e Satélite
-        var mapasBase = {
-            "Visualizar Ruas": camadaRua,
-            "Visualizar Satélite": camadaSatelite
+        // 4. Adiciona controle para o utilizador ligar/desligar os nomes
+        var overlayMaps = {
+            "Mostrar Nomes e Ruas": etiquetas
         };
-        L.control.layers(mapasBase).addTo(map);
+        L.control.layers(null, overlayMaps, { collapsed: false }).addTo(map);
 
-        // 4. Adiciona a BARRA DE BUSCA (A mágica do Google Maps)
+        // 5. Barra de Pesquisa
         L.Control.geocoder({
             defaultMarkGeocode: true,
-            placeholder: "Pesquisar lugar ou rua...",
-            errorMessage: "Local não encontrado."
+            placeholder: "Pesquisar cidade ou rua...",
         }).addTo(map);
 
-        // Ajuste de tamanho para evitar bugs
-        setTimeout(() => { map.invalidateSize(); }, 300);
+        // Ajuste de renderização
+        setTimeout(() => { map.invalidateSize(); }, 500);
     </script>
 </body>
 </html>

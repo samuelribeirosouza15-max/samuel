@@ -27,3 +27,82 @@
 
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Olá Mundo - Globo 3D</title>
+    <script src="https://unpkg.com/globe.gl"></script>
+    <style>
+        body { 
+            margin: 0; 
+            background: radial-gradient(circle, #1a1a2e 0%, #000 100%);
+            color: white; 
+            font-family: 'Segoe UI', sans-serif;
+            overflow: hidden; /* Impede barras de rolagem */
+        }
+
+        #interface {
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            z-index: 100;
+            pointer-events: none; /* Deixa o mouse passar para o globo */
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            margin: 0;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            color: #00d4ff;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.6);
+        }
+
+        p {
+            font-size: 1.2rem;
+            color: #aaa;
+        }
+
+        /* Container do Globo */
+        #globo-3d {
+            width: 100vw;
+            height: 100vh;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="interface">
+        <h1>Olá, Mundo!</h1>
+        <p>Arraste para girar • Scroll para zoom</p>
+    </div>
+
+    <div id="globo-3d"></div>
+
+    <script>
+        // Inicializa o globo no elemento 'globo-3d'
+        const meuGlobo = Globe()
+            (document.getElementById('globo-3d'))
+            // Textura da superfície (Visão de Satélite)
+            .globeImageUrl('//unpkg.com/three-globe/example/img/earth-blue-marble.jpg')
+            // Textura das luzes noturnas (opcional)
+            .bumpImageUrl('//unpkg.com/three-globe/example/img/earth-topology.png')
+            .backgroundImageUrl('//unpkg.com/three-globe/example/img/night-sky.png')
+            .showAtmosphere(true)
+            .atmosphereColor('#4da6ff')
+            .atmosphereAltitude(0.15);
+
+        // Configurações de movimento
+        meuGlobo.controls().autoRotate = true;
+        meuGlobo.controls().autoRotateSpeed = 0.7;
+        
+        // Ajusta o tamanho se a janela mudar
+        window.addEventListener('resize', () => {
+            meuGlobo.width(window.innerWidth);
+            meuGlobo.height(window.innerHeight);
+        });
+    </script>
+</body>
+</html>

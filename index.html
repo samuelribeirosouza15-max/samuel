@@ -3,74 +3,80 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Olá Mundo - Terra via Satélite</title>
-    <script src="https://unpkg.com/globe.gl"></script>
+    <title>Minha Página Incrível</title>
     <style>
-        body { 
-            margin: 0; 
-            background-color: #000; 
-            color: white; 
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            overflow: hidden;
-        }
-
-        #ui-overlay {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            z-index: 10;
-            pointer-events: none; /* Permite clicar no globo por baixo do texto */
-        }
-
-        h1 {
+        /* CSS para dar estilo à página */
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
             margin: 0;
-            font-size: 3rem;
-            text-shadow: 0 0 10px rgba(0, 255, 255, 0.5);
-            letter-spacing: 2px;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
         }
 
-        p {
-            font-size: 1.1rem;
-            opacity: 0.8;
+        header {
+            background: #2c3e50;
+            color: #fff;
+            padding: 2rem;
+            text-align: center;
         }
 
-        #globeViz {
-            cursor: move;
+        main {
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        .botao {
+            display: inline-block;
+            background: #e74c3c;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+
+        .botao:hover {
+            background: #c0392b;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            font-size: 0.8rem;
+            color: #777;
         }
     </style>
 </head>
 <body>
 
-    <div id="ui-overlay">
-        <h1>Olá, Mundo!</h1>
-        <p>Interaja com o planeta para explorar a visão de satélite.</p>
-    </div>
+    <header>
+        <h1>Bem-vindo ao Meu Site</h1>
+        <p>Criado com HTML e CSS puro</p>
+    </header>
 
-    <div id="globeViz"></div>
+    <main>
+        <h2>Sobre este projeto</h2>
+        <p>Este é um exemplo de estrutura básica de HTML. Aqui você pode adicionar informações sobre você, seus serviços ou qualquer conteúdo que desejar.</p>
+        
+        <h3>O que você encontra aqui:</h3>
+        <ul>
+            <li>Design responsivo (funciona no celular).</li>
+            <li>Código limpo e organizado.</li>
+            <li>Estilização moderna com CSS3.</li>
+        </ul>
 
-    <script>
-        // Configuração do Globo
-        const world = Globe()
-            (document.getElementById('globeViz'))
-            // Textura de Satélite (Imagens reais da NASA/Blue Marble)
-            .globeImageUrl('//unpkg.com/three-globe/example/img/earth-blue-marble.jpg')
-            // Textura de elevação/ relevo para dar profundidade
-            .bumpImageUrl('//unpkg.com/three-globe/example/img/earth-topology.png')
-            // Imagem das luzes noturnas (aparece se você mudar a textura)
-            .backgroundImageUrl('//unpkg.com/three-globe/example/img/night-sky.png')
-            .showAtmosphere(true)
-            .atmosphereColor('lightskyblue')
-            .atmosphereAltitude(0.15);
+        <p>Interessado em saber mais?</p>
+        <a href="#" class="botao">Clique Aqui</a>
+    </main>
 
-        // Ajusta o tamanho do globo ao redimensionar a janela
-        window.addEventListener('resize', () => {
-            world.width(window.innerWidth);
-            world.height(window.innerHeight);
-        });
+    <footer>
+        <p>&copy; 2024 - Desenvolvido por [Seu Nome]</p>
+    </footer>
 
-        // Auto-rotação suave
-        world.controls().autoRotate = true;
-        world.controls().autoRotateSpeed = 0.5;
-    </script>
 </body>
 </html>

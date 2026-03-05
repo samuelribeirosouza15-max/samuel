@@ -1,77 +1,47 @@
 <!DOCTYPE html>
-<html lang="pt-br">
+<html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Globo 3D Orbital</title>
-    <style>
-        body { margin: 0; background-color: #000; overflow: hidden; }
-        canvas { display: block; }
-        #info {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            color: white;
-            font-family: sans-serif;
-            pointer-events: none;
-            text-shadow: 1px 1px 2px black;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>Globo 3D Interativo</title>
+  <script src="https://cesium.com/downloads/cesiumjs/releases/1.111/Build/Cesium/Cesium.js"></script>
+  <link href="https://cesium.com/downloads/cesiumjs/releases/1.111/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+  <style>
+    html, body, #cesiumContainer {
+      width: 100%; 
+      height: 100%; 
+      margin: 0; 
+      padding: 0; 
+      overflow: hidden;
+    }
+  </style>
 </head>
 <body>
+  <div id="cesiumContainer"></div>
+  <script>
+    // Criando o globo
+    const viewer = new Cesium.Viewer('cesiumContainer', {
+      terrainProvider: Cesium.createWorldTerrain(),
+      imageryProvider: new Cesium.IonImageryProvider({ assetId: 3 }), // imagens de satélite
+      baseLayerPicker: true
+    });
 
-    <div id="info">
-        <h1>Globo Terrestre 3D</h1>
-        <p>Arraste para girar | Scroll para Zoom</p>
-    </div>
+    // Coordenadas da sua casa (exemplo: latitude e longitude)
+    const latitude = -23.55052;   // substitua pela sua latitude
+    const longitude = -46.633308; // substitua pela sua longitude
+    const height = 500; // altura inicial da câmera em metros
 
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
-                "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
-            }
-        }
-    </script>
+    // Move a câmera para a sua casa
+    viewer.camera.flyTo({
+      destination: Cesium.Cartesian3.fromDegrees(longitude, latitude, height),
+      duration: 3
+    });
 
-    <script type="module">
-        import * as THREE from 'three';
-        import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-
-        // 1. Configuração da Cena
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer({ antialias: true });
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(renderer.domElement);
-
-        // 2. Criando o Globo (Esfera)
-        const geometry = new THREE.SphereGeometry(5, 64, 64);
-        const textureLoader = new THREE.TextureLoader();
-        
-        // Textura de Satélite (Blue Marble da NASA)
-        const earthTexture = textureLoader.load('https://unpkg.com/threejs-earth@1.0.3/images/earth_color_map.jpg');
-        
-        const material = new THREE.MeshPhongMaterial({
-            map: earthTexture,
-            bumpScale: 0.05,
-        });
-
-        const earth = new THREE.Mesh(geometry, material);
-        scene.add(earth);
-
-        // 3. Iluminação (Simulando o Sol)
-        const light = new THREE.DirectionalLight(0xffffff, 1.5);
-        light.position.set(5, 3, 5);
-        scene.add(light);
-        scene.add(new THREE.AmbientLight(0x333333));
-
-        // 4. Estrelas de Fundo
-        const starGeometry = new THREE.BufferGeometry();
-        const starMaterial = new THREE.PointsMaterial({ color: 0xffffff });
-        const starVertices = [];
-        for (let i = 0; i < 5000; i++) {
-            starVertices.push((Math.random() - 0.5) * 1000, (Math.random() - 0.5) * 1000, (Math.random() - 0.5) * 1000);
-        }
-        starGeometry.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
-        const stars = new THREE.Points
+    // Marcador para sua casa
+    viewer.entities.add({
+      name: "Minha Casa",
+      position: Cesium.Cartesian3.fromDegrees(longitude, latitude, 0),
+      point: { pixelSize: 10, color: Cesium.Color.RED }
+    });
+  </script>
+</body>
+</html>

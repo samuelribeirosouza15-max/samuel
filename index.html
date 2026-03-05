@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Olá Mundo - Satélite com Nomes</title>
+    <title>Olá Mundo - Satélite em Português</title>
     
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -15,61 +15,71 @@
         body { margin: 0; padding: 0; background: #000; }
         #map { height: 100vh; width: 100vw; }
 
-        /* Estilo da caixa de título */
-        #status-bar {
+        /* Painel de Informações */
+        #painel {
             position: absolute;
             top: 20px;
             left: 20px;
             z-index: 1000;
-            background: rgba(255, 255, 255, 0.9);
-            padding: 10px 15px;
-            border-radius: 12px;
+            background: white;
+            padding: 12px 20px;
+            border-radius: 10px;
             font-family: 'Segoe UI', Arial, sans-serif;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            border-left: 5px solid #4285F4;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+        }
+
+        /* Estilo para a barra de busca em português */
+        .leaflet-control-geocoder-form input {
+            font-size: 14px;
         }
     </style>
 </head>
 <body>
 
-    <div id="status-bar">
-        <h2 style="margin:0; font-size: 1.2rem; color: #333;">Olá Mundo Maps</h2>
-        <span style="font-size: 0.8rem; color: #666;">Modo: Satélite + Etiquetas</span>
+    <div id="painel">
+        <h2 style="margin:0; color: #1a73e8; font-size: 1.3rem;">Olá Mundo Maps</h2>
+        <p style="margin:5px 0 0 0; font-size: 0.85rem; color: #555;">Use a lupa para buscar seu endereço</p>
     </div>
 
     <div id="map"></div>
 
     <script>
-        // 1. Camada de Satélite (Só as fotos)
-        var sateliteImg = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
-            attribution: 'Esri Satellite'
+        // 1. Camada de Imagem de Satélite
+        var satelite = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Imagens © Esri'
         });
 
-        // 2. Camada de Etiquetas (Nomes de cidades, ruas e estados)
-        var etiquetas = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
-            attribution: 'Esri Labels'
+        // 2. Camada de Nomes (Cidades, Ruas e Fronteiras)
+        var nomes = L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}', {
+            attribution: 'Nomes © Esri'
         });
 
-        // 3. Inicializa o mapa com as DUAS camadas juntas (Híbrido)
+        // 3. Inicializa o mapa (Focado no Brasil por padrão)
         var map = L.map('map', {
-            center: [-23.5505, -46.6333], // São Paulo
-            zoom: 12,
-            layers: [sateliteImg, etiquetas] // Ativa ambas ao carregar
+            center: [-15.7942, -47.8822], // Coordenadas de Brasília
+            zoom: 4,
+            layers: [satelite, nomes] // Ativa satélite e nomes juntos
         });
 
-        // 4. Adiciona controle para o utilizador ligar/desligar os nomes
-        var overlayMaps = {
-            "Mostrar Nomes e Ruas": etiquetas
+        // 4. Controle de camadas no canto superior direito
+        var opcoesMapas = {
+            "Mostrar Nomes das Ruas": nomes
         };
-        L.control.layers(null, overlayMaps, { collapsed: false }).addTo(map);
-
-        // 5. Barra de Pesquisa
-        L.Control.geocoder({
-            defaultMarkGeocode: true,
-            placeholder: "Pesquisar cidade ou rua...",
+        // Adiciona o seletor traduzido
+        L.control.layers(null, opcoesMapas, { 
+            collapsed: false,
+            position: 'topright' 
         }).addTo(map);
 
-        // Ajuste de renderização
+        // 5. Configura a barra de busca em Português
+        var buscador = L.Control.geocoder({
+            defaultMarkGeocode: true,
+            placeholder: "Pesquisar lugar...",
+            errorMessage: "Local não encontrado.",
+            showUniqueResult: true
+        }).addTo(map);
+
+        // Ajuste automático de carregamento
         setTimeout(() => { map.invalidateSize(); }, 500);
     </script>
 </body>

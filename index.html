@@ -1,80 +1,64 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Globo Terrestre 3D</title>
-  <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-      background-color: #000; /* fundo preto */
-    }
-    canvas {
-      display: block;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Globo Terrestre 3D</title>
+<style>
+  body { margin:0; overflow:hidden; background:#000; }
+  canvas { display:block; }
+</style>
 </head>
 <body>
-  <!-- Three.js -->
-  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/three@0.152.2/examples/js/controls/OrbitControls.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.152.2/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.152.2/examples/js/controls/OrbitControls.js"></script>
 
-  <script>
-    // Cena, câmera e renderizador
-    const scene = new THREE.Scene();
-    const camera = new THREE.PerspectiveCamera(
-      45,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      1000
-    );
-    camera.position.set(0, 0, 3);
+<script>
+// Cena e câmera
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(45, window.innerWidth/window.innerHeight, 0.1, 1000);
+camera.position.set(0,0,3);
 
-    const renderer = new THREE.WebGLRenderer({ antialias: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    document.body.appendChild(renderer.domElement);
+// Renderizador
+const renderer = new THREE.WebGLRenderer({antialias:true});
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
 
-    // Controle de órbita
-    const controls = new THREE.OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true;
-    controls.dampingFactor = 0.05;
+// Controle de órbita
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
+controls.enableDamping = true;
+controls.dampingFactor = 0.05;
 
-    // Luzes
-    const ambientLight = new THREE.AmbientLight(0xffffff, 0.8);
-    scene.add(ambientLight);
-    const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
-    directionalLight.position.set(5, 3, 5);
-    scene.add(directionalLight);
+// Luz
+scene.add(new THREE.AmbientLight(0xffffff,0.8));
+const directionalLight = new THREE.DirectionalLight(0xffffff,1);
+directionalLight.position.set(5,3,5);
+scene.add(directionalLight);
 
-    // Geometria do globo
-    const geometry = new THREE.SphereGeometry(1, 64, 64);
+// Geometria do globo
+const geometry = new THREE.SphereGeometry(1,64,64);
 
-    // Textura embutida (funciona direto)
-    const textureLoader = new THREE.TextureLoader();
-    const texture = textureLoader.load(
-      'https://raw.githubusercontent.com/mrdoob/three.js/dev/examples/textures/planets/earth_atmos_2048.jpg'
-    );
+// Material com cor sólida (garante que não fique preto)
+const material = new THREE.MeshStandardMaterial({ color: 0x156289, metalness: 0.1, roughness: 0.8 });
 
-    const material = new THREE.MeshStandardMaterial({ map: texture });
-    const earth = new THREE.Mesh(geometry, material);
-    scene.add(earth);
+// Globo
+const earth = new THREE.Mesh(geometry, material);
+scene.add(earth);
 
-    // Animação
-    function animate() {
-      requestAnimationFrame(animate);
-      earth.rotation.y += 0.001; // rotação lenta
-      controls.update();
-      renderer.render(scene, camera);
-    }
+// Animação
+function animate(){
+  requestAnimationFrame(animate);
+  earth.rotation.y += 0.002;
+  controls.update();
+  renderer.render(scene,camera);
+}
+animate();
 
-    animate();
-
-    // Ajuste do tamanho da tela
-    window.addEventListener('resize', () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-    });
-  </script>
+// Redimensionamento
+window.addEventListener('resize', ()=>{
+  camera.aspect = window.innerWidth/window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth,window.innerHeight);
+});
+</script>
 </body>
 </html>

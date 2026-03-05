@@ -2,45 +2,59 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Globo 3D Interativo</title>
-  <script src="https://cesium.com/downloads/cesiumjs/releases/1.111/Build/Cesium/Cesium.js"></script>
-  <link href="https://cesium.com/downloads/cesiumjs/releases/1.111/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+  <title>Globo 3D da Minha Casa</title>
+  <!-- CesiumJS -->
+  <script src="https://cdn.jsdelivr.net/npm/cesium@1.111/Build/Cesium/Cesium.js"></script>
+  <link href="https://cdn.jsdelivr.net/npm/cesium@1.111/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
   <style>
     html, body, #cesiumContainer {
-      width: 100%; 
-      height: 100%; 
-      margin: 0; 
-      padding: 0; 
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0;
       overflow: hidden;
+    }
+    #credits {
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      color: white;
+      font-family: sans-serif;
+      background: rgba(0,0,0,0.3);
+      padding: 5px 10px;
+      border-radius: 5px;
     }
   </style>
 </head>
 <body>
   <div id="cesiumContainer"></div>
+  <div id="credits">Globo 3D com satélite - CesiumJS</div>
+
   <script>
-    // Criando o globo
+    // Inicializa o globo
     const viewer = new Cesium.Viewer('cesiumContainer', {
       terrainProvider: Cesium.createWorldTerrain(),
-      imageryProvider: new Cesium.IonImageryProvider({ assetId: 3 }), // imagens de satélite
-      baseLayerPicker: true
+      imageryProvider: new Cesium.IonImageryProvider({ assetId: 3 }), // Satélite
+      baseLayerPicker: true,   // permite trocar camadas
+      geocoder: true,          // permite buscar endereços
     });
 
-    // Coordenadas da sua casa (exemplo: latitude e longitude)
-    const latitude = -23.55052;   // substitua pela sua latitude
-    const longitude = -46.633308; // substitua pela sua longitude
-    const height = 500; // altura inicial da câmera em metros
+    // Substitua pela latitude e longitude da sua casa
+    const latitude = -23.55052;   // exemplo: São Paulo
+    const longitude = -46.633308; // exemplo: São Paulo
+    const height = 500;           // altura inicial da câmera em metros
 
-    // Move a câmera para a sua casa
+    // Posiciona a câmera na sua casa
     viewer.camera.flyTo({
       destination: Cesium.Cartesian3.fromDegrees(longitude, latitude, height),
       duration: 3
     });
 
-    // Marcador para sua casa
+    // Adiciona marcador para sua casa
     viewer.entities.add({
       name: "Minha Casa",
       position: Cesium.Cartesian3.fromDegrees(longitude, latitude, 0),
-      point: { pixelSize: 10, color: Cesium.Color.RED }
+      point: { pixelSize: 12, color: Cesium.Color.RED }
     });
   </script>
 </body>

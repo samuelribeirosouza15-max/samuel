@@ -2,142 +2,63 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Shooter Infinito</title>
+<title>Jogo 3D Simples</title>
 <style>
-  body { margin:0; overflow:hidden; background:#111; }
-  #gameCanvas { display:block; margin:0 auto; background:#222; }
-  #weaponDisplay { position:absolute; top:10px; left:10px; color:white; font-family:sans-serif; font-size:20px;}
+  body { margin:0; overflow:hidden; }
+  canvas { display:block; }
 </style>
 </head>
 <body>
-<canvas id="gameCanvas" width="600" height="400"></canvas>
-<div id="weaponDisplay">Arma: Pistola</div>
+<script src="https://cdn.jsdelivr.net/npm/three@0.154.0/build/three.min.js"></script>
 <script>
-const canvas = document.getElementById('gameCanvas');
-const ctx = canvas.getContext('2d');
-const weaponDisplay = document.getElementById('weaponDisplay');
+let scene = new THREE.Scene();
+let camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
+let renderer = new THREE.WebGLRenderer();
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
 
-let player = { x:280, y:350, width:40, height:40, speed:5 };
-let bullets = [];
-let enemies = [];
-let score = 0;
-let lives = 3;
-let currentWeapon = 'pistola';
-let fireCooldown = 0;
+// Luz
+let light = new THREE.DirectionalLight(0xffffff, 1);
+light.position.set(10,10,10);
+scene.add(light);
 
-// Armas
-const weapons = {
-  pistola: { cooldown: 15, damage: 10, bullets: 1 },
-  rifle: { cooldown: 30, damage: 25, bullets: 1 },
-  shotgun: { cooldown: 45, damage: 15, bullets: 3 }
-};
+// Cubo (player)
+let geometry = new THREE.BoxGeometry();
+let material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
+let player = new THREE.Mesh(geometry, material);
+scene.add(player);
+player.position.y = 0.5;
 
-// Criar inimigos infinitamente
-function spawnEnemy() {
-  let x = Math.random() * (canvas.width - 40);
-  enemies.push({ x:x, y:0, width:40, height:40, speed:2 + Math.random() * 2 });
-}
-setInterval(spawnEnemy, 1500);
+// Plataforma
+let planeGeometry = new THREE.PlaneGeometry(20,20);
+let planeMaterial = new THREE.MeshStandardMaterial({color:0x555555});
+let plane = new THREE.Mesh(planeGeometry, planeMaterial);
+plane.rotation.x = -Math.PI/2;
+scene.add(plane);
 
-// Desenhar jogador
-function drawPlayer() {
-  ctx.fillStyle = 'cyan';
-  ctx.fillRect(player.x, player.y, player.width, player.height);
-}
+// Câmera
+camera.position.z = 5;
+camera.position.y = 5;
+camera.lookAt(0,0,0);
 
-// Desenhar balas
-function drawBullets() {
-  ctx.fillStyle = 'yellow';
-  bullets.forEach(b => ctx.fillRect(b.x, b.y, b.width, b.height));
-}
-
-// Desenhar inimigos
-function drawEnemies() {
-  ctx.fillStyle = 'red';
-  enemies.forEach(e => ctx.fillRect(e.x, e.y, e.width, e.height));
-}
-
-// Desenhar interface
-function drawUI() {
-  ctx.fillStyle = 'white';
-  ctx.font = '20px Arial';
-  ctx.fillText(`Pontuação: ${score}`, 10, 20);
-  ctx.fillText(`Vidas: ${lives}`, 500, 20);
-}
-
-function fireWeapon() {
-  if(fireCooldown <= 0) {
-    let w = weapons[currentWeapon];
-    if(currentWeapon === 'shotgun') {
-      for(let i=-1; i<=1; i++) {
-        bullets.push({ x:player.x+15, y:player.y, width:10, height:20, dy:-7, dx: i*2, damage: w.damage });
-      }
-    } else {
-      bullets.push({ x:player.x+15, y:player.y, width:10, height:20, dy:-7, dx:0, damage: w.damage });
-    }
-    fireCooldown = w.cooldown;
-  }
-}
-
-function update() {
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  fireCooldown--;
-
-  // Atualizar balas
-  bullets.forEach((b,i) => {
-    b.y += b.dy;
-    b.x += b.dx;
-    if(b.y < 0) bullets.splice(i,1);
-  });
-
-  // Atualizar inimigos
-  enemies.forEach((e,j) => {
-    e.y += e.speed;
-    // Colisão com jogador
-    if(e.x < player.x + player.width && e.x + e.width > player.x &&
-       e.y < player.y + player.height && e.y + e.height > player.y) {
-      enemies.splice(j,1);
-      lives -= 1;
-    }
-    // Colisão com balas
-    bullets.forEach((b,k) => {
-      if(b.x < e.x + e.width && b.x + b.width > e.x &&
-         b.y < e.y + e.height && b.y + b.height > e.y) {
-        enemies.splice(j,1);
-        bullets.splice(k,1);
-        score += 10;
-      }
-    });
-    if(e.y > canvas.height) {
-      enemies.splice(j,1);
-      lives -= 1;
-    }
-  });
-
-  drawPlayer();
-  drawBullets();
-  drawEnemies();
-  drawUI();
-
-  if(lives > 0) requestAnimationFrame(update);
-  else {
-    ctx.fillStyle = 'white';
-    ctx.font = '40px Arial';
-    ctx.fillText('Game Over', 200, 200);
-  }
-}
-
-// Controles
-document.addEventListener('keydown', (e) => {
-  if(e.key === 'ArrowLeft' && player.x > 0) player.x -= player.speed;
-  if(e.key === 'ArrowRight' && player.x + player.width < canvas.width) player.x += player.speed;
-  if(e.key === ' ') fireWeapon();
-  if(e.key === '1') { currentWeapon='pistola'; weaponDisplay.innerText='Arma: Pistola'; }
-  if(e.key === '2') { currentWeapon='rifle'; weaponDisplay.innerText='Arma: Rifle'; }
-  if(e.key === '3') { currentWeapon='shotgun'; weaponDisplay.innerText='Arma: Shotgun'; }
+// Movimentação
+let move = { left:false, right:false };
+document.addEventListener('keydown', e => {
+  if(e.key==='a') move.left = true;
+  if(e.key==='d') move.right = true;
+});
+document.addEventListener('keyup', e => {
+  if(e.key==='a') move.left = false;
+  if(e.key==='d') move.right = false;
 });
 
-update();
+function animate() {
+  requestAnimationFrame(animate);
+  if(move.left) player.position.x -= 0.1;
+  if(move.right) player.position.x += 0.1;
+  renderer.render(scene, camera);
+}
+animate();
 </script>
 </body>
 </html>

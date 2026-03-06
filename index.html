@@ -2,186 +2,151 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Ultimate Shooter 2D</title>
+<title>Zombies Invasion</title>
 <style>
   body { margin:0; overflow:hidden; background:#111; font-family:sans-serif; }
   #gameCanvas { display:block; margin:0 auto; background:#222; }
-  #hud {
-    position:absolute;
-    top:10px;
-    left:10px;
-    color:white;
-    font-size:20px;
-  }
+  #hud { position:absolute; top:10px; left:10px; color:white; font-size:20px; }
 </style>
 </head>
 <body>
 <canvas id="gameCanvas" width="800" height="500"></canvas>
-<div id="hud">Pontuação: 0 | Vidas: 3 | Arma: Pistola</div>
+<div id="hud">Pontuação: 0 | Vidas: 5 | Arma: Pistola</div>
 <script>
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 const hud = document.getElementById('hud');
 
 // --- PLAYER ---
-let player = {
-  x: 400,
-  y: 400,
-  width: 40,
-  height: 40,
-  speed: 5,
-  lives: 3
-};
+let player = { x:400, y:250, width:40, height:40, speed:5, lives:5 };
 
 // --- WEAPONS ---
 const weapons = {
-  pistola: { cooldown: 15, damage: 10, bullets: 1 },
-  rifle: { cooldown: 30, damage: 25, bullets: 1 },
-  shotgun: { cooldown: 45, damage: 15, bullets: 3 }
+  pistola: { cooldown: 15, damage: 10, bullets:1 },
+  rifle: { cooldown: 30, damage: 25, bullets:1 },
+  shotgun: { cooldown: 45, damage: 15, bullets:3 }
 };
 let currentWeapon = 'pistola';
 let fireCooldown = 0;
 
 // --- GAME STATE ---
 let bullets = [];
-let enemies = [];
+let zombies = [];
 let powerUps = [];
 let score = 0;
 let keys = {};
 
-// --- SPAWN ENEMIES ---
-function spawnEnemy() {
-  let x = Math.random() * (canvas.width - 30);
-  enemies.push({ x:x, y:0, width:30, height:30, speed:1+Math.random()*2 });
+// --- SPAWN ZOMBIES ---
+function spawnZombie() {
+  const edges = ['top','bottom','left','right'];
+  let edge = edges[Math.floor(Math.random()*edges.length)];
+  let x, y;
+  if(edge==='top') { x=Math.random()*canvas.width; y=0; }
+  if(edge==='bottom') { x=Math.random()*canvas.width; y=canvas.height; }
+  if(edge==='left') { x=0; y=Math.random()*canvas.height; }
+  if(edge==='right') { x=canvas.width; y=Math.random()*canvas.height; }
+  zombies.push({ x:x, y:y, width:30, height:30, speed:1 + Math.random()*2 });
 }
-setInterval(spawnEnemy, 1200);
+setInterval(spawnZombie, 1000);
 
 // --- SPAWN POWER-UPS ---
 function spawnPowerUp() {
-  let x = Math.random() * (canvas.width - 20);
-  let y = Math.random() * (canvas.height - 200);
-  const types = ['vida', 'municao', 'dano'];
-  powerUps.push({ x:x, y:y, width:20, height:20, type:types[Math.floor(Math.random()*types.length)] });
+  let x = Math.random()*(canvas.width-20);
+  let y = Math.random()*(canvas.height-20);
+  const types = ['vida','dano'];
+  powerUps.push({x:x, y:y, width:20, height:20, type:types[Math.floor(Math.random()*types.length)]});
 }
-setInterval(spawnPowerUp, 10000);
+setInterval(spawnPowerUp, 15000);
 
-// --- DRAW FUNCTIONS ---
-function drawPlayer() {
-  ctx.fillStyle = 'cyan';
-  ctx.fillRect(player.x, player.y, player.width, player.height);
-}
+// --- DRAW ---
+function drawPlayer() { ctx.fillStyle='cyan'; ctx.fillRect(player.x,player.y,player.width,player.height);}
+function drawBullets() { ctx.fillStyle='yellow'; bullets.forEach(b=>ctx.fillRect(b.x,b.y,b.width,b.height)); }
+function drawZombies() { ctx.fillStyle='green'; zombies.forEach(z=>ctx.fillRect(z.x,z.y,z.width,z.height)); }
+function drawPowerUps() { powerUps.forEach(p=>{ ctx.fillStyle=p.type==='vida'?'red':'orange'; ctx.fillRect(p.x,p.y,p.width,p.height); }); }
 
-function drawBullets() {
-  ctx.fillStyle = 'yellow';
-  bullets.forEach(b => ctx.fillRect(b.x, b.y, b.width, b.height));
-}
-
-function drawEnemies() {
-  ctx.fillStyle = 'red';
-  enemies.forEach(e => ctx.fillRect(e.x, e.y, e.width, e.height));
-}
-
-function drawPowerUps() {
-  powerUps.forEach(p => {
-    if(p.type==='vida') ctx.fillStyle='green';
-    if(p.type==='municao') ctx.fillStyle='blue';
-    if(p.type==='dano') ctx.fillStyle='orange';
-    ctx.fillRect(p.x, p.y, p.width, p.height);
-  });
-}
-
-// --- FIRE BULLET ---
+// --- FIRE ---
 function fireWeapon() {
-  if(fireCooldown <=0) {
+  if(fireCooldown<=0){
     let w = weapons[currentWeapon];
-    if(currentWeapon==='shotgun') {
+    if(currentWeapon==='shotgun'){
       for(let i=-1;i<=1;i++){
-        bullets.push({ x:player.x+15, y:player.y, width:10, height:20, dx:i*2, dy:-7, damage:w.damage });
+        bullets.push({ x:player.x+15, y:player.y+15, width:10, height:10, dx:i*2, dy:-7, damage:w.damage });
       }
-    } else {
-      bullets.push({ x:player.x+15, y:player.y, width:10, height:20, dx:0, dy:-7, damage:w.damage });
-    }
-    fireCooldown = w.cooldown;
+    } else { bullets.push({ x:player.x+15, y:player.y+15, width:10, height:10, dx:0, dy:-7, damage:w.damage }); }
+    fireCooldown=w.cooldown;
   }
 }
 
-// --- UPDATE GAME ---
-function update() {
+// --- UPDATE ---
+function update(){
   ctx.clearRect(0,0,canvas.width,canvas.height);
   fireCooldown--;
 
-  // Move bullets
+  // MOVE BULLETS
   bullets.forEach((b,i)=>{
     b.x += b.dx;
     b.y += b.dy;
-    if(b.y<0) bullets.splice(i,1);
+    if(b.x<0||b.x>canvas.width||b.y<0||b.y>canvas.height) bullets.splice(i,1);
   });
 
-  // Move enemies
-  enemies.forEach((e,j)=>{
-    e.y += e.speed;
+  // MOVE ZOMBIES
+  zombies.forEach((z,j)=>{
+    let dx = player.x - z.x;
+    let dy = player.y - z.y;
+    let dist = Math.sqrt(dx*dx+dy*dy);
+    z.x += (dx/dist)*z.speed;
+    z.y += (dy/dist)*z.speed;
 
     // Collision with player
-    if(e.x < player.x + player.width && e.x + e.width > player.x &&
-       e.y < player.y + player.height && e.y + e.height > player.y){
-      enemies.splice(j,1);
-      player.lives -= 1;
+    if(z.x < player.x+player.width && z.x+z.width>player.x &&
+       z.y<player.y+player.height && z.y+z.height>player.y){
+      zombies.splice(j,1);
+      player.lives -=1;
     }
 
     // Collision with bullets
     bullets.forEach((b,k)=>{
-      if(b.x < e.x + e.width && b.x + b.width > e.x &&
-         b.y < e.y + e.height && b.y + b.height > e.y){
-        enemies.splice(j,1);
+      if(b.x<z.x+z.width && b.x+b.width>z.x &&
+         b.y<z.y+z.height && b.y+b.height>z.y){
+        zombies.splice(j,1);
         bullets.splice(k,1);
         score += 10;
       }
     });
-
-    // Remove enemies out of screen
-    if(e.y>canvas.height) {
-      enemies.splice(j,1);
-      player.lives -= 1;
-    }
   });
 
-  // Power-ups
+  // POWER UPS
   powerUps.forEach((p,i)=>{
-    if(player.x < p.x + p.width && player.x + player.width > p.x &&
-       player.y < p.y + p.height && player.y + player.height > p.y){
-      if(p.type==='vida') player.lives += 1;
-      if(p.type==='dano') weapons[currentWeapon].damage += 5;
-      // municao seria simbólica aqui
+    if(player.x<p.x+p.width && player.x+player.width>p.x &&
+       player.y<p.y+p.height && player.y+player.height>p.y){
+      if(p.type==='vida') player.lives +=1;
+      if(p.type==='dano') weapons[currentWeapon].damage +=5;
       powerUps.splice(i,1);
     }
   });
 
-  // Draw everything
+  // DRAW
   drawPlayer();
   drawBullets();
-  drawEnemies();
+  drawZombies();
   drawPowerUps();
 
-  // Update HUD
-  hud.innerText = `Pontuação: ${score} | Vidas: ${player.lives} | Arma: ${currentWeapon.charAt(0).toUpperCase()+currentWeapon.slice(1)}`;
+  // UPDATE HUD
+  hud.innerText=`Pontuação: ${score} | Vidas: ${player.lives} | Arma: ${currentWeapon.charAt(0).toUpperCase()+currentWeapon.slice(1)}`;
 
   if(player.lives>0) requestAnimationFrame(update);
-  else {
-    ctx.fillStyle='white';
-    ctx.font='50px Arial';
-    ctx.fillText('GAME OVER', canvas.width/2-150, canvas.height/2);
-  }
+  else { ctx.fillStyle='white'; ctx.font='50px Arial'; ctx.fillText('GAME OVER', canvas.width/2-150, canvas.height/2); }
 }
 
-// --- KEY HANDLING ---
-document.addEventListener('keydown', e=>{ keys[e.key]=true; });
-document.addEventListener('keyup', e=>{ keys[e.key]=false; });
+// --- CONTROLS ---
+document.addEventListener('keydown', e=>keys[e.key]=true);
+document.addEventListener('keyup', e=>keys[e.key]=false);
 
 function handleMovement(){
-  if(keys['ArrowLeft'] && player.x>0) player.x -= player.speed;
-  if(keys['ArrowRight'] && player.x+player.width<canvas.width) player.x += player.speed;
-  if(keys['ArrowUp'] && player.y>0) player.y -= player.speed;
-  if(keys['ArrowDown'] && player.y+player.height<canvas.height) player.y += player.speed;
+  if(keys['w'] && player.y>0) player.y -= player.speed;
+  if(keys['s'] && player.y+player.height<canvas.height) player.y += player.speed;
+  if(keys['a'] && player.x>0) player.x -= player.speed;
+  if(keys['d'] && player.x+player.width<canvas.width) player.x += player.speed;
   if(keys[' ']) fireWeapon();
   if(keys['1']) currentWeapon='pistola';
   if(keys['2']) currentWeapon='rifle';

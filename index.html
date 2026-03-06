@@ -2,46 +2,62 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Tiro Pixel</title>
+<title>Shooter Infinito</title>
 <style>
-  body { margin:0; overflow:hidden; background:#222; }
-  #gameCanvas { display:block; margin:0 auto; background:#111; }
+  body { margin:0; overflow:hidden; background:#111; }
+  #gameCanvas { display:block; margin:0 auto; background:#222; }
+  #weaponDisplay { position:absolute; top:10px; left:10px; color:white; font-family:sans-serif; font-size:20px;}
 </style>
 </head>
 <body>
 <canvas id="gameCanvas" width="600" height="400"></canvas>
+<div id="weaponDisplay">Arma: Pistola</div>
 <script>
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
+const weaponDisplay = document.getElementById('weaponDisplay');
 
 let player = { x:280, y:350, width:40, height:40, speed:5 };
 let bullets = [];
 let enemies = [];
 let score = 0;
 let lives = 3;
+let currentWeapon = 'pistola';
+let fireCooldown = 0;
 
-// Criar inimigos aleatórios
+// Armas
+const weapons = {
+  pistola: { cooldown: 15, damage: 10, bullets: 1 },
+  rifle: { cooldown: 30, damage: 25, bullets: 1 },
+  shotgun: { cooldown: 45, damage: 15, bullets: 3 }
+};
+
+// Criar inimigos infinitamente
 function spawnEnemy() {
   let x = Math.random() * (canvas.width - 40);
   enemies.push({ x:x, y:0, width:40, height:40, speed:2 + Math.random() * 2 });
 }
-setInterval(spawnEnemy, 2000);
+setInterval(spawnEnemy, 1500);
 
+// Desenhar jogador
 function drawPlayer() {
   ctx.fillStyle = 'cyan';
   ctx.fillRect(player.x, player.y, player.width, player.height);
 }
 
+// Desenhar balas
 function drawBullets() {
   ctx.fillStyle = 'yellow';
   bullets.forEach(b => ctx.fillRect(b.x, b.y, b.width, b.height));
 }
 
+// Desenhar inimigos
 function drawEnemies() {
   ctx.fillStyle = 'red';
   enemies.forEach(e => ctx.fillRect(e.x, e.y, e.width, e.height));
 }
 
+// Desenhar interface
 function drawUI() {
   ctx.fillStyle = 'white';
   ctx.font = '20px Arial';
@@ -49,13 +65,28 @@ function drawUI() {
   ctx.fillText(`Vidas: ${lives}`, 500, 20);
 }
 
+function fireWeapon() {
+  if(fireCooldown <= 0) {
+    let w = weapons[currentWeapon];
+    if(currentWeapon === 'shotgun') {
+      for(let i=-1; i<=1; i++) {
+        bullets.push({ x:player.x+15, y:player.y, width:10, height:20, dy:-7, dx: i*2, damage: w.damage });
+      }
+    } else {
+      bullets.push({ x:player.x+15, y:player.y, width:10, height:20, dy:-7, dx:0, damage: w.damage });
+    }
+    fireCooldown = w.cooldown;
+  }
+}
+
 function update() {
   ctx.clearRect(0,0,canvas.width,canvas.height);
+  fireCooldown--;
 
   // Atualizar balas
   bullets.forEach((b,i) => {
-    b.y -= 7;
-    // remover balas fora da tela
+    b.y += b.dy;
+    b.x += b.dx;
     if(b.y < 0) bullets.splice(i,1);
   });
 
@@ -77,7 +108,6 @@ function update() {
         score += 10;
       }
     });
-    // Perde vida se inimigo passar
     if(e.y > canvas.height) {
       enemies.splice(j,1);
       lives -= 1;
@@ -97,10 +127,14 @@ function update() {
   }
 }
 
+// Controles
 document.addEventListener('keydown', (e) => {
   if(e.key === 'ArrowLeft' && player.x > 0) player.x -= player.speed;
   if(e.key === 'ArrowRight' && player.x + player.width < canvas.width) player.x += player.speed;
-  if(e.key === ' ') bullets.push({ x:player.x+15, y:player.y, width:10, height:20 });
+  if(e.key === ' ') fireWeapon();
+  if(e.key === '1') { currentWeapon='pistola'; weaponDisplay.innerText='Arma: Pistola'; }
+  if(e.key === '2') { currentWeapon='rifle'; weaponDisplay.innerText='Arma: Rifle'; }
+  if(e.key === '3') { currentWeapon='shotgun'; weaponDisplay.innerText='Arma: Shotgun'; }
 });
 
 update();

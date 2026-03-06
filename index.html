@@ -1,171 +1,110 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-    <meta charset="UTF-8">
-    <title>Globo 3D Ultra-Realista</title>
-    <script src="https://cdn.jsdelivr.net/npm/cesium/Build/Cesium/Cesium.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/cesium/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
-    <style>
-        html, body {
-            margin:0; padding:0; width:100%; height:100%; overflow:hidden;
-            font-family:'Segoe UI', Arial, sans-serif;
-        }
-        #cesiumContainer { width:100%; height:100%; display:block; }
-        #painel {
-            position:absolute; top:20px; left:20px; z-index:1000;
-            background: rgba(255,255,255,0.95); padding:12px 20px;
-            border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.4);
-        }
-        #painel h2 { margin:0; color:#1a73e8; font-size:1.3rem; }
-        #painel p { margin:5px 0 0 0; font-size:0.85rem; color:#555; }
-        #busca { margin-top:10px; width:100%; padding:6px; border-radius:6px; border:1px solid #ccc; font-size:14px; }
-        #camadas { margin-top:10px; display:flex; flex-direction:column; gap:4px; }
-        .btn-camada { padding:4px 8px; border-radius:4px; border:1px solid #ccc; cursor:pointer; background:#f1f1f1; font-size:13px; text-align:center; transition: all 0.2s ease; }
-        .btn-camada.active { background:#1a73e8; color:white; }
-        .btn-camada:hover { background:#d0e2ff; }
-        @media (max-width:600px){
-            #painel { width:90%; left:50%; transform:translateX(-50%); top:10px; padding:10px 15px; }
-        }
-    </style>
+<meta charset="UTF-8">
+<title>Globo 3D Realista</title>
+<script src="https://cdn.jsdelivr.net/npm/cesium/Build/Cesium/Cesium.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/cesium/Build/Cesium/Widgets/widgets.css" rel="stylesheet">
+<style>
+html, body { margin:0; padding:0; width:100%; height:100%; overflow:hidden; font-family:'Segoe UI', Arial, sans-serif;}
+#cesiumContainer { width:100%; height:100%; }
+#painel { position:absolute; top:20px; left:20px; z-index:1000; background:rgba(255,255,255,0.95); padding:12px 20px; border-radius:10px; box-shadow:0 4px 15px rgba(0,0,0,0.4);}
+#painel h2 { margin:0; color:#1a73e8; font-size:1.3rem; }
+#painel p { margin:5px 0 0 0; font-size:0.85rem; color:#555; }
+#busca { margin-top:10px; width:100%; padding:6px; border-radius:6px; border:1px solid #ccc; font-size:14px; }
+#camadas { margin-top:10px; display:flex; flex-direction:column; gap:4px; }
+.btn-camada { padding:4px 8px; border-radius:4px; border:1px solid #ccc; cursor:pointer; background:#f1f1f1; font-size:13px; text-align:center; transition:all 0.2s; }
+.btn-camada.active { background:#1a73e8; color:white; }
+.btn-camada:hover { background:#d0e2ff; }
+@media(max-width:600px){ #painel{width:90%; left:50%; transform:translateX(-50%); top:10px; padding:10px 15px;}}
+</style>
 </head>
 <body>
-
 <div id="painel">
-    <h2>Globo 3D Ultra-Realista</h2>
-    <p>Pesquise seu endereço:</p>
-    <input type="text" id="busca" placeholder="Pesquisar lugar...">
-    <div id="camadas">
-        <div class="btn-camada active" data-layer="satnames">Satélite + Nomes</div>
-        <div class="btn-camada" data-layer="osm">Mapa Simples</div>
-        <div class="btn-camada" data-layer="ruas">Satélite + Ruas</div>
-    </div>
+<h2>Globo 3D Realista</h2>
+<p>Pesquise seu endereço:</p>
+<input type="text" id="busca" placeholder="Pesquisar lugar...">
+<div id="camadas">
+<div class="btn-camada active" data-layer="satnames">Satélite + Nomes</div>
+<div class="btn-camada" data-layer="osm">Mapa Simples</div>
+<div class="btn-camada" data-layer="ruas">Satélite + Ruas</div>
 </div>
-
+</div>
 <div id="cesiumContainer"></div>
 
 <script>
-    // Inicializa Cesium Viewer com atmosfera, sombras e nuvens
-    const viewer = new Cesium.Viewer('cesiumContainer', {
-        baseLayerPicker: false,
-        terrainProvider: Cesium.createWorldTerrain(),
-        shouldAnimate: true,
-        shadows: true,
-        timeline: false,
-        animation: false
+const viewer = new Cesium.Viewer('cesiumContainer',{
+    baseLayerPicker:false,
+    terrainProvider:Cesium.createWorldTerrain(),
+    shouldAnimate:true,
+    shadows:true
+});
+viewer.scene.globe.enableLighting = true;
+viewer.scene.globe.depthTestAgainstTerrain = true;
+viewer.scene.skyAtmosphere.show = true;
+
+const satLayer = new Cesium.IonImageryProvider({assetId:2});
+const nomesLayer = new Cesium.UrlTemplateImageryProvider({
+    url:'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
+    credit:'Nomes © Esri'
+});
+const ruasLayer = new Cesium.UrlTemplateImageryProvider({
+    url:'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}',
+    credit:'Ruas © Esri'
+});
+const osmLayer = new Cesium.UrlTemplateImageryProvider({
+    url:'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+    subdomains:['a','b','c'],
+    credit:'Mapas © OpenStreetMap'
+});
+
+function switchLayer(layerName){
+    viewer.imageryLayers.removeAll();
+    if(layerName==='satnames'){ viewer.imageryLayers.addImageryProvider(satLayer); viewer.imageryLayers.addImageryProvider(nomesLayer);}
+    else if(layerName==='osm'){ viewer.imageryLayers.addImageryProvider(osmLayer);}
+    else if(layerName==='ruas'){ viewer.imageryLayers.addImageryProvider(satLayer); viewer.imageryLayers.addImageryProvider(ruasLayer);}
+}
+
+switchLayer('satnames');
+
+document.querySelectorAll('.btn-camada').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+        document.querySelectorAll('.btn-camada').forEach(b=>b.classList.remove('active'));
+        btn.classList.add('active');
+        switchLayer(btn.dataset.layer);
     });
+});
 
-    // Ativa iluminação dinâmica
-    viewer.scene.globe.enableLighting = true;
-    viewer.scene.globe.depthTestAgainstTerrain = true;
-    viewer.scene.skyAtmosphere.show = true;
+viewer.camera.setView({destination:Cesium.Cartesian3.fromDegrees(-47.8822,-15.7942,5000000)});
+viewer.scene.screenSpaceCameraController.enableRotate = true;
+viewer.scene.screenSpaceCameraController.enableZoom = true;
+viewer.scene.screenSpaceCameraController.enableTilt = true;
 
-    // Adiciona camada de nuvens realista
-    const cloudLayer = viewer.scene.imageryLayers.addImageryProvider(
-        new Cesium.UrlTemplateImageryProvider({
-            url: 'https://tiles.openaerialmap.org/clouds/{z}/{x}/{y}.png', // exemplo de nuvens públicas
-            credit: 'Nuvens © OAM'
-        })
-    );
-    cloudLayer.alpha = 0.5;
-
-    // Camadas de mapa
-    const satLayer = new Cesium.IonImageryProvider({ assetId: 2 }); // Satélite
-    const nomesLayer = new Cesium.UrlTemplateImageryProvider({
-        url: 'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}',
-        credit: 'Nomes © Esri'
-    });
-    const ruasLayer = new Cesium.UrlTemplateImageryProvider({
-        url: 'https://server.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}',
-        credit: 'Ruas © Esri'
-    });
-    const osmLayer = new Cesium.UrlTemplateImageryProvider({
-        url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-        subdomains:['a','b','c'],
-        credit: 'Mapas © OpenStreetMap'
-    });
-
-    // Alterna camadas
-    function switchLayer(layerName){
-        viewer.imageryLayers.removeAll();
-        if(layerName === 'satnames'){
-            viewer.imageryLayers.addImageryProvider(satLayer);
-            viewer.imageryLayers.addImageryProvider(nomesLayer);
-            viewer.imageryLayers.addImageryProvider(cloudLayer);
-        } else if(layerName === 'osm'){
-            viewer.imageryLayers.addImageryProvider(osmLayer);
-            viewer.imageryLayers.addImageryProvider(cloudLayer);
-        } else if(layerName === 'ruas'){
-            viewer.imageryLayers.addImageryProvider(satLayer);
-            viewer.imageryLayers.addImageryProvider(ruasLayer);
-            viewer.imageryLayers.addImageryProvider(cloudLayer);
-        }
-    }
-
-    // Inicializa com Satélite + Nomes
-    switchLayer('satnames');
-
-    // Botões de camadas
-    document.querySelectorAll('.btn-camada').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.btn-camada').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            switchLayer(btn.dataset.layer);
+const inputBusca=document.getElementById('busca');
+inputBusca.addEventListener('keydown',function(event){
+    if(event.key==="Enter"){
+        const query=inputBusca.value;
+        fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`)
+        .then(res=>res.json())
+        .then(data=>{
+            if(data.length>0){
+                const place=data[0];
+                const lon=parseFloat(place.lon);
+                const lat=parseFloat(place.lat);
+                viewer.camera.flyTo({
+                    destination:Cesium.Cartesian3.fromDegrees(lon,lat,2000000),
+                    orientation:{heading:Cesium.Math.toRadians(0), pitch:Cesium.Math.toRadians(-30), roll:0}
+                });
+                viewer.entities.add({
+                    name:place.display_name,
+                    position:Cesium.Cartesian3.fromDegrees(lon,lat),
+                    point:{pixelSize:12,color:Cesium.Color.RED},
+                    label:{text:place.display_name,font:'14px sans-serif',style:Cesium.LabelStyle.FILL_AND_OUTLINE,outlineWidth:2,verticalOrigin:Cesium.VerticalOrigin.BOTTOM,pixelOffset:new Cesium.Cartesian2(0,-15)}
+                });
+            }else{alert("Local não encontrado.");}
         });
-    });
-
-    // Foco inicial no Brasil
-    viewer.camera.setView({
-        destination: Cesium.Cartesian3.fromDegrees(-47.8822, -15.7942, 5000000)
-    });
-
-    // Controle de câmera estilo Google Earth
-    viewer.scene.screenSpaceCameraController.enableRotate = true;
-    viewer.scene.screenSpaceCameraController.enableZoom = true;
-    viewer.scene.screenSpaceCameraController.enableTilt = true;
-
-    // Busca de lugares via Nominatim
-    const inputBusca = document.getElementById('busca');
-    inputBusca.addEventListener('keydown', function(event){
-        if(event.key === "Enter"){
-            const query = inputBusca.value;
-            fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(query)}`)
-            .then(res => res.json())
-            .then(data => {
-                if(data.length > 0){
-                    const place = data[0];
-                    const lon = parseFloat(place.lon);
-                    const lat = parseFloat(place.lat);
-
-                    // Animação de voo até o local
-                    viewer.camera.flyTo({
-                        destination: Cesium.Cartesian3.fromDegrees(lon, lat, 2000000),
-                        orientation: {
-                            heading: Cesium.Math.toRadians(0),
-                            pitch: Cesium.Math.toRadians(-30),
-                            roll: 0
-                        }
-                    });
-
-                    // Adiciona marcador com label
-                    viewer.entities.add({
-                        name: place.display_name,
-                        position: Cesium.Cartesian3.fromDegrees(lon, lat),
-                        point: { pixelSize: 12, color: Cesium.Color.RED },
-                        label: {
-                            text: place.display_name,
-                            font: '14px sans-serif',
-                            style: Cesium.LabelStyle.FILL_AND_OUTLINE,
-                            outlineWidth: 2,
-                            verticalOrigin: Cesium.VerticalOrigin.BOTTOM,
-                            pixelOffset: new Cesium.Cartesian2(0, -15)
-                        }
-                    });
-                } else {
-                    alert("Local não encontrado.");
-                }
-            });
-        }
-    });
+    }
+});
 </script>
 
 </body>

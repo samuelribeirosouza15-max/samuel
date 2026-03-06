@@ -80,7 +80,32 @@
         }).addTo(map);
 
         // Ajuste automático de carregamento
-        setTimeout(() => { map.invalidateSize(); }, 500);
-    </script>
+        
+            var osm = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: 'Mapas © OpenStreetMap'
+});
+
+var baseMaps = {
+    "Satélite": satelite,
+    "Mapa": osm
+};
+
+L.control.layers(baseMaps, opcoesMapas, { collapsed: false, position: 'topright' }).addTo(map);
 </body>
 </html>
+        buscador.on('markgeocode', function(e) {
+    var latlng = e.geocode.center;
+    L.marker(latlng).addTo(map)
+        .bindPopup(e.geocode.name)
+        .openPopup();
+});
+        @media (max-width: 600px) {
+    #painel {
+        width: 90%;
+        left: 50%;
+        transform: translateX(-50%);
+        top: 10px;
+        padding: 10px 15px;
+    }
+}
+L.control.scale({ metric: true, imperial: false }).addTo(map);

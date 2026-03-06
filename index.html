@@ -2,63 +2,195 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Jogo 3D Simples</title>
+<title>Ultimate Shooter 2D</title>
 <style>
-  body { margin:0; overflow:hidden; }
-  canvas { display:block; }
+  body { margin:0; overflow:hidden; background:#111; font-family:sans-serif; }
+  #gameCanvas { display:block; margin:0 auto; background:#222; }
+  #hud {
+    position:absolute;
+    top:10px;
+    left:10px;
+    color:white;
+    font-size:20px;
+  }
 </style>
 </head>
 <body>
-<script src="https://cdn.jsdelivr.net/npm/three@0.154.0/build/three.min.js"></script>
+<canvas id="gameCanvas" width="800" height="500"></canvas>
+<div id="hud">Pontuação: 0 | Vidas: 3 | Arma: Pistola</div>
 <script>
-let scene = new THREE.Scene();
-let camera = new THREE.PerspectiveCamera(75, window.innerWidth/window.innerHeight, 0.1, 1000);
-let renderer = new THREE.WebGLRenderer();
-renderer.setSize(window.innerWidth, window.innerHeight);
-document.body.appendChild(renderer.domElement);
+const canvas = document.getElementById('gameCanvas');
+const ctx = canvas.getContext('2d');
+const hud = document.getElementById('hud');
 
-// Luz
-let light = new THREE.DirectionalLight(0xffffff, 1);
-light.position.set(10,10,10);
-scene.add(light);
+// --- PLAYER ---
+let player = {
+  x: 400,
+  y: 400,
+  width: 40,
+  height: 40,
+  speed: 5,
+  lives: 3
+};
 
-// Cubo (player)
-let geometry = new THREE.BoxGeometry();
-let material = new THREE.MeshStandardMaterial({ color: 0x00ff00 });
-let player = new THREE.Mesh(geometry, material);
-scene.add(player);
-player.position.y = 0.5;
+// --- WEAPONS ---
+const weapons = {
+  pistola: { cooldown: 15, damage: 10, bullets: 1 },
+  rifle: { cooldown: 30, damage: 25, bullets: 1 },
+  shotgun: { cooldown: 45, damage: 15, bullets: 3 }
+};
+let currentWeapon = 'pistola';
+let fireCooldown = 0;
 
-// Plataforma
-let planeGeometry = new THREE.PlaneGeometry(20,20);
-let planeMaterial = new THREE.MeshStandardMaterial({color:0x555555});
-let plane = new THREE.Mesh(planeGeometry, planeMaterial);
-plane.rotation.x = -Math.PI/2;
-scene.add(plane);
+// --- GAME STATE ---
+let bullets = [];
+let enemies = [];
+let powerUps = [];
+let score = 0;
+let keys = {};
 
-// Câmera
-camera.position.z = 5;
-camera.position.y = 5;
-camera.lookAt(0,0,0);
-
-// Movimentação
-let move = { left:false, right:false };
-document.addEventListener('keydown', e => {
-  if(e.key==='a') move.left = true;
-  if(e.key==='d') move.right = true;
-});
-document.addEventListener('keyup', e => {
-  if(e.key==='a') move.left = false;
-  if(e.key==='d') move.right = false;
-});
-
-function animate() {
-  requestAnimationFrame(animate);
-  if(move.left) player.position.x -= 0.1;
-  if(move.right) player.position.x += 0.1;
-  renderer.render(scene, camera);
+// --- SPAWN ENEMIES ---
+function spawnEnemy() {
+  let x = Math.random() * (canvas.width - 30);
+  enemies.push({ x:x, y:0, width:30, height:30, speed:1+Math.random()*2 });
 }
-animate();
+setInterval(spawnEnemy, 1200);
+
+// --- SPAWN POWER-UPS ---
+function spawnPowerUp() {
+  let x = Math.random() * (canvas.width - 20);
+  let y = Math.random() * (canvas.height - 200);
+  const types = ['vida', 'municao', 'dano'];
+  powerUps.push({ x:x, y:y, width:20, height:20, type:types[Math.floor(Math.random()*types.length)] });
+}
+setInterval(spawnPowerUp, 10000);
+
+// --- DRAW FUNCTIONS ---
+function drawPlayer() {
+  ctx.fillStyle = 'cyan';
+  ctx.fillRect(player.x, player.y, player.width, player.height);
+}
+
+function drawBullets() {
+  ctx.fillStyle = 'yellow';
+  bullets.forEach(b => ctx.fillRect(b.x, b.y, b.width, b.height));
+}
+
+function drawEnemies() {
+  ctx.fillStyle = 'red';
+  enemies.forEach(e => ctx.fillRect(e.x, e.y, e.width, e.height));
+}
+
+function drawPowerUps() {
+  powerUps.forEach(p => {
+    if(p.type==='vida') ctx.fillStyle='green';
+    if(p.type==='municao') ctx.fillStyle='blue';
+    if(p.type==='dano') ctx.fillStyle='orange';
+    ctx.fillRect(p.x, p.y, p.width, p.height);
+  });
+}
+
+// --- FIRE BULLET ---
+function fireWeapon() {
+  if(fireCooldown <=0) {
+    let w = weapons[currentWeapon];
+    if(currentWeapon==='shotgun') {
+      for(let i=-1;i<=1;i++){
+        bullets.push({ x:player.x+15, y:player.y, width:10, height:20, dx:i*2, dy:-7, damage:w.damage });
+      }
+    } else {
+      bullets.push({ x:player.x+15, y:player.y, width:10, height:20, dx:0, dy:-7, damage:w.damage });
+    }
+    fireCooldown = w.cooldown;
+  }
+}
+
+// --- UPDATE GAME ---
+function update() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  fireCooldown--;
+
+  // Move bullets
+  bullets.forEach((b,i)=>{
+    b.x += b.dx;
+    b.y += b.dy;
+    if(b.y<0) bullets.splice(i,1);
+  });
+
+  // Move enemies
+  enemies.forEach((e,j)=>{
+    e.y += e.speed;
+
+    // Collision with player
+    if(e.x < player.x + player.width && e.x + e.width > player.x &&
+       e.y < player.y + player.height && e.y + e.height > player.y){
+      enemies.splice(j,1);
+      player.lives -= 1;
+    }
+
+    // Collision with bullets
+    bullets.forEach((b,k)=>{
+      if(b.x < e.x + e.width && b.x + b.width > e.x &&
+         b.y < e.y + e.height && b.y + b.height > e.y){
+        enemies.splice(j,1);
+        bullets.splice(k,1);
+        score += 10;
+      }
+    });
+
+    // Remove enemies out of screen
+    if(e.y>canvas.height) {
+      enemies.splice(j,1);
+      player.lives -= 1;
+    }
+  });
+
+  // Power-ups
+  powerUps.forEach((p,i)=>{
+    if(player.x < p.x + p.width && player.x + player.width > p.x &&
+       player.y < p.y + p.height && player.y + player.height > p.y){
+      if(p.type==='vida') player.lives += 1;
+      if(p.type==='dano') weapons[currentWeapon].damage += 5;
+      // municao seria simbólica aqui
+      powerUps.splice(i,1);
+    }
+  });
+
+  // Draw everything
+  drawPlayer();
+  drawBullets();
+  drawEnemies();
+  drawPowerUps();
+
+  // Update HUD
+  hud.innerText = `Pontuação: ${score} | Vidas: ${player.lives} | Arma: ${currentWeapon.charAt(0).toUpperCase()+currentWeapon.slice(1)}`;
+
+  if(player.lives>0) requestAnimationFrame(update);
+  else {
+    ctx.fillStyle='white';
+    ctx.font='50px Arial';
+    ctx.fillText('GAME OVER', canvas.width/2-150, canvas.height/2);
+  }
+}
+
+// --- KEY HANDLING ---
+document.addEventListener('keydown', e=>{ keys[e.key]=true; });
+document.addEventListener('keyup', e=>{ keys[e.key]=false; });
+
+function handleMovement(){
+  if(keys['ArrowLeft'] && player.x>0) player.x -= player.speed;
+  if(keys['ArrowRight'] && player.x+player.width<canvas.width) player.x += player.speed;
+  if(keys['ArrowUp'] && player.y>0) player.y -= player.speed;
+  if(keys['ArrowDown'] && player.y+player.height<canvas.height) player.y += player.speed;
+  if(keys[' ']) fireWeapon();
+  if(keys['1']) currentWeapon='pistola';
+  if(keys['2']) currentWeapon='rifle';
+  if(keys['3']) currentWeapon='shotgun';
+  requestAnimationFrame(handleMovement);
+}
+
+handleMovement();
+update();
 </script>
 </body>
 </html>

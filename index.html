@@ -220,6 +220,52 @@ update();
 #buttons {
   position:absolute; bottom:10px; width:100%; display:flex; justify-content:space-between; padding:10px;
 }
+  <script>
+// --- CONTROLS ---
+// Alterar as teclas de movimento para as setas
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowUp') keys['up'] = true;
+  if (e.key === 'ArrowDown') keys['down'] = true;
+  if (e.key === 'ArrowLeft') keys['left'] = true;
+  if (e.key === 'ArrowRight') keys['right'] = true;
+  if (e.key === '1') currentWeapon = 'pistola';
+  if (e.key === '2') currentWeapon = 'rifle';
+  if (e.key === '3') currentWeapon = 'shotgun';
+});
+
+document.addEventListener('keyup', e => {
+  if (e.key === 'ArrowUp') keys['up'] = false;
+  if (e.key === 'ArrowDown') keys['down'] = false;
+  if (e.key === 'ArrowLeft') keys['left'] = false;
+  if (e.key === 'ArrowRight') keys['right'] = false;
+});
+
+document.addEventListener('mousemove', e => {
+  const rect = canvas.getBoundingClientRect();
+  mouse.x = e.clientX - rect.left;
+  mouse.y = e.clientY - rect.top;
+});
+document.addEventListener('mousedown', e => mouse.down = true);
+document.addEventListener('mouseup', e => mouse.down = false);
+
+function handleMovement() {
+  if (keys['up'] && player.y - player.radius > 0) player.y -= player.speed;
+  if (keys['down'] && player.y + player.radius < canvas.height) player.y += player.speed;
+  if (keys['left'] && player.x - player.radius > 0) player.x -= player.speed;
+  if (keys['right'] && player.x + player.radius < canvas.width) player.x += player.speed;
+  requestAnimationFrame(handleMovement);
+}
+
+handleMovement();
+
+// Botões de movimento no HTML
+document.getElementById('up').addEventListener('click', () => { if (player.y - player.radius > 0) player.y -= player.speed; });
+document.getElementById('down').addEventListener('click', () => { if (player.y + player.radius < canvas.height) player.y += player.speed; });
+document.getElementById('left').addEventListener('click', () => { if (player.x - player.radius > 0) player.x -= player.speed; });
+document.getElementById('right').addEventListener('click', () => { if (player.x + player.radius < canvas.width) player.x += player.speed; });
+
+document.getElementById('shoot').addEventListener('click', () => mouse.down = true);
+</script>
 #buttons button {
   width:60px; height:60px; font-size:24px; opacity:0.7; border:none; border-radius:10px;
 }

@@ -50,4 +50,23 @@
     <p>Samuel Ribeiro de Souza</p>
 </body>
 </html>
+/* Melhora a transição da sombra */
+a img {
+    /* ... seu código existente ... */
+    transition: transform 0.3s, box-shadow 0.3s;
+}
 
+a img:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 40px rgba(0, 255, 255, 1); /* Brilho mais intenso no hover */
+}
+
+/* Efeito de pulsar no nome */
+p {
+    animation: glow 2s ease-in-out infinite alternate;
+}
+
+@keyframes glow {
+    from { text-shadow: 0 0 5px #00ffff; }
+    to { text-shadow: 0 0 20px #00ffff, 0 0 30px #008080; }
+}

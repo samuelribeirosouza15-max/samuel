@@ -22,12 +22,17 @@
             font-size: 2.5em;
         }
 
-        img {
+        a img {
             width: 250px;
             height: auto;
             border-radius: 50%;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.7); /* Sombra neon para destacar no fundo preto */
+            box-shadow: 0 0 20px rgba(0, 255, 255, 0.7); /* Sombra neon */
             margin-bottom: 20px;
+            transition: transform 0.3s; /* Efeito hover */
+        }
+
+        a img:hover {
+            transform: scale(1.1); /* Aumenta um pouco ao passar o mouse */
         }
 
         p {
@@ -39,7 +44,10 @@
 </head>
 <body>
     <h1>Olá Mundo!</h1>
-    <img src="https://upload.wikimedia.org/wikipedia/commons/9/97/The_Earth_seen_from_Apollo_17.jpg" alt="Globo Terrestre">
+    <a href="https://earth.google.com/web/" target="_blank">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/9/97/The_Earth_seen_from_Apollo_17.jpg" alt="Globo Terrestre">
+    </a>
     <p>Samuel Ribeiro de Souza</p>
 </body>
 </html>
+

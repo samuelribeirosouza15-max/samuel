@@ -70,3 +70,22 @@ p {
     from { text-shadow: 0 0 5px #00ffff; }
     to { text-shadow: 0 0 20px #00ffff, 0 0 30px #008080; }
 }
+a img {
+    /* ... seus outros estilos ... */
+    animation: rotateGlobe 20s linear infinite;
+}
+
+@keyframes rotateGlobe {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Mantém o aumento de tamanho no hover sem quebrar a rotação */
+a img:hover {
+    animation-play-state: paused; /* Para de girar quando você passa o mouse */
+    transform: scale(1.1); 
+}

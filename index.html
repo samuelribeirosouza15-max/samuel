@@ -89,3 +89,32 @@ a img:hover {
     animation-play-state: paused; /* Para de girar quando você passa o mouse */
     transform: scale(1.1); 
 }
+a img {
+    width: 250px;
+    height: auto;
+    border-radius: 50%;
+    box-shadow: 0 0 20px rgba(0, 255, 255, 0.7);
+    margin-bottom: 20px;
+    transition: transform 0.3s, box-shadow 0.3s;
+    
+    /* Aplica a animação: nome, duração, suavidade, infinita, vai-e-volta */
+    animation: floatAndGlow 4s ease-in-out infinite alternate;
+}
+
+/* Define o movimento de flutuar e o brilho da atmosfera */
+@keyframes floatAndGlow {
+    from {
+        transform: translateY(0px);
+        box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
+    }
+    to {
+        transform: translateY(-20px);
+        box-shadow: 0 0 40px rgba(0, 255, 255, 1), 0 0 60px rgba(0, 255, 255, 0.4);
+    }
+}
+
+/* Mantém o efeito de zoom ao passar o mouse sem cancelar a flutuação */
+a img:hover {
+    transform: scale(1.1) translateY(-10px);
+    filter: brightness(1.2);
+}

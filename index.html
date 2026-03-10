@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fashion Hub | Curadoria de Marcas</title>
+    <title>Fashion Hub | Vitrine de Estilo</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -17,7 +17,6 @@
         
         body { background-color: var(--bg); color: var(--primary); }
 
-        /* Navegação */
         header {
             padding: 20px 5%;
             display: flex;
@@ -32,192 +31,45 @@
 
         .logo { font-weight: 800; font-size: 1.4rem; letter-spacing: -1px; }
 
-        /* Seção de Busca */
         .hero {
-            padding: 60px 5%;
+            padding: 50px 5%;
             text-align: center;
-            background: #fdfdfd;
+            background: #fff;
         }
 
         .hero h1 { font-size: 2.5rem; margin-bottom: 10px; font-weight: 800; }
 
         .search-container {
             max-width: 600px;
-            margin: 30px auto 0;
-            position: relative;
+            margin: 20px auto 0;
         }
 
         #searchInput {
             width: 100%;
             padding: 18px 25px;
-            border-radius: 50px;
+            border-radius: 12px;
             border: 2px solid #eee;
             font-size: 1rem;
             outline: none;
             transition: 0.3s;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
         }
 
-        #searchInput:focus {
-            border-color: var(--primary);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-        }
+        #searchInput:focus { border-color: var(--primary); }
 
-        /* Grid de Marcas */
         .brand-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
+            gap: 30px;
             padding: 40px 5%;
             max-width: 1200px;
             margin: 0 auto;
         }
 
         .brand-card {
-            background: var(--card-bg);
-            border-radius: 15px;
-            padding: 30px;
-            text-align: center;
-            transition: 0.3s;
-            border: 1px solid transparent;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .brand-card:hover {
-            transform: translateY(-5px);
             background: #fff;
-            border-color: #eee;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.05);
-        }
-
-        .brand-card img {
-            width: 100px;
-            height: 70px;
-            object-fit: contain;
-            margin-bottom: 15px;
-        }
-
-        .brand-card h3 { margin-bottom: 5px; font-size: 1.2rem; }
-
-        .brand-card p { 
-            font-size: 0.8rem; 
-            color: var(--secondary); 
-            margin-bottom: 20px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-        }
-
-        .btn-visit {
-            padding: 10px 25px;
-            background: var(--primary);
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
-            font-size: 0.9rem;
-            transition: 0.3s;
-        }
-
-        .btn-visit:hover { opacity: 0.8; }
-
-        footer { text-align: center; padding: 40px; color: #bbb; font-size: 0.8rem; }
-    </style>
-</head>
-<body>
-
-<header>
-    <div class="logo">FASHION HUB</div>
-    <div style="color: #999; font-size: 0.8rem;">CURADORIA OFICIAL</div>
-</header>
-
-<section class="hero">
-    <h1>Encontre sua Marca</h1>
-    <p>O melhor da moda masculina e feminina em um só lugar.</p>
-    
-    <div class="search-container">
-        <input type="text" id="searchInput" placeholder="Busque por marca, estilo ou produto..." autocomplete="off">
-    </div>
-</section>
-
-<main class="brand-grid" id="brandGrid">
-    <div class="brand-card" data-keywords="nike tenis esportivo corrida academia masculino feminino">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_NIKE.svg" alt="Nike">
-        <h3>Nike</h3>
-        <p>Esportivo & Lifestyle</p>
-        <a href="https://www.nike.com.br" target="_blank" class="btn-visit">Visitar Loja</a>
-    </div>
-
-    <div class="brand-card" data-keywords="adidas tenis esporte futebol originals masculino feminino">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/2/20/Adidas_Logo.svg" alt="Adidas">
-        <h3>Adidas</h3>
-        <p>Performance & Street</p>
-        <a href="https://www.adidas.com.br" target="_blank" class="btn-visit">Visitar Loja</a>
-    </div>
-
-    <div class="brand-card" data-keywords="puma tenis chuteira esporte masculino feminino casual">
-        <img src="https://upload.wikimedia.org/wikipedia/pt/d/d4/Puma_Logo.png" alt="Puma">
-        <h3>Puma</h3>
-        <p>Esporte & Moda</p>
-        <a href="https://br.puma.com" target="_blank" class="btn-visit">Visitar Loja</a>
-    </div>
-
-    <div class="brand-card" data-keywords="ralph lauren polo luxo social camisa masculino feminino">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Ralph_Lauren_Logo.svg/1200px-Ralph_Lauren_Logo.svg.png" alt="Ralph Lauren">
-        <h3>Ralph Lauren</h3>
-        <p>Luxo Clássico</p>
-        <a href="https://www.ralphlauren.com" target="_blank" class="btn-visit">Visitar Loja</a>
-    </div>
-
-    <div class="brand-card" data-keywords="lacoste jacare polo social casual luxo masculino feminino">
-        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/9/93/Lacoste_logo.svg/1200px-Lacoste_logo.svg.png" alt="Lacoste">
-        <h3>Lacoste</h3>
-        <p>Casual Premium</p>
-        <a href="https://www.lacoste.com/br/" target="_blank" class="btn-visit">Visitar Loja</a>
-    </div>
-
-    <div class="brand-card" data-keywords="shein feminino moda barato acessivel rapido">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/SHEIN_logo.svg/2560px-SHEIN_logo.svg.png" alt="SHEIN">
-        <h3>SHEIN</h3>
-        <p>Tendências Mundiais</p>
-        <a href="https://br.shein.com" target="_blank" class="btn-visit">Visitar Loja</a>
-    </div>
-
-    <div class="brand-card" data-keywords="manfinity shein masculino homem streetwear casual moderno">
-        <img src="https://img.ltwebstatic.com/images3_pi/2021/08/23/16297071987b920e40882e3f0e8f0a3e0f0e0f0e0f.png" alt="Manfinity">
-        <h3>Manfinity</h3>
-        <p>Moda Masculina Urban</p>
-        <a href="https://br.shein.com/men" target="_blank" class="btn-visit">Visitar Loja</a>
-    </div>
-</main>
-
-<footer>
-    &copy; 2024 Fashion Hub - Guia de Marcas Oficiais.
-</footer>
-
-<script>
-    // Seleciona o input e os cards
-    const searchInput = document.getElementById('searchInput');
-    const cards = document.querySelectorAll('.brand-card');
-
-    // Escuta o evento de digitação
-    searchInput.addEventListener('input', () => {
-        const value = searchInput.value.toLowerCase();
-
-        cards.forEach(card => {
-            const name = card.querySelector('h3').innerText.toLowerCase();
-            const keywords = card.getAttribute('data-keywords').toLowerCase();
-
-            // Se encontrar no nome ou nas palavras-chave, mostra o card
-            if (name.includes(value) || keywords.includes(value)) {
-                card.style.display = 'flex';
-            } else {
-                card.style.display = 'none';
-            }
-        });
-    });
-</script>
-
-</body>
-</html>
+            border-radius: 15px;
+            overflow: hidden;
+            transition: 0.4s;
+            border: 1px solid #eee;
+            display: flex;
+            flex-

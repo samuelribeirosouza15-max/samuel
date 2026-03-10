@@ -3,217 +3,259 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fashion Hub | Curadoria de Marcas</title>
+    <title>Fashion Hub | Vitrine de Produtos</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #000;
             --secondary: #666;
-            --bg: #ffffff;
-            --card-bg: #f8f9fa;
+            --bg: #f4f5f7;
+            --card-bg: #ffffff;
+            --accent: #ff4757;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         
         body { background-color: var(--bg); color: var(--primary); }
 
-        /* Navegação */
+        /* Cabeçalho */
         header {
             padding: 20px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border-bottom: 1px solid #eee;
             background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             position: sticky;
             top: 0;
             z-index: 1000;
         }
 
-        .logo { font-weight: 800; font-size: 1.4rem; letter-spacing: -1px; }
+        .logo { font-weight: 800; font-size: 1.5rem; letter-spacing: -1px; }
 
-        /* Seção de Busca */
+        /* Seção Hero e Busca */
         .hero {
-            padding: 60px 5%;
+            padding: 50px 5%;
             text-align: center;
-            background: #fdfdfd;
+            background: linear-gradient(to bottom, #ffffff, #f4f5f7);
         }
 
-        .hero h1 { font-size: 2.5rem; margin-bottom: 10px; font-weight: 800; }
+        .hero h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 10px; }
+        .hero p { color: var(--secondary); margin-bottom: 30px; }
 
         .search-container {
             max-width: 600px;
-            margin: 30px auto 0;
+            margin: 0 auto;
             position: relative;
         }
 
         #searchInput {
             width: 100%;
-            padding: 18px 25px;
+            padding: 16px 25px;
             border-radius: 50px;
-            border: 2px solid #eee;
+            border: 2px solid #e1e1e1;
             font-size: 1rem;
             outline: none;
             transition: 0.3s;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
 
         #searchInput:focus {
             border-color: var(--primary);
-            box-shadow: 0 8px 20px rgba(0,0,0,0.08);
         }
 
-        /* Grid de Marcas */
-        .brand-grid {
+        /* Grid de Produtos */
+        .product-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 30px;
             padding: 40px 5%;
-            max-width: 1200px;
+            max-width: 1300px;
             margin: 0 auto;
         }
 
-        .brand-card {
+        .product-card {
             background: var(--card-bg);
-            border-radius: 15px;
-            padding: 30px;
-            text-align: center;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
             transition: 0.3s;
-            border: 1px solid transparent;
             display: flex;
             flex-direction: column;
-            align-items: center;
         }
 
-        .brand-card:hover {
-            transform: translateY(-5px);
-            background: #fff;
-            border-color: #eee;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.05);
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.1);
         }
 
-        .brand-card img {
-            width: 100px;
-            height: 70px;
-            object-fit: contain;
-            margin-bottom: 15px;
+        .product-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover; /* Faz a imagem preencher o espaço bonito */
+            background: #f0f0f0;
         }
 
-        .brand-card h3 { margin-bottom: 5px; font-size: 1.2rem; }
+        .product-info {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
 
-        .brand-card p { 
-            font-size: 0.8rem; 
-            color: var(--secondary); 
-            margin-bottom: 20px;
+        .brand-name {
+            font-size: 0.75rem;
+            color: var(--secondary);
             text-transform: uppercase;
+            font-weight: 700;
             letter-spacing: 1px;
+            margin-bottom: 5px;
         }
 
-        .btn-visit {
-            padding: 10px 25px;
+        .product-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+            line-height: 1.3;
+        }
+
+        .product-price {
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            margin-top: auto; /* Empurra o preço para baixo */
+        }
+
+        .btn-buy {
+            text-align: center;
+            padding: 12px;
             background: var(--primary);
             color: white;
             text-decoration: none;
             border-radius: 8px;
             font-weight: 600;
-            font-size: 0.9rem;
             transition: 0.3s;
+            width: 100%;
         }
 
-        .btn-visit:hover { opacity: 0.8; }
+        .btn-buy:hover { background: #333; }
 
-        footer { text-align: center; padding: 40px; color: #bbb; font-size: 0.8rem; }
+        footer { text-align: center; padding: 40px; color: #999; font-size: 0.9rem; }
     </style>
 </head>
 <body>
 
 <header>
-    <div class="logo">FASHION HUB</div>
-    <div style="color: #999; font-size: 0.8rem;">CURADORIA OFICIAL</div>
+    <div class="logo">FASHION STORE</div>
+    <div>TÊNIS | ROUPAS | ACESSÓRIOS</div>
 </header>
 
 <section class="hero">
-    <h1>Encontre sua Marca</h1>
-    <p>O melhor da moda masculina e feminina em um só lugar.</p>
+    <h1>Lançamentos e Tendências</h1>
+    <p>Encontre os melhores produtos das suas marcas favoritas.</p>
     
     <div class="search-container">
-        <input type="text" id="searchInput" placeholder="Busque por marca, estilo ou produto..." autocomplete="off">
+        <input type="text" id="searchInput" placeholder="Busque por 'tênis', 'vestido', 'Nike'..." autocomplete="off">
     </div>
 </section>
 
-<main class="brand-grid" id="brandGrid">
-    <div class="brand-card" data-keywords="nike tenis esportivo corrida academia masculino feminino">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_NIKE.svg" alt="Nike">
-        <h3>Nike</h3>
-        <p>Esportivo & Lifestyle</p>
-        <a href="https://www.nike.com.br" target="_blank" class="btn-visit">Visitar Loja</a>
+<main class="product-grid" id="productGrid">
+
+    <div class="product-card" data-keywords="nike tenis sneaker esportivo corrida vermelho masculino calçado">
+        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Tênis Nike">
+        <div class="product-info">
+            <span class="brand-name">Nike</span>
+            <h3 class="product-title">Tênis Air Max Revolution</h3>
+            <div class="product-price">R$ 599,90</div>
+            <a href="https://www.nike.com.br" target="_blank" class="btn-buy">Ver na Loja</a>
+        </div>
     </div>
 
-    <div class="brand-card" data-keywords="adidas tenis esporte futebol originals masculino feminino">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/2/20/Adidas_Logo.svg" alt="Adidas">
-        <h3>Adidas</h3>
-        <p>Performance & Street</p>
-        <a href="https://www.adidas.com.br" target="_blank" class="btn-visit">Visitar Loja</a>
+    <div class="product-card" data-keywords="adidas moletom casaco blusa frio roupa masculino feminino">
+        <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Moletom">
+        <div class="product-info">
+            <span class="brand-name">Adidas</span>
+            <h3 class="product-title">Moletom Originals Essential</h3>
+            <div class="product-price">R$ 349,90</div>
+            <a href="https://www.adidas.com.br" target="_blank" class="btn-buy">Ver na Loja</a>
+        </div>
     </div>
 
-    <div class="brand-card" data-keywords="puma tenis chuteira esporte masculino feminino casual">
-        <img src="https://upload.wikimedia.org/wikipedia/pt/d/d4/Puma_Logo.png" alt="Puma">
-        <h3>Puma</h3>
-        <p>Esporte & Moda</p>
-        <a href="https://br.puma.com" target="_blank" class="btn-visit">Visitar Loja</a>
+    <div class="product-card" data-keywords="shein vestido floral verao roupa feminino casual">
+        <img src="https://images.unsplash.com/photo-1572804013309-82a89b4f259f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Vestido">
+        <div class="product-info">
+            <span class="brand-name">SHEIN</span>
+            <h3 class="product-title">Vestido Midi Estampado Floral</h3>
+            <div class="product-price">R$ 89,90</div>
+            <a href="https://br.shein.com" target="_blank" class="btn-buy">Ver na Loja</a>
+        </div>
     </div>
 
-    <div class="brand-card" data-keywords="ralph lauren polo luxo social camisa masculino feminino">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Ralph_Lauren_Logo.svg/1200px-Ralph_Lauren_Logo.svg.png" alt="Ralph Lauren">
-        <h3>Ralph Lauren</h3>
-        <p>Luxo Clássico</p>
-        <a href="https://www.ralphlauren.com" target="_blank" class="btn-visit">Visitar Loja</a>
+    <div class="product-card" data-keywords="lacoste relogio acessorio luxo prata masculino feminino">
+        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Relógio">
+        <div class="product-info">
+            <span class="brand-name">Lacoste</span>
+            <h3 class="product-title">Relógio Classic Silver 42mm</h3>
+            <div class="product-price">R$ 799,00</div>
+            <a href="https://www.lacoste.com/br/" target="_blank" class="btn-buy">Ver na Loja</a>
+        </div>
     </div>
 
-    <div class="brand-card" data-keywords="lacoste jacare polo social casual luxo masculino feminino">
-        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/9/93/Lacoste_logo.svg/1200px-Lacoste_logo.svg.png" alt="Lacoste">
-        <h3>Lacoste</h3>
-        <p>Casual Premium</p>
-        <a href="https://www.lacoste.com/br/" target="_blank" class="btn-visit">Visitar Loja</a>
+    <div class="product-card" data-keywords="ralph lauren camisa polo branca social roupa masculino">
+        <img src="https://images.unsplash.com/photo-1581655353564-df123a1eb820?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Camisa Branca">
+        <div class="product-info">
+            <span class="brand-name">Ralph Lauren</span>
+            <h3 class="product-title">Camisa Branca Slim Fit</h3>
+            <div class="product-price">R$ 450,00</div>
+            <a href="https://www.ralphlauren.com" target="_blank" class="btn-buy">Ver na Loja</a>
+        </div>
     </div>
 
-    <div class="brand-card" data-keywords="shein feminino moda barato acessivel rapido">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/SHEIN_logo.svg/2560px-SHEIN_logo.svg.png" alt="SHEIN">
-        <h3>SHEIN</h3>
-        <p>Tendências Mundiais</p>
-        <a href="https://br.shein.com" target="_blank" class="btn-visit">Visitar Loja</a>
+    <div class="product-card" data-keywords="puma bone preto acessorio esportivo masculino">
+        <img src="https://images.unsplash.com/photo-1588850561407-ed78c282e89b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Boné">
+        <div class="product-info">
+            <span class="brand-name">Puma</span>
+            <h3 class="product-title">Boné Metal Cat Preto</h3>
+            <div class="product-price">R$ 119,90</div>
+            <a href="https://br.puma.com" target="_blank" class="btn-buy">Ver na Loja</a>
+        </div>
     </div>
 
-    <div class="brand-card" data-keywords="manfinity shein masculino homem streetwear casual moderno">
-        <img src="https://img.ltwebstatic.com/images3_pi/2021/08/23/16297071987b920e40882e3f0e8f0a3e0f0e0f0e0f.png" alt="Manfinity">
-        <h3>Manfinity</h3>
-        <p>Moda Masculina Urban</p>
-        <a href="https://br.shein.com/men" target="_blank" class="btn-visit">Visitar Loja</a>
+    <div class="product-card" data-keywords="manfinity shein jaqueta couro casaco inverno masculino roupa">
+        <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Jaqueta de Couro">
+        <div class="product-info">
+            <span class="brand-name">Manfinity (SHEIN)</span>
+            <h3 class="product-title">Jaqueta Biker de Couro PU</h3>
+            <div class="product-price">R$ 185,90</div>
+            <a href="https://br.shein.com/men" target="_blank" class="btn-buy">Ver na Loja</a>
+        </div>
     </div>
+
 </main>
 
 <footer>
-    &copy; 2024 Fashion Hub - Guia de Marcas Oficiais.
+    &copy; 2024 Fashion Store - Catálogo de Produtos Oficiais.
 </footer>
 
 <script>
-    // Seleciona o input e os cards
+    // Script da Barra de Pesquisa Atualizado
     const searchInput = document.getElementById('searchInput');
-    const cards = document.querySelectorAll('.brand-card');
+    const products = document.querySelectorAll('.product-card');
 
-    // Escuta o evento de digitação
     searchInput.addEventListener('input', () => {
         const value = searchInput.value.toLowerCase();
 
-        cards.forEach(card => {
-            const name = card.querySelector('h3').innerText.toLowerCase();
-            const keywords = card.getAttribute('data-keywords').toLowerCase();
+        products.forEach(product => {
+            // Busca pelo título do produto, pela marca e pelas palavras-chave ocultas
+            const title = product.querySelector('.product-title').innerText.toLowerCase();
+            const brand = product.querySelector('.brand-name').innerText.toLowerCase();
+            const keywords = product.getAttribute('data-keywords').toLowerCase();
 
-            // Se encontrar no nome ou nas palavras-chave, mostra o card
-            if (name.includes(value) || keywords.includes(value)) {
-                card.style.display = 'flex';
+            // Se o que o usuário digitou bater com o título, marca ou keywords, o produto aparece
+            if (title.includes(value) || brand.includes(value) || keywords.includes(value)) {
+                product.style.display = 'flex';
             } else {
-                card.style.display = 'none';
+                product.style.display = 'none';
             }
         });
     });

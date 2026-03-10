@@ -3,73 +3,123 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fashion Hub | Vitrine de Estilo</title>
+    <title>Fashion Store | Vitrine Inteligente</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --primary: #000;
-            --secondary: #666;
-            --bg: #ffffff;
-            --card-bg: #f8f9fa;
-        }
-
+        :root { --primary: #000; --bg: #ffffff; --gray: #f4f4f4; }
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         
         body { background-color: var(--bg); color: var(--primary); }
 
         header {
             padding: 20px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+            text-align: center;
             border-bottom: 1px solid #eee;
             background: white;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            position: sticky; top: 0; z-index: 1000;
         }
-
-        .logo { font-weight: 800; font-size: 1.4rem; letter-spacing: -1px; }
-
-        .hero {
-            padding: 50px 5%;
-            text-align: center;
-            background: #fff;
-        }
-
-        .hero h1 { font-size: 2.5rem; margin-bottom: 10px; font-weight: 800; }
 
         .search-container {
-            max-width: 600px;
-            margin: 20px auto 0;
+            max-width: 700px;
+            margin: 20px auto;
+            padding: 0 20px;
         }
 
         #searchInput {
             width: 100%;
-            padding: 18px 25px;
-            border-radius: 12px;
+            padding: 15px 25px;
+            border-radius: 50px;
             border: 2px solid #eee;
             font-size: 1rem;
             outline: none;
             transition: 0.3s;
         }
 
-        #searchInput:focus { border-color: var(--primary); }
+        #searchInput:focus { border-color: var(--primary); box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
 
-        .brand-grid {
+        /* Grid de Produtos */
+        .product-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 30px;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
             padding: 40px 5%;
             max-width: 1200px;
             margin: 0 auto;
         }
 
-        .brand-card {
-            background: #fff;
-            border-radius: 15px;
+        .product-card {
+            background: white;
+            border-radius: 12px;
             overflow: hidden;
-            transition: 0.4s;
+            transition: 0.3s;
             border: 1px solid #eee;
             display: flex;
-            flex-
+            flex-direction: column;
+        }
+
+        .product-card:hover { transform: translateY(-5px); box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+
+        .img-container {
+            width: 100%;
+            height: 250px;
+            background: #f9f9f9;
+            overflow: hidden;
+        }
+
+        .img-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.5s;
+        }
+
+        .product-info { padding: 15px; text-align: left; }
+        .product-brand { font-size: 0.7rem; color: #888; text-transform: uppercase; font-weight: 700; }
+        .product-title { font-size: 1rem; margin: 5px 0; font-weight: 600; }
+        
+        .btn-buy {
+            display: block;
+            background: var(--primary);
+            color: white;
+            text-align: center;
+            padding: 10px;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-top: auto;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h2 style="font-weight: 800; letter-spacing: -1px;">SHOP.HUB</h2>
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="O que você procura? (ex: tênis nike, camisa, acessório...)" autocomplete="off">
+    </div>
+</header>
+
+<main class="product-grid" id="productGrid">
+    <div class="product-card" data-keywords="tenis nike air esporte corrida preto">
+        <div class="img-container">
+            <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=600" alt="Tênis Nike">
+        </div>
+        <div class="product-info">
+            <span class="product-brand">Nike</span>
+            <p class="product-title">Tênis Nike Revolution</p>
+            <a href="https://www.nike.com.br" class="btn-buy">Ver no Site</a>
+        </div>
+    </div>
+
+    <div class="product-card" data-keywords="acessorio oculos sol luxo ralph lauren">
+        <div class="img-container">
+            <img src="https://images.unsplash.com/photo-1572635196237-14b3f281503f?auto=format&fit=crop&w=600" alt="Óculos">
+        </div>
+        <div class="product-info">
+            <span class="product-brand">Ralph Lauren</span>
+            <p class="product-title">Óculos de Sol Premium</p>
+            <a href="https://www.ralphlauren.com" class="btn-buy">Ver no Site</a>
+        </div>
+    </div>
+
+    <div class="product-card" data-keywords="roupa camisa polo branca lacoste casual">

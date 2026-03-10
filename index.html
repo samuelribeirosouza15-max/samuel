@@ -290,7 +290,41 @@
         } else {
             nikeTitle.style.display = 'block';
         }
+    <script>
+    const searchInput = document.getElementById('searchInput');
+    const products = document.querySelectorAll('.product-card');
+    const nikeTitle = document.getElementById('nikeTitle');
+
+    searchInput.addEventListener('input', () => {
+        const value = searchInput.value.toLowerCase();
+        let isNikeVisible = false;
+
+        products.forEach(product => {
+            const title = product.querySelector('.product-title').innerText.toLowerCase();
+            const brand = product.querySelector('.brand-name').innerText.toLowerCase();
+            const keywords = product.getAttribute('data-keywords').toLowerCase();
+
+            // Se o produto bater com a pesquisa, ele aparece
+            if (title.includes(value) || brand.includes(value) || keywords.includes(value)) {
+                product.style.display = 'flex';
+                
+                // Verifica se esse produto que apareceu é da Nike
+                if (brand.includes('nike')) {
+                    isNikeVisible = true;
+                }
+            } else {
+                product.style.display = 'none';
+            }
+        });
+
+        // Mostra o título apenas se a busca estiver vazia ou se houver um tênis da Nike na tela
+        if (value === "" || isNikeVisible) {
+            nikeTitle.style.display = 'block';
+        } else {
+            nikeTitle.style.display = 'none';
+        }
     });
+</script>
 </script>
 
 </body>

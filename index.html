@@ -64,12 +64,23 @@
             border-color: var(--primary);
         }
 
+        /* Título das Seções */
+        .section-title {
+            padding: 40px 5% 10px;
+            max-width: 1300px;
+            margin: 0 auto;
+            font-size: 1.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: -0.5px;
+        }
+
         /* Grid de Produtos */
         .product-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             gap: 30px;
-            padding: 40px 5%;
+            padding: 20px 5% 40px;
             max-width: 1300px;
             margin: 0 auto;
         }
@@ -82,11 +93,13 @@
             transition: 0.3s;
             display: flex;
             flex-direction: column;
+            border: 1px solid #eee;
         }
 
         .product-card:hover {
             transform: translateY(-8px);
             box-shadow: 0 12px 25px rgba(0,0,0,0.1);
+            border-color: #ddd;
         }
 
         .product-card img {
@@ -155,19 +168,51 @@
     <p>Encontre os melhores produtos das suas marcas favoritas.</p>
     
     <div class="search-container">
-        <input type="text" id="searchInput" placeholder="Busque por 'tênis', 'vestido', 'Nike'..." autocomplete="off">
+        <input type="text" id="searchInput" placeholder="Busque por 'jordan', 'nike', 'vestido'..." autocomplete="off">
     </div>
 </section>
 
+<div class="section-title" id="nikeTitle">🔥 Especial: Clássicos Nike</div>
+
 <main class="product-grid" id="productGrid">
 
-    <div class="product-card" data-keywords="nike tenis sneaker esportivo corrida vermelho masculino calçado">
-        <img src="https://images.unsplash.com/photo-1542291026-7eec264c27ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Tênis Nike">
+    <div class="product-card" data-keywords="nike tenis sneaker branco basquete casual air force 1 masculino feminino">
+        <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Nike Air Force 1">
         <div class="product-info">
             <span class="brand-name">Nike</span>
-            <h3 class="product-title">Tênis Air Max Revolution</h3>
-            <div class="product-price">R$ 599,90</div>
-            <a href="https://www.nike.com.br/nav/colecoes/air-max" target="_blank" class="btn-buy">Ver Produto</a>
+            <h3 class="product-title">Tênis Air Force 1 '07 Branco</h3>
+            <div class="product-price">R$ 799,99</div>
+            <a href="https://www.nike.com.br/nav/colecoes/air-force" target="_blank" class="btn-buy">Ver na Nike</a>
+        </div>
+    </div>
+
+    <div class="product-card" data-keywords="nike tenis sneaker jordan basquete vermelho preto masculino feminino">
+        <img src="https://images.unsplash.com/photo-1597045566677-8cf032ed6634?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Nike Air Jordan 1">
+        <div class="product-info">
+            <span class="brand-name">Nike</span>
+            <h3 class="product-title">Tênis Air Jordan 1 Retro</h3>
+            <div class="product-price">R$ 1.299,99</div>
+            <a href="https://www.nike.com.br/nav/colecoes/jordan" target="_blank" class="btn-buy">Ver na Nike</a>
+        </div>
+    </div>
+
+    <div class="product-card" data-keywords="nike tenis sneaker dunk low skate casual masculino feminino">
+        <img src="https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Nike Dunk Low">
+        <div class="product-info">
+            <span class="brand-name">Nike</span>
+            <h3 class="product-title">Tênis Dunk Low Retro</h3>
+            <div class="product-price">R$ 899,99</div>
+            <a href="https://www.nike.com.br/nav/colecoes/dunk" target="_blank" class="btn-buy">Ver na Nike</a>
+        </div>
+    </div>
+
+    <div class="product-card" data-keywords="nike tenis sneaker air max corrida esporte casual masculino feminino">
+        <img src="https://images.unsplash.com/photo-1605340537586-0b5fd41f4eb4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Nike Air Max">
+        <div class="product-info">
+            <span class="brand-name">Nike</span>
+            <h3 class="product-title">Tênis Air Max 90</h3>
+            <div class="product-price">R$ 999,99</div>
+            <a href="https://www.nike.com.br/nav/colecoes/air-max" target="_blank" class="btn-buy">Ver na Nike</a>
         </div>
     </div>
 
@@ -211,26 +256,6 @@
         </div>
     </div>
 
-    <div class="product-card" data-keywords="puma bone preto acessorio esportivo masculino">
-        <img src="https://images.unsplash.com/photo-1588850561407-ed78c282e89b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Boné">
-        <div class="product-info">
-            <span class="brand-name">Puma</span>
-            <h3 class="product-title">Boné Metal Cat Preto</h3>
-            <div class="product-price">R$ 119,90</div>
-            <a href="https://br.puma.com/acessorios/bones-e-viseiras.html" target="_blank" class="btn-buy">Ver Produto</a>
-        </div>
-    </div>
-
-    <div class="product-card" data-keywords="manfinity shein jaqueta couro casaco inverno masculino roupa">
-        <img src="https://images.unsplash.com/photo-1551028719-00167b16eac5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Jaqueta de Couro">
-        <div class="product-info">
-            <span class="brand-name">Manfinity (SHEIN)</span>
-            <h3 class="product-title">Jaqueta Biker de Couro PU</h3>
-            <div class="product-price">R$ 185,90</div>
-            <a href="https://br.shein.com/men-outerwear-c-1972.html" target="_blank" class="btn-buy">Ver Produto</a>
-        </div>
-    </div>
-
 </main>
 
 <footer>
@@ -240,9 +265,11 @@
 <script>
     const searchInput = document.getElementById('searchInput');
     const products = document.querySelectorAll('.product-card');
+    const nikeTitle = document.getElementById('nikeTitle');
 
     searchInput.addEventListener('input', () => {
         const value = searchInput.value.toLowerCase();
+        let hasVisibleProducts = false;
 
         products.forEach(product => {
             const title = product.querySelector('.product-title').innerText.toLowerCase();
@@ -251,10 +278,18 @@
 
             if (title.includes(value) || brand.includes(value) || keywords.includes(value)) {
                 product.style.display = 'flex';
+                hasVisibleProducts = true;
             } else {
                 product.style.display = 'none';
             }
         });
+
+        // Esconde o título "Especial Nike" se o usuário estiver buscando algo diferente (ex: Adidas)
+        if (value.length > 0 && !value.includes('nike') && !value.includes('jordan') && !value.includes('air') && !value.includes('dunk')) {
+            nikeTitle.style.display = 'none';
+        } else {
+            nikeTitle.style.display = 'block';
+        }
     });
 </script>
 

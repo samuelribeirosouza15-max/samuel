@@ -3,166 +3,210 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elite Fashion | Curadoria de Marcas</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    <title>Fashion Hub Pro | Curadoria de Elite</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #000000;
-            --accent: #555555;
-            --bg: #ffffff;
-            --card-bg: #f9f9f9;
+            --primary: #000;
+            --secondary: #666;
+            --accent: #ff4757;
+            --bg: #fff;
+            --gray-light: #f8f9fa;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        
+        body { background-color: var(--bg); color: var(--primary); overflow-x: hidden; }
 
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background-color: var(--bg); 
-            color: var(--primary);
-            line-height: 1.6;
-        }
-
-        /* Navegação */
-        nav {
+        /* Header & Nav */
+        header {
+            padding: 20px 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 20px 5%;
             border-bottom: 1px solid #eee;
-            position: sticky;
-            top: 0;
-            background: rgba(255,255,255,0.95);
-            z-index: 1000;
+            sticky: top;
+            background: white;
+            z-index: 100;
         }
 
-        .logo { font-weight: 700; font-size: 1.5rem; letter-spacing: -1px; }
+        .logo { font-weight: 800; font-size: 1.4rem; letter-spacing: -1px; }
 
-        /* Banner Principal */
+        /* Hero Section */
         .hero {
-            padding: 60px 5%;
+            padding: 80px 5%;
             text-align: center;
-            background: #f4f4f4;
-            margin-bottom: 40px;
+            background: linear-gradient(to bottom, #f0f0f0, #ffffff);
         }
 
-        .hero h2 { font-size: 2.5rem; margin-bottom: 10px; }
-        .hero p { color: var(--accent); max-width: 600px; margin: 0 auto; }
+        .hero h1 { font-size: 3rem; font-weight: 800; margin-bottom: 15px; letter-spacing: -2px; }
+        
+        /* Barra de Busca Premium */
+        .search-box {
+            position: relative;
+            max-width: 600px;
+            margin: 30px auto;
+        }
 
-        /* Grade de Produtos */
-        .container { 
-            display: grid; 
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); 
-            gap: 30px; 
-            padding: 0 5% 50px;
-            max-width: 1200px;
+        #searchInput {
+            width: 100%;
+            padding: 20px 30px;
+            border-radius: 100px;
+            border: 1px solid #ddd;
+            font-size: 1.1rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            transition: 0.3s;
+        }
+
+        #searchInput:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+        }
+
+        /* Grid de Marcas */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            padding: 40px 5%;
+            max-width: 1300px;
             margin: 0 auto;
         }
 
-        .card { 
-            background: var(--card-bg); 
-            border-radius: 12px; 
-            overflow: hidden;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 1px solid #eee;
+        .brand-card {
+            background: var(--gray-light);
+            border-radius: 20px;
+            padding: 40px;
             text-align: center;
-            padding: 30px;
+            position: relative;
+            transition: 0.4s;
+            border: 1px solid transparent;
         }
 
-        .card:hover { 
-            transform: translateY(-10px); 
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        .brand-card:hover {
             background: #fff;
+            border-color: #eee;
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.08);
         }
 
-        .card img { 
-            width: 100%; 
-            height: 120px; 
-            object-fit: contain; 
+        .brand-card img {
+            width: 120px;
+            height: 80px;
+            object-fit: contain;
             margin-bottom: 20px;
             filter: grayscale(100%);
             transition: 0.3s;
         }
 
-        .card:hover img { filter: grayscale(0%); }
+        .brand-card:hover img { filter: grayscale(0%); }
 
-        .card h3 { font-weight: 700; margin-bottom: 15px; text-transform: uppercase; letter-spacing: 1px; }
+        .tags {
+            font-size: 0.7rem;
+            color: var(--secondary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+            display: block;
+        }
 
-        .btn { 
-            display: inline-block; 
-            padding: 12px 25px; 
-            background: var(--primary); 
-            color: #fff; 
-            text-decoration: none; 
-            border-radius: 50px; 
-            font-size: 0.9rem;
+        .btn-shop {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 12px 30px;
+            background: var(--primary);
+            color: #fff;
+            text-decoration: none;
+            border-radius: 10px;
             font-weight: 600;
+            font-size: 0.9rem;
             transition: 0.3s;
         }
 
-        .btn:hover { background: #333; letter-spacing: 1px; }
+        .btn-shop:hover { background: #333; transform: scale(1.05); }
 
-        footer { padding: 40px; text-align: center; border-top: 1px solid #eee; color: #999; font-size: 0.8rem; }
+        /* Selo de Categoria */
+        .category-badge {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: #e0e0e0;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.6rem;
+            font-weight: 700;
+        }
+
+        footer { text-align: center; padding: 60px; color: #999; font-size: 0.9rem; }
     </style>
 </head>
 <body>
 
-<nav>
-    <div class="logo">FASHION.HUB</div>
-    <div>MASCULINO | FEMININO | ACESSÓRIOS</div>
-</nav>
+<header>
+    <div class="logo">FASHION HUB.</div>
+    <div style="font-size: 0.8rem; font-weight: 600; color: #666;">COLEÇÃO 2024</div>
+</header>
 
 <section class="hero">
-    <h2>As Melhores Marcas em um só lugar</h2>
-    <p>Navegue pelas coleções oficiais e encontre o seu estilo nas lojas mais renomadas do mundo.</p>
+    <h1>Encontre sua marca favorita.</h1>
+    <p>A curadoria definitiva das melhores lojas de moda masculina e feminina.</p>
+    
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Busque por marca ou estilo (ex: tênis, luxo, casual)..." onkeyup="filterBrands()">
+    </div>
 </section>
 
-<div class="container">
-    <div class="card">
+<main class="grid" id="brandGrid">
+    <div class="brand-card" data-keywords="nike tenis esportivo corrida masculino feminino">
+        <span class="category-badge">ESPORTIVO</span>
+        <span class="tags">Tênis • Performance • Casual</span>
         <img src="https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_NIKE.svg" alt="Nike">
         <h3>Nike</h3>
-        <a href="https://www.nike.com.br" target="_blank" class="btn">VER COLEÇÃO</a>
+        <a href="https://www.nike.com.br" target="_blank" class="btn-shop">Visitar Loja</a>
     </div>
 
-    <div class="card">
+    <div class="brand-card" data-keywords="adidas tenis esportivo chuteira masculino feminino originals">
+        <span class="category-badge">ESPORTIVO</span>
+        <span class="tags">Lifestyle • Esporte • Street</span>
         <img src="https://upload.wikimedia.org/wikipedia/commons/2/20/Adidas_Logo.svg" alt="Adidas">
         <h3>Adidas</h3>
-        <a href="https://www.adidas.com.br" target="_blank" class="btn">VER COLEÇÃO</a>
+        <a href="https://www.adidas.com.br" target="_blank" class="btn-shop">Visitar Loja</a>
     </div>
 
-    <div class="card">
-        <img src="https://upload.wikimedia.org/wikipedia/pt/d/d4/Puma_Logo.png" alt="Puma">
-        <h3>Puma</h3>
-        <a href="https://br.puma.com" target="_blank" class="btn">VER COLEÇÃO</a>
-    </div>
-
-    <div class="card">
+    <div class="brand-card" data-keywords="ralph lauren polo luxo social masculino feminino classico">
+        <span class="category-badge">LUXO</span>
+        <span class="tags">Social • Elegante • Premium</span>
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Ralph_Lauren_Logo.svg/1200px-Ralph_Lauren_Logo.svg.png" alt="Ralph Lauren">
         <h3>Ralph Lauren</h3>
-        <a href="https://www.ralphlauren.com" target="_blank" class="btn">VER COLEÇÃO</a>
+        <a href="https://www.ralphlauren.com" target="_blank" class="btn-shop">Visitar Loja</a>
     </div>
 
-    <div class="card">
+    <div class="brand-card" data-keywords="lacoste jacare polo luxo casual masculino feminino">
+        <span class="category-badge">LUXO CASUAL</span>
+        <span class="tags">Polo • Sport Fino • Francês</span>
         <img src="https://upload.wikimedia.org/wikipedia/en/thumb/9/93/Lacoste_logo.svg/1200px-Lacoste_logo.svg.png" alt="Lacoste">
         <h3>Lacoste</h3>
-        <a href="https://www.lacoste.com/br/" target="_blank" class="btn">VER COLEÇÃO</a>
+        <a href="https://www.lacoste.com/br/" target="_blank" class="btn-shop">Visitar Loja</a>
     </div>
 
-    <div class="card">
+    <div class="brand-card" data-keywords="shein barato feminino moda fast fashion rapido">
+        <span class="category-badge">FAST FASHION</span>
+        <span class="tags">Tendências • Acessível • Variedade</span>
         <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/SHEIN_logo.svg/2560px-SHEIN_logo.svg.png" alt="SHEIN">
         <h3>SHEIN</h3>
-        <a href="https://br.shein.com" target="_blank" class="btn">VER COLEÇÃO</a>
+        <a href="https://br.shein.com" target="_blank" class="btn-shop">Visitar Loja</a>
     </div>
 
-    <div class="card">
+    <div class="brand-card" data-keywords="manfinity shein masculino homem streetwear casual">
+        <span class="category-badge">MASCULINO</span>
+        <span class="tags">Streetwear • Urbano • Homem</span>
         <img src="https://img.ltwebstatic.com/images3_pi/2021/08/23/16297071987b920e40882e3f0e8f0a3e0f0e0f0e0f.png" alt="Manfinity">
         <h3>Manfinity</h3>
-        <a href="https://br.shein.com/men" target="_blank" class="btn">MODA MASCULINA</a>
+        <a href="https://br.shein.com/men" target="_blank" class="btn-shop">Visitar Loja</a>
     </div>
-</div>
 
-<footer>
-    &copy; 2024 Fashion Hub - Direcionamento para lojas oficiais.
-</footer>
-
-</body>
-</html>
+    <div class="brand-card" data-keywords="puma tenis futebol esportivo masculino feminino casual">
+        <span class="category-badge">ESPORTIVO</span>
+        <span class="tags">Chuteiras • Velocidade • Moda</span>
+        <img src="https://upload.wikimedia

@@ -1,120 +1,71 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Olá Mundo</title>
+    <title>Fashion Hub | As Melhores Marcas</title>
     <style>
-        body {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background-color: #000000; /* Fundo preto */
+        body { font-family: 'Arial', sans-serif; margin: 0; background-color: #f4f4f4; text-align: center; }
+        header { background: #000; color: #fff; padding: 20px; }
+        .container { display: flex; flex-wrap: wrap; justify-content: center; padding: 20px; }
+        .card { 
+            background: #fff; border-radius: 10px; margin: 15px; width: 250px; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1); transition: 0.3s; overflow: hidden;
         }
-
-        h1 {
-            color: #ffffff; /* Texto branco */
-            margin-bottom: 20px;
-            font-size: 2.5em;
+        .card:hover { transform: translateY(-5px); }
+        .card img { width: 100%; height: 150px; object-fit: contain; padding: 10px; }
+        .card h3 { font-size: 1.2rem; margin: 10px 0; color: #333; }
+        .btn { 
+            display: inline-block; padding: 10px 20px; margin-bottom: 15px; 
+            background-color: #000; color: #fff; text-decoration: none; border-radius: 5px; 
         }
-
-        a img {
-            width: 250px;
-            height: auto;
-            border-radius: 50%;
-            box-shadow: 0 0 20px rgba(0, 255, 255, 0.7); /* Sombra neon */
-            margin-bottom: 20px;
-            transition: transform 0.3s; /* Efeito hover */
-        }
-
-        a img:hover {
-            transform: scale(1.1); /* Aumenta um pouco ao passar o mouse */
-        }
-
-        p {
-            font-size: 1.5em;
-            color: #00ffff; /* Texto azul neon */
-            font-weight: bold;
-        }
+        .btn:hover { background-color: #444; }
     </style>
 </head>
 <body>
-    <h1>Olá Mundo!</h1>
-    <a href="https://earth.google.com/web/" target="_blank">
-        <img src="https://upload.wikimedia.org/wikipedia/commons/9/97/The_Earth_seen_from_Apollo_17.jpg" alt="Globo Terrestre">
-    </a>
-    <p>Samuel Ribeiro de Souza</p>
+
+<header>
+    <h1>Moda Masculina & Feminina</h1>
+    <p>Sua porta de entrada para as melhores marcas do mundo</p>
+</header>
+
+<div class="container">
+    <div class="card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_NIKE.svg" alt="Nike">
+        <h3>Nike</h3>
+        <a href="https://www.nike.com.br" target="_blank" class="btn">Comprar Agora</a>
+    </div>
+
+    <div class="card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/2/20/Adidas_Logo.svg" alt="Adidas">
+        <h3>Adidas</h3>
+        <a href="https://www.adidas.com.br" target="_blank" class="btn">Comprar Agora</a>
+    </div>
+
+    <div class="card">
+        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/9/93/Lacoste_logo.svg/1200px-Lacoste_logo.svg.png" alt="Lacoste">
+        <h3>Lacoste</h3>
+        <a href="https://www.lacoste.com/br/" target="_blank" class="btn">Comprar Agora</a>
+    </div>
+
+    <div class="card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Ralph_Lauren_Logo.svg/1200px-Ralph_Lauren_Logo.svg.png" alt="Ralph Lauren">
+        <h3>Ralph Lauren</h3>
+        <a href="https://www.ralphlauren.com" target="_blank" class="btn">Comprar Agora</a>
+    </div>
+
+    <div class="card">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/SHEIN_logo.svg/2560px-SHEIN_logo.svg.png" alt="SHEIN">
+        <h3>SHEIN</h3>
+        <a href="https://br.shein.com" target="_blank" class="btn">Comprar Agora</a>
+    </div>
+
+    <div class="card">
+        <img src="https://upload.wikimedia.org/wikipedia/pt/d/d4/Puma_Logo.png" alt="Puma">
+        <h3>Puma</h3>
+        <a href="https://br.puma.com" target="_blank" class="btn">Comprar Agora</a>
+    </div>
+</div>
+
 </body>
 </html>
-/* Melhora a transição da sombra */
-a img {
-    /* ... seu código existente ... */
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-
-a img:hover {
-    transform: scale(1.1);
-    box-shadow: 0 0 40px rgba(0, 255, 255, 1); /* Brilho mais intenso no hover */
-}
-
-/* Efeito de pulsar no nome */
-p {
-    animation: glow 2s ease-in-out infinite alternate;
-}
-
-@keyframes glow {
-    from { text-shadow: 0 0 5px #00ffff; }
-    to { text-shadow: 0 0 20px #00ffff, 0 0 30px #008080; }
-}
-a img {
-    /* ... seus outros estilos ... */
-    animation: rotateGlobe 20s linear infinite;
-}
-
-@keyframes rotateGlobe {
-    from {
-        transform: rotate(0deg);
-    }
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-/* Mantém o aumento de tamanho no hover sem quebrar a rotação */
-a img:hover {
-    animation-play-state: paused; /* Para de girar quando você passa o mouse */
-    transform: scale(1.1); 
-}
-a img {
-    width: 250px;
-    height: auto;
-    border-radius: 50%;
-    box-shadow: 0 0 20px rgba(0, 255, 255, 0.7);
-    margin-bottom: 20px;
-    transition: transform 0.3s, box-shadow 0.3s;
-    
-    /* Aplica a animação: nome, duração, suavidade, infinita, vai-e-volta */
-    animation: floatAndGlow 4s ease-in-out infinite alternate;
-}
-
-/* Define o movimento de flutuar e o brilho da atmosfera */
-@keyframes floatAndGlow {
-    from {
-        transform: translateY(0px);
-        box-shadow: 0 0 20px rgba(0, 255, 255, 0.5);
-    }
-    to {
-        transform: translateY(-20px);
-        box-shadow: 0 0 40px rgba(0, 255, 255, 1), 0 0 60px rgba(0, 255, 255, 0.4);
-    }
-}
-
-/* Mantém o efeito de zoom ao passar o mouse sem cancelar a flutuação */
-a img:hover {
-    transform: scale(1.1) translateY(-10px);
-    filter: brightness(1.2);
-}

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fashion Hub | Vitrine de Produtos</title>
+    <title>Fashion Hub | Destaques por Marca</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -11,14 +11,12 @@
             --secondary: #666;
             --bg: #f4f5f7;
             --card-bg: #ffffff;
-            --accent: #ff4757;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         
         body { background-color: var(--bg); color: var(--primary); }
 
-        /* Cabeçalho */
         header {
             padding: 20px 5%;
             display: flex;
@@ -33,7 +31,6 @@
 
         .logo { font-weight: 800; font-size: 1.5rem; letter-spacing: -1px; }
 
-        /* Seção Hero e Busca */
         .hero {
             padding: 50px 5%;
             text-align: center;
@@ -57,34 +54,34 @@
             font-size: 1rem;
             outline: none;
             transition: 0.3s;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
         }
 
-        #searchInput:focus {
-            border-color: var(--primary);
-        }
+        #searchInput:focus { border-color: var(--primary); }
 
-        /* Título das Seções */
-        .section-title {
-            padding: 40px 5% 10px;
+        /* Estilos das Seções por Marca */
+        .brand-section {
             max-width: 1300px;
-            margin: 0 auto;
+            margin: 0 auto 40px;
+            padding: 0 5%;
+        }
+
+        .section-title {
             font-size: 1.5rem;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: -0.5px;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eaeaea;
         }
 
-        /* Grid de Produtos */
         .product-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
             gap: 30px;
-            padding: 20px 5% 40px;
-            max-width: 1300px;
-            margin: 0 auto;
         }
 
+        /* Estilo dos Cards */
         .product-card {
             background: var(--card-bg);
             border-radius: 12px;
@@ -99,7 +96,6 @@
         .product-card:hover {
             transform: translateY(-8px);
             box-shadow: 0 12px 25px rgba(0,0,0,0.1);
-            border-color: #ddd;
         }
 
         .product-card img {
@@ -121,7 +117,6 @@
             color: var(--secondary);
             text-transform: uppercase;
             font-weight: 700;
-            letter-spacing: 1px;
             margin-bottom: 5px;
         }
 
@@ -129,7 +124,6 @@
             font-size: 1.1rem;
             font-weight: 600;
             margin-bottom: 10px;
-            line-height: 1.3;
         }
 
         .product-price {
@@ -148,7 +142,6 @@
             border-radius: 8px;
             font-weight: 600;
             transition: 0.3s;
-            width: 100%;
         }
 
         .btn-buy:hover { background: #333; }
@@ -164,168 +157,35 @@
 </header>
 
 <section class="hero">
-    <h1>Lançamentos e Tendências</h1>
-    <p>Encontre os melhores produtos das suas marcas favoritas.</p>
-    
+    <h1>Itens Especiais das Maiores Marcas</h1>
+    <p>Navegue pelas coleções exclusivas e encontre o seu estilo.</p>
     <div class="search-container">
-        <input type="text" id="searchInput" placeholder="Busque por 'jordan', 'nike', 'vestido'..." autocomplete="off">
+        <input type="text" id="searchInput" placeholder="Busque por 'tênis', 'moletom', 'adidas'..." autocomplete="off">
     </div>
 </section>
 
-<div class="section-title" id="nikeTitle">🔥 Especial: Clássicos Nike</div>
+<main id="mainContainer">
 
-<main class="product-grid" id="productGrid">
-
-    <div class="product-card" data-keywords="nike tenis sneaker branco basquete casual air force 1 masculino feminino">
-        <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Nike Air Force 1">
-        <div class="product-info">
-            <span class="brand-name">Nike</span>
-            <h3 class="product-title">Tênis Air Force 1 '07 Branco</h3>
-            <div class="product-price">R$ 799,99</div>
-            <a href="https://www.nike.com.br/nav/colecoes/air-force" target="_blank" class="btn-buy">Ver na Nike</a>
+    <div class="brand-section">
+        <div class="section-title">🔥 Destaques: Nike</div>
+        <div class="product-grid">
+            <div class="product-card" data-keywords="nike tenis branco casual air force 1 masculino feminino">
+                <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Nike Air Force 1">
+                <div class="product-info">
+                    <span class="brand-name">Nike</span>
+                    <h3 class="product-title">Air Force 1 '07</h3>
+                    <div class="product-price">R$ 799,99</div>
+                    <a href="https://www.nike.com.br" target="_blank" class="btn-buy">Ver na Loja</a>
+                </div>
+            </div>
+            <div class="product-card" data-keywords="nike tenis jordan vermelho basquete masculino feminino">
+                <img src="https://images.unsplash.com/photo-1597045566677-8cf032ed6634?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Nike Air Jordan 1">
+                <div class="product-info">
+                    <span class="brand-name">Nike</span>
+                    <h3 class="product-title">Air Jordan 1 Retro</h3>
+                    <div class="product-price">R$ 1.299,99</div>
+                    <a href="https://www.nike.com.br" target="_blank" class="btn-buy">Ver na Loja</a>
+                </div>
+            </div>
         </div>
     </div>
-
-    <div class="product-card" data-keywords="nike tenis sneaker jordan basquete vermelho preto masculino feminino">
-        <img src="https://images.unsplash.com/photo-1597045566677-8cf032ed6634?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Nike Air Jordan 1">
-        <div class="product-info">
-            <span class="brand-name">Nike</span>
-            <h3 class="product-title">Tênis Air Jordan 1 Retro</h3>
-            <div class="product-price">R$ 1.299,99</div>
-            <a href="https://www.nike.com.br/nav/colecoes/jordan" target="_blank" class="btn-buy">Ver na Nike</a>
-        </div>
-    </div>
-
-    <div class="product-card" data-keywords="nike tenis sneaker dunk low skate casual masculino feminino">
-        <img src="https://images.unsplash.com/photo-1608231387042-66d1773070a5?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Nike Dunk Low">
-        <div class="product-info">
-            <span class="brand-name">Nike</span>
-            <h3 class="product-title">Tênis Dunk Low Retro</h3>
-            <div class="product-price">R$ 899,99</div>
-            <a href="https://www.nike.com.br/nav/colecoes/dunk" target="_blank" class="btn-buy">Ver na Nike</a>
-        </div>
-    </div>
-
-    <div class="product-card" data-keywords="nike tenis sneaker air max corrida esporte casual masculino feminino">
-        <img src="https://images.unsplash.com/photo-1605340537586-0b5fd41f4eb4?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Nike Air Max">
-        <div class="product-info">
-            <span class="brand-name">Nike</span>
-            <h3 class="product-title">Tênis Air Max 90</h3>
-            <div class="product-price">R$ 999,99</div>
-            <a href="https://www.nike.com.br/nav/colecoes/air-max" target="_blank" class="btn-buy">Ver na Nike</a>
-        </div>
-    </div>
-
-    <div class="product-card" data-keywords="adidas moletom casaco blusa frio roupa masculino feminino">
-        <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Moletom">
-        <div class="product-info">
-            <span class="brand-name">Adidas</span>
-            <h3 class="product-title">Moletom Originals Essential</h3>
-            <div class="product-price">R$ 349,90</div>
-            <a href="https://www.adidas.com.br/moletons" target="_blank" class="btn-buy">Ver Produto</a>
-        </div>
-    </div>
-
-    <div class="product-card" data-keywords="shein vestido floral verao roupa feminino casual">
-        <img src="https://images.unsplash.com/photo-1572804013309-82a89b4f259f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Vestido">
-        <div class="product-info">
-            <span class="brand-name">SHEIN</span>
-            <h3 class="product-title">Vestido Midi Estampado Floral</h3>
-            <div class="product-price">R$ 89,90</div>
-            <a href="https://br.shein.com/pdsearch/vestido%20floral/" target="_blank" class="btn-buy">Ver Produto</a>
-        </div>
-    </div>
-
-    <div class="product-card" data-keywords="lacoste relogio acessorio luxo prata masculino feminino">
-        <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Relógio">
-        <div class="product-info">
-            <span class="brand-name">Lacoste</span>
-            <h3 class="product-title">Relógio Classic Silver 42mm</h3>
-            <div class="product-price">R$ 799,00</div>
-            <a href="https://www.lacoste.com/br/lacoste/homem/acessorios/relogios/" target="_blank" class="btn-buy">Ver Produto</a>
-        </div>
-    </div>
-
-    <div class="product-card" data-keywords="ralph lauren camisa polo branca social roupa masculino">
-        <img src="https://images.unsplash.com/photo-1581655353564-df123a1eb820?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Camisa Branca">
-        <div class="product-info">
-            <span class="brand-name">Ralph Lauren</span>
-            <h3 class="product-title">Camisa Branca Slim Fit</h3>
-            <div class="product-price">R$ 450,00</div>
-            <a href="https://www.ralphlauren.com/men-clothing-casual-shirts" target="_blank" class="btn-buy">Ver Produto</a>
-        </div>
-    </div>
-
-</main>
-
-<footer>
-    &copy; 2024 Fashion Store - Catálogo de Produtos Oficiais.
-</footer>
-
-<script>
-    const searchInput = document.getElementById('searchInput');
-    const products = document.querySelectorAll('.product-card');
-    const nikeTitle = document.getElementById('nikeTitle');
-
-    searchInput.addEventListener('input', () => {
-        const value = searchInput.value.toLowerCase();
-        let hasVisibleProducts = false;
-
-        products.forEach(product => {
-            const title = product.querySelector('.product-title').innerText.toLowerCase();
-            const brand = product.querySelector('.brand-name').innerText.toLowerCase();
-            const keywords = product.getAttribute('data-keywords').toLowerCase();
-
-            if (title.includes(value) || brand.includes(value) || keywords.includes(value)) {
-                product.style.display = 'flex';
-                hasVisibleProducts = true;
-            } else {
-                product.style.display = 'none';
-            }
-        });
-
-        // Esconde o título "Especial Nike" se o usuário estiver buscando algo diferente (ex: Adidas)
-        if (value.length > 0 && !value.includes('nike') && !value.includes('jordan') && !value.includes('air') && !value.includes('dunk')) {
-            nikeTitle.style.display = 'none';
-        } else {
-            nikeTitle.style.display = 'block';
-        }
-    <script>
-    const searchInput = document.getElementById('searchInput');
-    const products = document.querySelectorAll('.product-card');
-    const nikeTitle = document.getElementById('nikeTitle');
-
-    searchInput.addEventListener('input', () => {
-        const value = searchInput.value.toLowerCase();
-        let isNikeVisible = false;
-
-        products.forEach(product => {
-            const title = product.querySelector('.product-title').innerText.toLowerCase();
-            const brand = product.querySelector('.brand-name').innerText.toLowerCase();
-            const keywords = product.getAttribute('data-keywords').toLowerCase();
-
-            // Se o produto bater com a pesquisa, ele aparece
-            if (title.includes(value) || brand.includes(value) || keywords.includes(value)) {
-                product.style.display = 'flex';
-                
-                // Verifica se esse produto que apareceu é da Nike
-                if (brand.includes('nike')) {
-                    isNikeVisible = true;
-                }
-            } else {
-                product.style.display = 'none';
-            }
-        });
-
-        // Mostra o título apenas se a busca estiver vazia ou se houver um tênis da Nike na tela
-        if (value === "" || isNikeVisible) {
-            nikeTitle.style.display = 'block';
-        } else {
-            nikeTitle.style.display = 'none';
-        }
-    });
-</script>
-</script>
-
-</body>
-</html>

@@ -14,21 +14,9 @@
             --transition-speed: 0.3s;
         }
 
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-            font-family: 'Inter', sans-serif; 
-        }
-        
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body { 
-            background-color: var(--bg); 
-            color: var(--primary); 
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        html { scroll-behavior: smooth; }
+        body { background-color: var(--bg); color: var(--primary); }
 
         header {
             padding: 20px 5%;
@@ -42,11 +30,7 @@
             z-index: 1000;
         }
 
-        .logo { 
-            font-weight: 800; 
-            font-size: 1.5rem; 
-            letter-spacing: -1px; 
-        }
+        .logo { font-weight: 800; font-size: 1.5rem; letter-spacing: -1px; }
 
         .hero {
             padding: 50px 5%;
@@ -55,163 +39,72 @@
             margin-bottom: 20px;
         }
 
-        .hero h1 { 
-            font-size: 2.5rem; 
-            font-weight: 800; 
-            margin-bottom: 10px; 
-        }
-        
-        .hero p { 
-            color: var(--secondary); 
-            margin-bottom: 30px; 
-        }
+        .hero h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 10px; }
+        .hero p { color: var(--secondary); margin-bottom: 30px; }
 
-        .search-container {
-            max-width: 600px;
-            margin: 0 auto;
-            position: relative;
-        }
+        .search-container { max-width: 600px; margin: 0 auto; position: relative; }
 
         #searchInput {
-            width: 100%;
-            padding: 16px 25px;
-            border-radius: 50px;
-            border: 2px solid #e1e1e1;
-            font-size: 1rem;
-            outline: none;
+            width: 100%; padding: 16px 25px; border-radius: 50px;
+            border: 2px solid #e1e1e1; font-size: 1rem; outline: none;
             transition: border-color var(--transition-speed);
         }
+        #searchInput:focus { border-color: var(--primary); }
 
-        #searchInput:focus { 
-            border-color: var(--primary); 
-        }
-
-        /* Estilos dos Botões de Filtro */
         .filters-container {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-bottom: 40px;
-            flex-wrap: wrap; /* Permite quebrar linha em telas pequenas */
-            padding: 0 5%;
+            display: flex; justify-content: center; gap: 15px;
+            margin-bottom: 40px; flex-wrap: wrap; padding: 0 5%;
         }
 
         .filter-btn {
-            padding: 10px 24px;
-            border: 2px solid var(--primary);
-            background: transparent;
-            color: var(--primary);
-            border-radius: 50px;
-            font-weight: 600;
-            cursor: pointer;
+            padding: 10px 24px; border: 2px solid var(--primary);
+            background: transparent; color: var(--primary);
+            border-radius: 50px; font-weight: 600; cursor: pointer;
             transition: all var(--transition-speed);
         }
+        .filter-btn:hover, .filter-btn.active { background: var(--primary); color: white; }
 
-        .filter-btn:hover, .filter-btn.active {
-            background: var(--primary);
-            color: white;
-        }
-
-        /* Estilos das Seções por Marca */
-        .brand-section {
-            max-width: 1300px;
-            margin: 0 auto 40px;
-            padding: 0 5%;
-        }
+        .brand-section { max-width: 1300px; margin: 0 auto 40px; padding: 0 5%; }
 
         .section-title {
-            font-size: 1.5rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: -0.5px;
-            margin-bottom: 20px;
-            padding-bottom: 10px;
+            font-size: 1.5rem; font-weight: 800; text-transform: uppercase;
+            letter-spacing: -0.5px; margin-bottom: 20px; padding-bottom: 10px;
             border-bottom: 2px solid #eaeaea;
         }
 
         .product-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 30px;
+            display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 30px;
         }
 
-        /* Estilo dos Cards */
         .product-card {
-            background: var(--card-bg);
-            border-radius: 12px;
-            overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.04);
+            background: var(--card-bg); border-radius: 12px; overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.04); display: flex;
+            flex-direction: column; border: 1px solid #eee;
             transition: transform var(--transition-speed), box-shadow var(--transition-speed);
-            display: flex;
-            flex-direction: column;
-            border: 1px solid #eee;
         }
+        .product-card:hover { transform: translateY(-8px); box-shadow: 0 12px 25px rgba(0,0,0,0.1); }
 
-        .product-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 25px rgba(0,0,0,0.1);
-        }
+        .product-card img { width: 100%; height: 250px; object-fit: cover; background: #f0f0f0; }
 
-        .product-card img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            background: #f0f0f0;
-        }
-
-        .product-info {
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-        }
+        .product-info { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; }
 
         .brand-name {
-            font-size: 0.75rem;
-            color: var(--secondary);
-            text-transform: uppercase;
-            font-weight: 700;
-            margin-bottom: 5px;
+            font-size: 0.75rem; color: var(--secondary); text-transform: uppercase;
+            font-weight: 700; margin-bottom: 5px;
         }
 
-        .product-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-
-        .product-price {
-            font-size: 1.25rem;
-            font-weight: 800;
-            margin-bottom: 20px;
-            margin-top: auto;
-        }
+        .product-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 10px; }
+        .product-price { font-size: 1.25rem; font-weight: 800; margin-bottom: 20px; margin-top: auto; }
 
         .btn-buy {
-            text-align: center;
-            padding: 12px;
-            background: var(--primary);
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: background var(--transition-speed), transform 0.1s;
+            text-align: center; padding: 12px; background: var(--primary);
+            color: white; text-decoration: none; border-radius: 8px;
+            font-weight: 600; transition: background var(--transition-speed), transform 0.1s;
         }
+        .btn-buy:hover { background: #333; }
+        .btn-buy:active { transform: scale(0.98); }
 
-        .btn-buy:hover { 
-            background: #333; 
-        }
-        
-        .btn-buy:active {
-            transform: scale(0.98);
-        }
-
-        footer { 
-            text-align: center; 
-            padding: 40px; 
-            color: #999; 
-            font-size: 0.9rem; 
-        }
+        footer { text-align: center; padding: 40px; color: #999; font-size: 0.9rem; }
     </style>
 </head>
 <body>
@@ -248,7 +141,25 @@
                     <span class="brand-name">Nike</span>
                     <h3 class="product-title">Air Force 1 '07</h3>
                     <div class="product-price">R$ 799,99</div>
-                    <a href="https://www.nike.com.br" target="_blank" rel="noopener noreferrer" class="btn-buy">Ver na Loja</a>
+                    <a href="#" class="btn-buy">Ver na Loja</a>
+                </div>
+            </article>
+            <article class="product-card" data-keywords="nike moletom blusa frio preto esporte roupa">
+                <img src="https://images.unsplash.com/photo-1556821840-3a63f95609a7?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Moletom Nike Preto" loading="lazy">
+                <div class="product-info">
+                    <span class="brand-name">Nike</span>
+                    <h3 class="product-title">Moletom Sportswear Club</h3>
+                    <div class="product-price">R$ 349,90</div>
+                    <a href="#" class="btn-buy">Ver na Loja</a>
+                </div>
+            </article>
+            <article class="product-card" data-keywords="nike tenis dunk low preto e branco panda casual">
+                <img src="https://images.unsplash.com/photo-1658398150499-1a0650ed85db?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Nike Dunk Low" loading="lazy">
+                <div class="product-info">
+                    <span class="brand-name">Nike</span>
+                    <h3 class="product-title">Dunk Low 'Panda'</h3>
+                    <div class="product-price">R$ 899,99</div>
+                    <a href="#" class="btn-buy">Ver na Loja</a>
                 </div>
             </article>
         </div>
@@ -263,7 +174,25 @@
                     <span class="brand-name">Adidas</span>
                     <h3 class="product-title">Ultraboost Light</h3>
                     <div class="product-price">R$ 999,99</div>
-                    <a href="https://www.adidas.com.br" target="_blank" rel="noopener noreferrer" class="btn-buy">Ver na Loja</a>
+                    <a href="#" class="btn-buy">Ver na Loja</a>
+                </div>
+            </article>
+            <article class="product-card" data-keywords="adidas tenis branco superstar classico casual">
+                <img src="https://images.unsplash.com/photo-1620158863640-5226177b96fb?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Tênis Adidas Superstar" loading="lazy">
+                <div class="product-info">
+                    <span class="brand-name">Adidas</span>
+                    <h3 class="product-title">Superstar Originals</h3>
+                    <div class="product-price">R$ 599,99</div>
+                    <a href="#" class="btn-buy">Ver na Loja</a>
+                </div>
+            </article>
+            <article class="product-card" data-keywords="adidas camisa real madrid futebol esporte branca">
+                <img src="https://images.unsplash.com/photo-1577223625816-7546f13df25d?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Camisa de Futebol Adidas" loading="lazy">
+                <div class="product-info">
+                    <span class="brand-name">Adidas</span>
+                    <h3 class="product-title">Camisa Real Madrid I 23/24</h3>
+                    <div class="product-price">R$ 349,99</div>
+                    <a href="#" class="btn-buy">Ver na Loja</a>
                 </div>
             </article>
         </div>
@@ -278,7 +207,25 @@
                     <span class="brand-name">Lacoste</span>
                     <h3 class="product-title">Polo Clássica L.12.12</h3>
                     <div class="product-price">R$ 489,00</div>
-                    <a href="https://www.lacoste.com/br" target="_blank" rel="noopener noreferrer" class="btn-buy">Ver na Loja</a>
+                    <a href="#" class="btn-buy">Ver na Loja</a>
+                </div>
+            </article>
+            <article class="product-card" data-keywords="lacoste tenis branco couro casual">
+                <img src="https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Tênis Lacoste Branco" loading="lazy">
+                <div class="product-info">
+                    <span class="brand-name">Lacoste</span>
+                    <h3 class="product-title">Tênis Carnaby Evo Couro</h3>
+                    <div class="product-price">R$ 649,00</div>
+                    <a href="#" class="btn-buy">Ver na Loja</a>
+                </div>
+            </article>
+            <article class="product-card" data-keywords="lacoste bone acessorio preto crocodilo">
+                <img src="https://images.unsplash.com/photo-1588850561407-ed78c282e89b?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Boné Lacoste" loading="lazy">
+                <div class="product-info">
+                    <span class="brand-name">Lacoste</span>
+                    <h3 class="product-title">Boné Básico Gabardine</h3>
+                    <div class="product-price">R$ 289,00</div>
+                    <a href="#" class="btn-buy">Ver na Loja</a>
                 </div>
             </article>
         </div>
@@ -293,7 +240,25 @@
                     <span class="brand-name">Penalty</span>
                     <h3 class="product-title">Bola Campo S11 Ecoknit</h3>
                     <div class="product-price">R$ 249,90</div>
-                    <a href="https://penalty.com.br" target="_blank" rel="noopener noreferrer" class="btn-buy">Ver na Loja</a>
+                    <a href="#" class="btn-buy">Ver na Loja</a>
+                </div>
+            </article>
+            <article class="product-card" data-keywords="penalty chuteira futsal salao quadra preta">
+                <img src="https://images.unsplash.com/photo-1511886929837-354d827aae26?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Chuteira Futsal" loading="lazy">
+                <div class="product-info">
+                    <span class="brand-name">Penalty</span>
+                    <h3 class="product-title">Chuteira Futsal Max 1000</h3>
+                    <div class="product-price">R$ 329,90</div>
+                    <a href="#" class="btn-buy">Ver na Loja</a>
+                </div>
+            </article>
+            <article class="product-card" data-keywords="penalty luva goleiro campo defesa acessorio">
+                <img src="https://images.unsplash.com/photo-1552062590-c08170c061de?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Luvas de Goleiro" loading="lazy">
+                <div class="product-info">
+                    <span class="brand-name">Penalty</span>
+                    <h3 class="product-title">Luva Delta Fit Training</h3>
+                    <div class="product-price">R$ 159,90</div>
+                    <a href="#" class="btn-buy">Ver na Loja</a>
                 </div>
             </article>
         </div>
@@ -311,14 +276,12 @@
         const searchTerm = e.target.value.toLowerCase();
         const productCards = document.querySelectorAll('.product-card');
 
-        // Se o usuário começar a digitar, removemos a seleção visual dos botões
         if(searchTerm !== '') {
             document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
         }
 
         productCards.forEach(card => {
             const keywords = card.getAttribute('data-keywords').toLowerCase();
-            
             if(keywords.includes(searchTerm)) {
                 card.style.display = 'flex'; 
                 card.closest('.brand-section').style.display = 'block';
@@ -343,30 +306,24 @@
 
     filterBtns.forEach(btn => {
         btn.addEventListener('click', () => {
-            // 1. Limpa a barra de pesquisa para evitar conflitos
             const searchInput = document.getElementById('searchInput');
             searchInput.value = '';
             
-            // 2. Garante que todos os cards de produtos estejam visíveis antes de filtrar as seções
             document.querySelectorAll('.product-card').forEach(card => {
                 card.style.display = 'flex';
             });
 
-            // 3. Gerencia as classes ativas dos botões
             filterBtns.forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
 
-            // 4. Pega o valor do botão clicado (ex: 'nike')
             const filterValue = btn.getAttribute('data-filter');
 
-            // 5. Mostra ou esconde as seções com base na marca
             brandSections.forEach(section => {
                 const sectionBrand = section.getAttribute('data-brand');
-                
                 if (filterValue === 'todos' || sectionBrand === filterValue) {
-                    section.style.display = 'block'; // Mostra a seção
+                    section.style.display = 'block'; 
                 } else {
-                    section.style.display = 'none'; // Esconde a seção
+                    section.style.display = 'none'; 
                 }
             });
         });

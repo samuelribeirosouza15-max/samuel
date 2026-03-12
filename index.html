@@ -22,7 +22,7 @@
         }
         
         html {
-            scroll-behavior: smooth; /* Rolagem suave */
+            scroll-behavior: smooth;
         }
 
         body { 
@@ -52,6 +52,7 @@
             padding: 50px 5%;
             text-align: center;
             background: linear-gradient(to bottom, #ffffff, var(--bg));
+            margin-bottom: 20px;
         }
 
         .hero h1 { 
@@ -83,6 +84,32 @@
 
         #searchInput:focus { 
             border-color: var(--primary); 
+        }
+
+        /* Estilos dos Botões de Filtro */
+        .filters-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 40px;
+            flex-wrap: wrap; /* Permite quebrar linha em telas pequenas */
+            padding: 0 5%;
+        }
+
+        .filter-btn {
+            padding: 10px 24px;
+            border: 2px solid var(--primary);
+            background: transparent;
+            color: var(--primary);
+            border-radius: 50px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all var(--transition-speed);
+        }
+
+        .filter-btn:hover, .filter-btn.active {
+            background: var(--primary);
+            color: white;
         }
 
         /* Estilos das Seções por Marca */
@@ -117,4 +144,234 @@
             transition: transform var(--transition-speed), box-shadow var(--transition-speed);
             display: flex;
             flex-direction: column;
-            border:
+            border: 1px solid #eee;
+        }
+
+        .product-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 12px 25px rgba(0,0,0,0.1);
+        }
+
+        .product-card img {
+            width: 100%;
+            height: 250px;
+            object-fit: cover;
+            background: #f0f0f0;
+        }
+
+        .product-info {
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+        }
+
+        .brand-name {
+            font-size: 0.75rem;
+            color: var(--secondary);
+            text-transform: uppercase;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .product-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            font-size: 1.25rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            margin-top: auto;
+        }
+
+        .btn-buy {
+            text-align: center;
+            padding: 12px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: background var(--transition-speed), transform 0.1s;
+        }
+
+        .btn-buy:hover { 
+            background: #333; 
+        }
+        
+        .btn-buy:active {
+            transform: scale(0.98);
+        }
+
+        footer { 
+            text-align: center; 
+            padding: 40px; 
+            color: #999; 
+            font-size: 0.9rem; 
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">FASHION STORE</div>
+    <nav>TÊNIS | ROUPAS | ACESSÓRIOS | ESPORTES</nav>
+</header>
+
+<section class="hero">
+    <h1>Itens Especiais das Maiores Marcas</h1>
+    <p>Navegue pelas coleções exclusivas e encontre o seu estilo.</p>
+    <div class="search-container">
+        <input type="text" id="searchInput" aria-label="Buscar produtos" placeholder="Busque por 'tênis', 'polo', 'lacoste', 'bola'..." autocomplete="off">
+    </div>
+</section>
+
+<div class="filters-container">
+    <button class="filter-btn active" data-filter="todos">Todos</button>
+    <button class="filter-btn" data-filter="nike">Nike</button>
+    <button class="filter-btn" data-filter="adidas">Adidas</button>
+    <button class="filter-btn" data-filter="lacoste">Lacoste</button>
+    <button class="filter-btn" data-filter="penalty">Penalty</button>
+</div>
+
+<main id="mainContainer">
+    
+    <section class="brand-section" data-brand="nike">
+        <h2 class="section-title">🔥 Destaques: Nike</h2>
+        <div class="product-grid">
+            <article class="product-card" data-keywords="nike tenis branco casual air force 1 masculino feminino">
+                <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Tênis Nike Air Force 1 Branco" loading="lazy">
+                <div class="product-info">
+                    <span class="brand-name">Nike</span>
+                    <h3 class="product-title">Air Force 1 '07</h3>
+                    <div class="product-price">R$ 799,99</div>
+                    <a href="https://www.nike.com.br" target="_blank" rel="noopener noreferrer" class="btn-buy">Ver na Loja</a>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <section class="brand-section" data-brand="adidas">
+        <h2 class="section-title">⚡ Destaques: Adidas</h2>
+        <div class="product-grid">
+            <article class="product-card" data-keywords="adidas tenis preto corrida ultraboost esporte masculino feminino">
+                <img src="https://images.unsplash.com/photo-1518002171953-a080ee817e1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Tênis Adidas Ultraboost" loading="lazy">
+                <div class="product-info">
+                    <span class="brand-name">Adidas</span>
+                    <h3 class="product-title">Ultraboost Light</h3>
+                    <div class="product-price">R$ 999,99</div>
+                    <a href="https://www.adidas.com.br" target="_blank" rel="noopener noreferrer" class="btn-buy">Ver na Loja</a>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <section class="brand-section" data-brand="lacoste">
+        <h2 class="section-title">🐊 Destaques: Lacoste</h2>
+        <div class="product-grid">
+            <article class="product-card" data-keywords="lacoste camisa polo verde casual roupa masculino">
+                <img src="https://images.unsplash.com/photo-1596755094514-f87e32f85e2c?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Camisa Polo Lacoste" loading="lazy">
+                <div class="product-info">
+                    <span class="brand-name">Lacoste</span>
+                    <h3 class="product-title">Polo Clássica L.12.12</h3>
+                    <div class="product-price">R$ 489,00</div>
+                    <a href="https://www.lacoste.com/br" target="_blank" rel="noopener noreferrer" class="btn-buy">Ver na Loja</a>
+                </div>
+            </article>
+        </div>
+    </section>
+
+    <section class="brand-section" data-brand="penalty">
+        <h2 class="section-title">⚽ Destaques: Penalty</h2>
+        <div class="product-grid">
+            <article class="product-card" data-keywords="penalty bola futebol campo esporte equipamento">
+                <img src="https://images.unsplash.com/photo-1614632537190-23e4146777db?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Bola de Futebol" loading="lazy">
+                <div class="product-info">
+                    <span class="brand-name">Penalty</span>
+                    <h3 class="product-title">Bola Campo S11 Ecoknit</h3>
+                    <div class="product-price">R$ 249,90</div>
+                    <a href="https://penalty.com.br" target="_blank" rel="noopener noreferrer" class="btn-buy">Ver na Loja</a>
+                </div>
+            </article>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <p>&copy; 2024 Fashion Store. Todos os direitos reservados.</p>
+</footer>
+
+<script>
+    // --- LÓGICA DA BARRA DE PESQUISA ---
+    document.getElementById('searchInput').addEventListener('input', function(e) {
+        const searchTerm = e.target.value.toLowerCase();
+        const productCards = document.querySelectorAll('.product-card');
+
+        // Se o usuário começar a digitar, removemos a seleção visual dos botões
+        if(searchTerm !== '') {
+            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        }
+
+        productCards.forEach(card => {
+            const keywords = card.getAttribute('data-keywords').toLowerCase();
+            
+            if(keywords.includes(searchTerm)) {
+                card.style.display = 'flex'; 
+                card.closest('.brand-section').style.display = 'block';
+            } else {
+                card.style.display = 'none'; 
+            }
+        });
+
+        document.querySelectorAll('.brand-section').forEach(section => {
+            const visibleCards = section.querySelectorAll('.product-card[style="display: flex;"]');
+            if(searchTerm !== '' && visibleCards.length === 0) {
+                section.style.display = 'none';
+            } else {
+                section.style.display = 'block';
+            }
+        });
+    });
+
+    // --- LÓGICA DOS BOTÕES DE FILTRO ---
+    const filterBtns = document.querySelectorAll('.filter-btn');
+    const brandSections = document.querySelectorAll('.brand-section');
+
+    filterBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // 1. Limpa a barra de pesquisa para evitar conflitos
+            const searchInput = document.getElementById('searchInput');
+            searchInput.value = '';
+            
+            // 2. Garante que todos os cards de produtos estejam visíveis antes de filtrar as seções
+            document.querySelectorAll('.product-card').forEach(card => {
+                card.style.display = 'flex';
+            });
+
+            // 3. Gerencia as classes ativas dos botões
+            filterBtns.forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+
+            // 4. Pega o valor do botão clicado (ex: 'nike')
+            const filterValue = btn.getAttribute('data-filter');
+
+            // 5. Mostra ou esconde as seções com base na marca
+            brandSections.forEach(section => {
+                const sectionBrand = section.getAttribute('data-brand');
+                
+                if (filterValue === 'todos' || sectionBrand === filterValue) {
+                    section.style.display = 'block'; // Mostra a seção
+                } else {
+                    section.style.display = 'none'; // Esconde a seção
+                }
+            });
+        });
+    });
+</script>
+
+</body>
+</html>

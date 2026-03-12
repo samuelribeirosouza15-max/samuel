@@ -11,11 +11,24 @@
             --secondary: #666;
             --bg: #f4f5f7;
             --card-bg: #ffffff;
+            --transition-speed: 0.3s;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: 'Inter', sans-serif; 
+        }
         
-        body { background-color: var(--bg); color: var(--primary); }
+        html {
+            scroll-behavior: smooth; /* Rolagem suave */
+        }
+
+        body { 
+            background-color: var(--bg); 
+            color: var(--primary); 
+        }
 
         header {
             padding: 20px 5%;
@@ -29,16 +42,28 @@
             z-index: 1000;
         }
 
-        .logo { font-weight: 800; font-size: 1.5rem; letter-spacing: -1px; }
+        .logo { 
+            font-weight: 800; 
+            font-size: 1.5rem; 
+            letter-spacing: -1px; 
+        }
 
         .hero {
             padding: 50px 5%;
             text-align: center;
-            background: linear-gradient(to bottom, #ffffff, #f4f5f7);
+            background: linear-gradient(to bottom, #ffffff, var(--bg));
         }
 
-        .hero h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 10px; }
-        .hero p { color: var(--secondary); margin-bottom: 30px; }
+        .hero h1 { 
+            font-size: 2.5rem; 
+            font-weight: 800; 
+            margin-bottom: 10px; 
+        }
+        
+        .hero p { 
+            color: var(--secondary); 
+            margin-bottom: 30px; 
+        }
 
         .search-container {
             max-width: 600px;
@@ -53,10 +78,12 @@
             border: 2px solid #e1e1e1;
             font-size: 1rem;
             outline: none;
-            transition: 0.3s;
+            transition: border-color var(--transition-speed);
         }
 
-        #searchInput:focus { border-color: var(--primary); }
+        #searchInput:focus { 
+            border-color: var(--primary); 
+        }
 
         /* Estilos das Seções por Marca */
         .brand-section {
@@ -87,105 +114,7 @@
             border-radius: 12px;
             overflow: hidden;
             box-shadow: 0 4px 15px rgba(0,0,0,0.04);
-            transition: 0.3s;
+            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
             display: flex;
             flex-direction: column;
-            border: 1px solid #eee;
-        }
-
-        .product-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 12px 25px rgba(0,0,0,0.1);
-        }
-
-        .product-card img {
-            width: 100%;
-            height: 250px;
-            object-fit: cover;
-            background: #f0f0f0;
-        }
-
-        .product-info {
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            flex-grow: 1;
-        }
-
-        .brand-name {
-            font-size: 0.75rem;
-            color: var(--secondary);
-            text-transform: uppercase;
-            font-weight: 700;
-            margin-bottom: 5px;
-        }
-
-        .product-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-
-        .product-price {
-            font-size: 1.25rem;
-            font-weight: 800;
-            margin-bottom: 20px;
-            margin-top: auto;
-        }
-
-        .btn-buy {
-            text-align: center;
-            padding: 12px;
-            background: var(--primary);
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
-            transition: 0.3s;
-        }
-
-        .btn-buy:hover { background: #333; }
-
-        footer { text-align: center; padding: 40px; color: #999; font-size: 0.9rem; }
-    </style>
-</head>
-<body>
-
-<header>
-    <div class="logo">FASHION STORE</div>
-    <div>TÊNIS | ROUPAS | ACESSÓRIOS</div>
-</header>
-
-<section class="hero">
-    <h1>Itens Especiais das Maiores Marcas</h1>
-    <p>Navegue pelas coleções exclusivas e encontre o seu estilo.</p>
-    <div class="search-container">
-        <input type="text" id="searchInput" placeholder="Busque por 'tênis', 'moletom', 'adidas'..." autocomplete="off">
-    </div>
-</section>
-
-<main id="mainContainer">
-
-    <div class="brand-section">
-        <div class="section-title">🔥 Destaques: Nike</div>
-        <div class="product-grid">
-            <div class="product-card" data-keywords="nike tenis branco casual air force 1 masculino feminino">
-                <img src="https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Nike Air Force 1">
-                <div class="product-info">
-                    <span class="brand-name">Nike</span>
-                    <h3 class="product-title">Air Force 1 '07</h3>
-                    <div class="product-price">R$ 799,99</div>
-                    <a href="https://www.nike.com.br" target="_blank" class="btn-buy">Ver na Loja</a>
-                </div>
-            </div>
-            <div class="product-card" data-keywords="nike tenis jordan vermelho basquete masculino feminino">
-                <img src="https://images.unsplash.com/photo-1597045566677-8cf032ed6634?ixlib=rb-4.0.3&auto=format&fit=crop&w=600&q=80" alt="Nike Air Jordan 1">
-                <div class="product-info">
-                    <span class="brand-name">Nike</span>
-                    <h3 class="product-title">Air Jordan 1 Retro</h3>
-                    <div class="product-price">R$ 1.299,99</div>
-                    <a href="https://www.nike.com.br" target="_blank" class="btn-buy">Ver na Loja</a>
-                </div>
-            </div>
-        </div>
-    </div>
+            border:

@@ -73,7 +73,17 @@
         }
         .product-card:hover { transform: translateY(-8px); box-shadow: 0 12px 25px rgba(0,0,0,0.1); }
 
-        .product-card img { width: 100%; height: 250px; object-fit: cover; background: #f0f0f0; }
+        /* Tiramos a borda azul que o link pode criar em volta da imagem */
+        .image-link { display: block; text-decoration: none; }
+        
+        .product-card img { 
+            width: 100%; height: 250px; object-fit: cover; background: #f0f0f0; 
+            transition: opacity 0.3s;
+        }
+        
+        /* Efeito visual de que a imagem é clicável */
+        .image-link:hover img { opacity: 0.9; }
+
         .product-info { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; }
         .brand-name { font-size: 0.75rem; color: var(--secondary); text-transform: uppercase; font-weight: 700; margin-bottom: 5px; }
         .product-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 10px; }
@@ -140,115 +150,8 @@
 </footer>
 
 <script>
-    // 1. LISTA DE PRODUTOS (É aqui que você vai adicionar seus 30 itens!)
-    // Basta copiar uma linha inteira {}, colar embaixo e mudar os textos.
+    // 1. LISTA DE PRODUTOS COM O NOVO ATRIBUTO 'link'
     const produtos = [
         // --- NIKE ---
-        { marca: 'nike', titulo: "Air Force 1 '07", preco: "799,99", img: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=600", keywords: "nike tenis branco casual air force 1 masculino feminino" },
-        { marca: 'nike', titulo: "Moletom Sportswear Club", preco: "349,90", img: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=600", keywords: "nike moletom blusa frio preto esporte roupa" },
-        { marca: 'nike', titulo: "Dunk Low 'Panda'", preco: "899,99", img: "https://images.unsplash.com/photo-1658398150499-1a0650ed85db?w=600", keywords: "nike tenis dunk low preto e branco panda casual" },
-        { marca: 'nike', titulo: "Jaqueta Corta-Vento Windrunner", preco: "499,99", img: "https://images.unsplash.com/photo-1544441893-675973e31985?w=600", keywords: "nike jaqueta frio corta vento esporte corrida" },
-        { marca: 'nike', titulo: "Air Max 270", preco: "999,99", img: "https://images.unsplash.com/photo-1605348532760-6753d2c43329?w=600", keywords: "nike tenis air max 270 corrida esporte preto" },
-        
-        // --- ADIDAS ---
-        { marca: 'adidas', titulo: "Ultraboost Light", preco: "999,99", img: "https://images.unsplash.com/photo-1518002171953-a080ee817e1f?w=600", keywords: "adidas tenis preto corrida ultraboost esporte" },
-        { marca: 'adidas', titulo: "Superstar Originals", preco: "599,99", img: "https://images.unsplash.com/photo-1620158863640-5226177b96fb?w=600", keywords: "adidas tenis branco superstar classico casual" },
-        { marca: 'adidas', titulo: "Camisa Real Madrid 23/24", preco: "349,99", img: "https://images.unsplash.com/photo-1577223625816-7546f13df25d?w=600", keywords: "adidas camisa real madrid futebol esporte branca" },
-        { marca: 'adidas', titulo: "Calça Jogger Tiro 21", preco: "299,99", img: "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?w=600", keywords: "adidas calca moletom jogger preta treino" },
-        { marca: 'adidas', titulo: "Mochila Classic Badge", preco: "199,99", img: "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=600", keywords: "adidas mochila bolsa preta acessorio escola" },
-
-        // --- LACOSTE ---
-        { marca: 'lacoste', titulo: "Polo Clássica L.12.12", preco: "489,00", img: "https://images.unsplash.com/photo-1596755094514-f87e32f85e2c?w=600", keywords: "lacoste camisa polo verde casual roupa" },
-        { marca: 'lacoste', titulo: "Tênis Carnaby Evo Couro", preco: "649,00", img: "https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?w=600", keywords: "lacoste tenis branco couro casual" },
-        { marca: 'lacoste', titulo: "Boné Básico Gabardine", preco: "289,00", img: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?w=600", keywords: "lacoste bone acessorio preto crocodilo" },
-        { marca: 'lacoste', titulo: "Relógio Tiebreaker", preco: "990,00", img: "https://images.unsplash.com/photo-1524592094714-0f0654e20314?w=600", keywords: "lacoste relogio prata acessorio luxo pulso" },
-        { marca: 'lacoste', titulo: "Perfume L.12.12 Blanc", preco: "529,00", img: "https://images.unsplash.com/photo-1594035910387-fea47794261f?w=600", keywords: "lacoste perfume branco cheiro higiene beleza" },
-
-        // --- PENALTY ---
-        { marca: 'penalty', titulo: "Bola Campo S11 Ecoknit", preco: "249,90", img: "https://images.unsplash.com/photo-1614632537190-23e4146777db?w=600", keywords: "penalty bola futebol campo esporte equipamento" },
-        { marca: 'penalty', titulo: "Chuteira Futsal Max 1000", preco: "329,90", img: "https://images.unsplash.com/photo-1511886929837-354d827aae26?w=600", keywords: "penalty chuteira futsal salao quadra preta" },
-        { marca: 'penalty', titulo: "Luva Delta Fit Training", preco: "159,90", img: "https://images.unsplash.com/photo-1552062590-c08170c061de?w=600", keywords: "penalty luva goleiro campo defesa acessorio" },
-        { marca: 'penalty', titulo: "Meião Kanguru Profissional", preco: "49,90", img: "https://images.unsplash.com/photo-1580927752452-89d86da3fa0a?w=600", keywords: "penalty meiao meia futebol branca esporte" },
-        { marca: 'penalty', titulo: "Bomba de Ar Dupla Ação", preco: "39,90", img: "https://images.unsplash.com/photo-1628004481232-0ee8eb9bb142?w=600", keywords: "penalty bomba ar bola acessorio encher" }
-    ];
-
-    // 2. FUNÇÃO QUE DESENHA OS PRODUTOS NA TELA
-    function renderizarProdutos() {
-        produtos.forEach(produto => {
-            // Cria o HTML do card
-            const cardHTML = `
-                <article class="product-card" data-keywords="${produto.keywords}">
-                    <img src="${produto.img}" alt="${produto.titulo}" loading="lazy">
-                    <div class="product-info">
-                        <span class="brand-name">${produto.marca}</span>
-                        <h3 class="product-title">${produto.titulo}</h3>
-                        <div class="product-price">R$ ${produto.preco}</div>
-                        <a href="#" class="btn-buy">Ver na Loja</a>
-                    </div>
-                </article>
-            `;
-            // Acha qual é a grid certa (ex: grid-nike, grid-adidas) e joga o card lá dentro
-            document.getElementById(`grid-${produto.marca}`).innerHTML += cardHTML;
-        });
-    }
-
-    // Executa a função ao carregar a página
-    renderizarProdutos();
-
-    // 3. LÓGICA DA BARRA DE PESQUISA
-    document.getElementById('searchInput').addEventListener('input', function(e) {
-        const searchTerm = e.target.value.toLowerCase();
-        const productCards = document.querySelectorAll('.product-card');
-
-        if(searchTerm !== '') {
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-        }
-
-        productCards.forEach(card => {
-            const keywords = card.getAttribute('data-keywords').toLowerCase();
-            if(keywords.includes(searchTerm)) {
-                card.style.display = 'flex'; 
-                card.closest('.brand-section').style.display = 'block';
-            } else {
-                card.style.display = 'none'; 
-            }
-        });
-
-        document.querySelectorAll('.brand-section').forEach(section => {
-            const visibleCards = section.querySelectorAll('.product-card[style="display: flex;"]');
-            if(searchTerm !== '' && visibleCards.length === 0) {
-                section.style.display = 'none';
-            } else {
-                section.style.display = 'block';
-            }
-        });
-    });
-
-    // 4. LÓGICA DOS BOTÕES DE FILTRO
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    const brandSections = document.querySelectorAll('.brand-section');
-
-    filterBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.getElementById('searchInput').value = '';
-            document.querySelectorAll('.product-card').forEach(card => card.style.display = 'flex');
-            
-            filterBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-
-            const filterValue = btn.getAttribute('data-filter');
-
-            brandSections.forEach(section => {
-                const sectionBrand = section.getAttribute('data-brand');
-                if (filterValue === 'todos' || sectionBrand === filterValue) {
-                    section.style.display = 'block'; 
-                } else {
-                    section.style.display = 'none'; 
-                }
-            });
-        });
-    });
-</script>
-
-</body>
-</html>
+        { marca: 'nike', titulo: "Air Force 1 '07", preco: "799,99", img: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?w=600", link: "https://www.nike.com.br", keywords: "nike tenis branco casual air force 1 masculino feminino" },
+        { marca: 'nike', titulo: "Moletom Sportswear Club", preco: "349,90", img: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?w=60

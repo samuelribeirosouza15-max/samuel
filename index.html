@@ -140,48 +140,45 @@
 </footer>
 
 <script>
-    // 1. LISTA DE PRODUTOS COMPLETA COM LINKS
+    // 1. LISTA DE PRODUTOS COMPLETA
     const produtos = [
-        
         // --- NIKE ---
-        { marca: 'nike', titulo: "Air Force branco classico", preco: "759,99", img: "https://imgnike-a.akamaihd.net/768x768/01113751A2.jpg", keywords: "nike tenis branco casual air force 1 masculino feminino", link: "https://www.nike.com.br/tenis-nike-air-force-1-07-masculino-011137.html?srsltid=AfmBOorftwJ6YiY-gNQHYMIdELxBf5-XCsg6goWk8f3k_IS-H6V0_iLk" },
+        { marca: 'nike', titulo: "Air Force branco classico", preco: "759,99", img: "https://imgnike-a.akamaihd.net/768x768/01113751A2.jpg", keywords: "nike tenis branco casual air force 1 masculino feminino", link: "https://www.nike.com.br/tenis-nike-air-force-1-07-masculino-011137.html" },
         { marca: 'nike', titulo: "Moletom Sportswear Club", preco: "284,99 ", img: "https://imgnike-a.akamaihd.net/1024x1024/0957727TA2.jpg", keywords: "nike moletom blusa frio preto esporte roupa", link: "https://www.nike.com.br/blusao-nike-park-fleece-infantil-095772.html?cor=7T" },
         { marca: 'nike', titulo: "Dunk Low 'Panda'", preco: "854,99 ", img: "https://imgnike-a.akamaihd.net/1920x1920/05847553A2.jpg", keywords: "nike tenis dunk low preto e branco panda casual", link: "https://www.nike.com.br/tenis-nike-dunk-low-retro-panda-masculino-058475.html?cor=53" },
         { marca: 'nike', titulo: "Jaqueta Corta-Vento Windrunner", preco: "759,99", img: "https://imgnike-a.akamaihd.net/768x768/028202IDA1.jpg", keywords: "nike jaqueta frio corta vento esporte corrida", link: "https://www.nike.com.br/jaqueta-nike-run-energy-windrunner-masculina-028202.html?cor=ID" },
-        { marca: 'nike', titulo: "tenis TN", preco: "1.329,99 ", img: "https://imgnike-a.akamaihd.net/768x768/022147IHA6.jpg", keywords: "nike TN corrida esporte azul", link: "https://www.nike.com.br/tenis-nike-air-max-plus-masculino-022147.html?cor=IH" },
-        { marca: 'nike', titulo: "air max dn se", preco: "1.006,99", img: "https://imgnike-a.akamaihd.net/768x768/098427NDA5.jpg", keywords: "nike tenis corrida branco se", link: "https://www.nike.com.br/air-max-dn-se-098427.html?cor=ND" },
-    
+        { marca: 'nike', titulo: "tenis TN", preco: "1.329,99 ", img: "https://imgnike-a.akamaihd.net/768x768/022147IHA2.jpg", keywords: "nike TN corrida esporte azul", link: "https://www.nike.com.br/tenis-nike-air-max-plus-masculino-022147.html?cor=IH" },
+        { marca: 'nike', titulo: "air max dn se", preco: "1.006,99", img: "https://imgnike-a.akamaihd.net/768x768/098427NDA5.jpg", keywords: "nike tenis corrida branco se air max", link: "https://www.nike.com.br/air-max-dn-se-098427.html?cor=ND" },
+
         // --- ADIDAS ---
-        { marca: 'adidas', titulo: "Tênis ULTRABOOST 5", preco: "1.099,99", img: "https://assets.adidas.com/images/w_600,f_auto,q_auto/a284c05789e64be281506dbda3204ed0_9366/Tenis_Ultraboost_5_Turquesa_JQ2911_HM1.jpg", link: "https://www.adidas.com.br/tenis-ultraboost-5/JQ2911.html" },
+        { marca: 'adidas', titulo: "Tênis ULTRABOOST 5", preco: "1.099,99", img: "https://assets.adidas.com/images/w_600,f_auto,q_auto/a284c05789e64be281506dbda3204ed0_9366/Tenis_Ultraboost_5_Turquesa_JQ2911_HM1.jpg", keywords: "adidas ultraboost corrida azul", link: "https://www.adidas.com.br/tenis-ultraboost-5/JQ2911.html" },
         { marca: 'adidas', titulo: "Superstar Originals", preco: "599,99", img: "https://assets.adidas.com/images/w_600,f_auto,q_auto/19bb876160da48f9b261741f4512ea9f_9366/Tenis_SUPERSTAR_ST_Cinza_KI4208_00_plp_standard.jpg", keywords: "adidas tenis branco superstar classico casual", link: "https://www.adidas.com.br/tenis-superstar-st/KI4208.html" },
         { marca: 'adidas', titulo: "Camisa Real Madrid 25/26", preco: "399,99", img: "https://assets.adidas.com/images/h_2000,f_auto,q_auto,fl_lossy,c_fill,g_auto/6781a185b37a4e508590bf5c35993725_9366/Camisa_III_Real_Madrid_25-26_Azul_JV5845_01_laydown.jpg", keywords: "adidas camisa real madrid futebol esporte azul", link: "https://www.adidas.com.br/camisa-iii-real-madrid-25-26/JV5845.html" },
         { marca: 'adidas', titulo: "Calça de treino Tiro 25 Essentials", preco: "249,99", img: "https://assets.adidas.com/images/h_2000,f_auto,q_auto,fl_lossy,c_fill,g_auto/f2e72ecc59fe450ebcd2b3104c64b8b2_9366/Calca_de_treino_Tiro_25_Essentials_Verde_JM5981_01_laydown.jpg", keywords: "adidas calca moletom jogger verde treino", link: "https://www.adidas.com.br/calca-de-treino-tiro-25-essentials/JM5981.html" },
         { marca: 'adidas', titulo: "Adicolor Clássico Mochila", preco: "279,99", img: "https://assets.adidas.com/images/h_2000,f_auto,q_auto,fl_lossy,c_fill,g_auto/fca8c91408ce4aa09709fec8d74fb7d7_9366/Adicolor_Classico_Mochila_Bege_KD7808_04_standard.jpg", keywords: "adidas mochila bolsa preta acessorio escola", link: "https://www.adidas.com.br/adicolor-classico-mochila/KD7808.html" },
-        { marca: 'adidas', titulo: "Camisa II CR Flamengo 25 Authentic", preco: "699,99", img: "https://assets.adidas.com/images/h_2000,f_auto,q_auto,fl_lossy,c_fill,g_auto/6829af4cafd44227a1857d48bb6a5426_9366/Camisa_II_CR_Flamengo_25_Authentic_Branco_IV6045_01_laydown.jpg", link: "https://www.adidas.com.br/camisa-ii-cr-flamengo-25-authentic/IV6045.html" },
-        { marca: 'adidas', titulo: "Blusa Capuz CR Flamengo DNA", preco: "399,99", img: "https://assets.adidas.com/images/h_2000,f_auto,q_auto,fl_lossy,c_fill,g_auto/d1ee7b100e6e48a1a8233fb097877aa8_9366/Blusa_Capuz_CR_Flamengo_DNA_Preto_JZ2805_01_laydown.jpg", link: "https://www.adidas.com.br/blusa-capuz-cr-flamengo-dna/JZ2805.html" },
-        
+        { marca: 'adidas', titulo: "Camisa II CR Flamengo 25 Authentic", preco: "699,99", img: "https://assets.adidas.com/images/h_2000,f_auto,q_auto,fl_lossy,c_fill,g_auto/6829af4cafd44227a1857d48bb6a5426_9366/Camisa_II_CR_Flamengo_25_Authentic_Branco_IV6045_01_laydown.jpg", keywords: "adidas flamengo camisa branca futebol mengo", link: "https://www.adidas.com.br/camisa-ii-cr-flamengo-25-authentic/IV6045.html" },
+        { marca: 'adidas', titulo: "Blusa Capuz CR Flamengo DNA", preco: "399,99", img: "https://assets.adidas.com/images/h_2000,f_auto,q_auto,fl_lossy,c_fill,g_auto/d1ee7b100e6e48a1a8233fb097877aa8_9366/Blusa_Capuz_CR_Flamengo_DNA_Preto_JZ2805_01_laydown.jpg", keywords: "adidas flamengo moletom preto casaco blusa", link: "https://www.adidas.com.br/blusa-capuz-cr-flamengo-dna/JZ2805.html" },
+
         // --- LACOSTE ---
-        { marca: 'lacoste', titulo: "Camisa Polo de Caimento Clássico Original", preco: "699,00", img: "https://imagesa1.lacoste.com/dw/image/v2/BCWL_PRD/on/demandware.static/-/Sites-master/default/dwc5ccbfaf/L1212_HBP_24.jpg?imwidth=1920&impolicy=zoom", keywords: "lacoste camisa polo verde casual roupa", link: "https://www.lacoste.com/br/lacoste/masculino/vestu%C3%A1rio/polos/L1212-23.html?color=HBP" },
-        { marca: 'lacoste', titulo: "Tênis Masculino Lineshot de Couro", preco: "929,00", img: "https://imagesa1.lacoste.com/dw/image/v2/BCWL_PRD/on/demandware.static/-/Sites-master/default/dweba3204a/48SMA0026_AAT_01.jpg?imwidth=960&impolicy=pctp&imdensity=1", keywords: "lacoste tenis branco couro casual", link: "https://www.lacoste.com/br/48SMA0026.html?color=AAT" },
-        { marca: 'lacoste', titulo: "Boné de Gabardine de Algodão", preco: "199,00", img: "https://imagesa1.lacoste.com/dw/image/v2/BCWL_PRD/on/demandware.static/-/Sites-master/default/dw328b605f/RK4313_4XA_24.jpg?imwidth=1920&impolicy=zoom", keywords: "lacoste bone acessorio preto crocodilo", link: "https://www.lacoste.com/br/lacoste/masculino/acess%C3%B3rios/bones-chapeus/RK4313-23.html?color=4XA" },
-        { marca: 'lacoste', titulo: "Relógio Analógico e Digital de Silicone LC33", preco: "449,00", img: "https://imagesa1.lacoste.com/dw/image/v2/BCWL_PRD/on/demandware.static/-/Sites-master/default/dw3d3ab1e6/2011365_000_32.jpg?imwidth=1920&impolicy=zoom", keywords: "lacoste relogio prata acessorio luxo pulso", link: "https://imagesa1.lacoste.com/dw/image/v2/BCWL_PRD/on/demandware.static/-/Sites-master/default/dw3d3ab1e6/2011365_000_32.jpg?imwidth=1920&impolicy=zoom" },
-        { marca: 'lacoste', titulo: "L.12.12 Blanc Eau de Toilette 100ml", preco: "539,00", img: "https://imagesa1.lacoste.com/dw/image/v2/BCWL_PRD/on/demandware.static/-/Sites-master/default/dwab91a70e/LC001A01_000_31.jpg?imwidth=960&impolicy=pctp&imdensity=1", keywords: "lacoste perfume branco cheiro higiene beleza", link: "https://www.lacoste.com/br/lacoste/masculino/acess%C3%B3rios/perfumes/LC001A01.html?color=000" },
+        { marca: 'lacoste', titulo: "Camisa Polo Original", preco: "699,00", img: "https://imagesa1.lacoste.com/dw/image/v2/BCWL_PRD/on/demandware.static/-/Sites-master/default/dwc5ccbfaf/L1212_HBP_24.jpg?imwidth=1920&impolicy=zoom", keywords: "lacoste camisa polo verde casual roupa", link: "https://www.lacoste.com/br/lacoste/masculino/vestu%C3%A1rio/polos/L1212-23.html?color=HBP" },
+        { marca: 'lacoste', titulo: "Tênis Masculino Lineshot", preco: "929,00", img: "https://imagesa1.lacoste.com/dw/image/v2/BCWL_PRD/on/demandware.static/-/Sites-master/default/dweba3204a/48SMA0026_AAT_01.jpg?imwidth=960&impolicy=pctp&imdensity=1", keywords: "lacoste tenis branco couro casual", link: "https://www.lacoste.com/br/48SMA0026.html?color=AAT" },
+        { marca: 'lacoste', titulo: "Boné Gabardine", preco: "199,00", img: "https://imagesa1.lacoste.com/dw/image/v2/BCWL_PRD/on/demandware.static/-/Sites-master/default/dw328b605f/RK4313_4XA_24.jpg?imwidth=1920&impolicy=zoom", keywords: "lacoste bone acessorio preto crocodilo", link: "https://www.lacoste.com/br/lacoste/masculino/acess%C3%B3rios/bones-chapeus/RK4313-23.html?color=4XA" },
+        { marca: 'lacoste', titulo: "Relógio LC33", preco: "449,00", img: "https://imagesa1.lacoste.com/dw/image/v2/BCWL_PRD/on/demandware.static/-/Sites-master/default/dw3d3ab1e6/2011365_000_32.jpg?imwidth=1920&impolicy=zoom", keywords: "lacoste relogio prata acessorio luxo pulso", link: "https://www.lacoste.com/br/relogio-masculino-lacoste-lc33/2011365.html" },
+        { marca: 'lacoste', titulo: "L.12.12 Blanc 100ml", preco: "539,00", img: "https://imagesa1.lacoste.com/dw/image/v2/BCWL_PRD/on/demandware.static/-/Sites-master/default/dwab91a70e/LC001A01_000_31.jpg?imwidth=960&impolicy=pctp&imdensity=1", keywords: "lacoste perfume branco cheiro higiene beleza", link: "https://www.lacoste.com/br/lacoste/masculino/acess%C3%B3rios/perfumes/LC001A01.html?color=000" },
 
         // --- PENALTY ---
-        { marca: 'penalty', titulo: "Bola De Futebol De Campo Penalty S11 Ecoknit Xxv", preco: "599,99", img: "https://cambuci.vtexassets.com/arquivos/ids/1505567-1200-auto?v=638962390747600000&width=1200&height=auto&aspect=true", keywords: "penalty bola futebol campo esporte equipamento", link: "https://www.penalty.com.br/bola-de-futebol-de-campo-penalty-s11-ecoknit-xxv/p?srsltid=AfmBOor7_SOdObQ-jhvZR4iBOnoWe9_09I-eOjwfphJMytc_A074t4DJ" },
-        { marca: 'penalty', titulo: "Chuteira Society Penalty Storm Y-3", preco: "269,99", img: "https://cambuci.vtexassets.com/arquivos/ids/1555564-1200-auto?v=638906130667100000&width=1200&height=auto&aspect=true", keywords: "penalty chuteira futsal salao quadra laranja", link: "https://www.penalty.com.br/chuteira-society-penalty-storm-y-3/p?property__Cor=Coral&skuId=12757" },
-        { marca: 'penalty', titulo: "Luva Delta Fit Training", preco: "99,99", img: "https://cambuci.vtexassets.com/arquivos/ids/1297303-1200-auto?v=638500909549730000&width=1200&height=auto&aspect=true", keywords: "penalty chuteira campo", link: "https://www.penalty.com.br/luva-goleiro-penalty-delta-indoor-training-juvenil/p?srsltid=AfmBOorqTSlgnt1hCJkFKb2Qs7AIu4SSCkdqVCIjzcZQvx7BYxhsof62" },
-        { marca: 'penalty', titulo: "Meião De Futebol Adulto Penalty Storm T 39-44", preco: "24,99", img: "https://cambuci.vtexassets.com/arquivos/ids/1532216-1200-auto?v=638957158784170000&width=1200&height=auto&aspect=true", keywords: "penalty meiao meia futebol azul esporte", link: "https://www.penalty.com.br/meiao-penalty-storm-t-39-44/p?property__Cor=Azul%20Cobalto" },
-        { marca: 'penalty', titulo: "Bomba De Ar Penalty Big", preco: "69,99", img: "https://cambuci.vtexassets.com/arquivos/ids/1487863-1200-auto?v=638838758768200000&width=1200&height=auto&aspect=true", keywords: "penalty bomba ar bola acessorio encher", link:"https://www.penalty.com.br/bomba-de-ar-penalty-big/p?property__Cor=Chumbo" },
-    ];
-    // 2. FUNÇÃO QUE DESENHA OS PRODUTOS NA TELA COM O LINK CORRETO
-    function renderizarProdutos() {
-        produtos.forEach(produto => {
-    
+        { marca: 'penalty', titulo: "Bola Penalty S11 Ecoknit", preco: "599,99", img: "https://cambuci.vtexassets.com/arquivos/ids/1505567-1200-auto?v=638962390747600000", keywords: "penalty bola futebol campo esporte equipamento", link: "https://www.penalty.com.br/bola-de-futebol-de-campo-penalty-s11-ecoknit-xxv/p" },
+        { marca: 'penalty', titulo: "Chuteira Society Storm Y-3", preco: "269,99", img: "https://cambuci.vtexassets.com/arquivos/ids/1555564-1200-auto?v=638906130667100000", keywords: "penalty chuteira society salao quadra laranja", link: "https://www.penalty.com.br/chuteira-society-penalty-storm-y-3/p" },
+        { marca: 'penalty', titulo: "Luva Delta Fit Training", preco: "99,99", img: "https://cambuci.vtexassets.com/arquivos/ids/1297303-1200-auto?v=638500909549730000", keywords: "penalty luva goleiro futebol", link: "https://www.penalty.com.br/luva-goleiro-penalty-delta-indoor-training-juvenil/p" },
+        { marca: 'penalty', titulo: "Meião Penalty Storm", preco: "24,99", img: "https://cambuci.vtexassets.com/arquivos/ids/1532216-1200-auto?v=638957158784170000", keywords: "penalty meiao meia futebol azul esporte", link: "https://www.penalty.com.br/meiao-penalty-storm-t-39-44/p" },
+        { marca: 'penalty', titulo: "Bomba De Ar Big", preco: "69,99", img: "https://cambuci.vtexassets.com/arquivos/ids/1487863-1200-auto?v=638838758768200000", keywords: "penalty bomba ar bola acessorio encher", link:"https://www.penalty.com.br/bomba-de-ar-penalty-big/p" }
     ];
 
-    // 2. FUNÇÃO QUE DESENHA OS PRODUTOS NA TELA COM O LINK CORRETO
+    // 2. FUNÇÃO QUE DESENHA OS PRODUTOS
     function renderizarProdutos() {
+        const containers = ['grid-nike', 'grid-adidas', 'grid-lacoste', 'grid-penalty'];
+        containers.forEach(id => document.getElementById(id).innerHTML = ''); // Limpa antes de renderizar
+
         produtos.forEach(produto => {
             const cardHTML = `
                 <article class="product-card" data-keywords="${produto.keywords}">
@@ -194,11 +191,12 @@
                     </div>
                 </article>
             `;
-            document.getElementById(`grid-${produto.marca}`).innerHTML += cardHTML;
+            const grid = document.getElementById(`grid-${produto.marca}`);
+            if(grid) grid.innerHTML += cardHTML;
         });
     }
 
-    // Executa a função ao carregar a página
+    // Inicializa
     renderizarProdutos();
 
     // 3. LÓGICA DA BARRA DE PESQUISA
@@ -208,25 +206,22 @@
 
         if(searchTerm !== '') {
             document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+        } else {
+            document.querySelector('.filter-btn[data-filter="todos"]').classList.add('active');
         }
 
         productCards.forEach(card => {
             const keywords = card.getAttribute('data-keywords').toLowerCase();
             if(keywords.includes(searchTerm)) {
                 card.style.display = 'flex'; 
-                card.closest('.brand-section').style.display = 'block';
             } else {
                 card.style.display = 'none'; 
             }
         });
 
         document.querySelectorAll('.brand-section').forEach(section => {
-            const visibleCards = section.querySelectorAll('.product-card[style="display: flex;"]');
-            if(searchTerm !== '' && visibleCards.length === 0) {
-                section.style.display = 'none';
-            } else {
-                section.style.display = 'block';
-            }
+            const visibleCards = section.querySelectorAll('.product-card:not([style*="display: none"])');
+            section.style.display = visibleCards.length > 0 ? 'block' : 'none';
         });
     });
 
@@ -246,11 +241,7 @@
 
             brandSections.forEach(section => {
                 const sectionBrand = section.getAttribute('data-brand');
-                if (filterValue === 'todos' || sectionBrand === filterValue) {
-                    section.style.display = 'block'; 
-                } else {
-                    section.style.display = 'none'; 
-                }
+                section.style.display = (filterValue === 'todos' || sectionBrand === filterValue) ? 'block' : 'none';
             });
         });
     });

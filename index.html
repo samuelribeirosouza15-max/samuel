@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Samuel fashion | site para facilitar suas compras online</title>
+    <title>Samuel Fashion | Site para facilitar suas compras online</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -12,23 +12,40 @@
             --bg: #f4f5f7;
             --card-bg: #ffffff;
             --transition-speed: 0.3s;
+            --accent: #2ecc71;
+            --heart-color: #ccc;
+        }
+
+        /* Variáveis para o Modo Escuro */
+        body.dark-theme {
+            --bg: #121212;
+            --card-bg: #1e1e1e;
+            --primary: #ffffff;
+            --secondary: #b0b0b0;
+            --heart-color: #555;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         html { scroll-behavior: smooth; }
-        body { background-color: var(--bg); color: var(--primary); }
+        body { background-color: var(--bg); color: var(--primary); transition: background var(--transition-speed); }
 
         header {
             padding: 20px 5%; display: flex; justify-content: space-between;
-            align-items: center; background: white; box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            align-items: center; background: var(--card-bg); box-shadow: 0 2px 10px rgba(0,0,0,0.05);
             position: sticky; top: 0; z-index: 1000;
         }
 
         .logo { font-weight: 800; font-size: 1.5rem; letter-spacing: -1px; }
 
+        /* Botão Dark Mode */
+        #themeToggle {
+            background: none; border: 1px solid var(--primary); color: var(--primary);
+            padding: 5px 15px; border-radius: 20px; cursor: pointer; font-size: 0.8rem;
+        }
+
         .hero {
             padding: 50px 5%; text-align: center;
-            background: linear-gradient(to bottom, #ffffff, var(--bg)); margin-bottom: 20px;
+            background: linear-gradient(to bottom, var(--card-bg), var(--bg)); margin-bottom: 20px;
         }
 
         .hero h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 10px; }
@@ -40,6 +57,7 @@
             width: 100%; padding: 16px 25px; border-radius: 50px;
             border: 2px solid #e1e1e1; font-size: 1rem; outline: none;
             transition: border-color var(--transition-speed);
+            background: var(--card-bg); color: var(--primary);
         }
         #searchInput:focus { border-color: var(--primary); }
 
@@ -54,7 +72,7 @@
             border-radius: 50px; font-weight: 600; cursor: pointer;
             transition: all var(--transition-speed);
         }
-        .filter-btn:hover, .filter-btn.active { background: var(--primary); color: white; }
+        .filter-btn:hover, .filter-btn.active { background: var(--primary); color: var(--bg); }
 
         .brand-section { max-width: 1300px; margin: 0 auto 40px; padding: 0 5%; }
         .section-title {
@@ -68,24 +86,46 @@
         .product-card {
             background: var(--card-bg); border-radius: 12px; overflow: hidden;
             box-shadow: 0 4px 15px rgba(0,0,0,0.04); display: flex;
-            flex-direction: column; border: 1px solid #eee;
+            flex-direction: column; border: 1px solid #eee; position: relative;
             transition: transform var(--transition-speed), box-shadow var(--transition-speed);
         }
         .product-card:hover { transform: translateY(-8px); box-shadow: 0 12px 25px rgba(0,0,0,0.1); }
 
-        .product-card img { width: 100%; height: 250px; object-fit: cover; background: #f0f0f0; }
+        /* Imagem com Zoom */
+        .img-container { width: 100%; height: 250px; overflow: hidden; }
+        .product-card img { 
+            width: 100%; height: 100%; object-fit: cover; background: #f0f0f0; 
+            transition: transform 0.5s ease;
+        }
+        .product-card:hover img { transform: scale(1.1); }
+
+        /* Badge e Coração */
+        .badge {
+            position: absolute; top: 10px; left: 10px; background: #ff3e3e;
+            color: white; padding: 4px 10px; border-radius: 4px; font-size: 0.7rem;
+            font-weight: 800; z-index: 10;
+        }
+        .btn-heart {
+            position: absolute; top: 10px; right: 10px; background: white;
+            border: none; border-radius: 50%; width: 35px; height: 35px;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 10;
+            color: var(--heart-color); font-size: 1.2rem; transition: 0.2s;
+        }
+        .btn-heart.active { color: #ff3e3e; }
+
         .product-info { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; }
         .brand-name { font-size: 0.75rem; color: var(--secondary); text-transform: uppercase; font-weight: 700; margin-bottom: 5px; }
         .product-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 10px; }
-        .product-price { font-size: 1.25rem; font-weight: 800; margin-bottom: 20px; margin-top: auto; color: #2ecc71; }
+        .product-price { font-size: 1.25rem; font-weight: 800; margin-bottom: 20px; margin-top: auto; color: var(--accent); }
 
         .btn-buy {
             text-align: center; padding: 12px; background: var(--primary);
-            color: white; text-decoration: none; border-radius: 8px;
-            font-weight: 600; transition: background var(--transition-speed), transform 0.1s;
+            color: var(--bg); text-decoration: none; border-radius: 8px;
+            font-weight: 600; transition: background var(--transition-speed);
         }
-        .btn-buy:hover { background: #333; }
-        .btn-buy:active { transform: scale(0.98); }
+
+        #noResults { display: none; text-align: center; padding: 50px; color: var(--secondary); font-weight: 600; }
 
         footer { text-align: center; padding: 40px; color: #999; font-size: 0.9rem; }
     </style>
@@ -94,14 +134,14 @@
 
 <header>
     <div class="logo">Samuel fashion</div>
-    <nav>TÊNIS | ROUPAS | ACESSÓRIOS | ESPORTES</nav>
+    <button id="themeToggle">MODO ESCURO</button>
 </header>
 
 <section class="hero">
     <h1>Itens Especiais das Maiores Marcas</h1>
     <p>Navegue pelas coleções exclusivas e encontre o seu estilo.</p>
     <div class="search-container">
-        <input type="text" id="searchInput" aria-label="Buscar produtos" placeholder="Busque por 'tênis', 'polo', 'lacoste', 'bola'..." autocomplete="off">
+        <input type="text" id="searchInput" placeholder="Busque por produtos..." autocomplete="off">
     </div>
 </section>
 
@@ -112,6 +152,8 @@
     <button class="filter-btn" data-filter="lacoste">Lacoste</button>
     <button class="filter-btn" data-filter="penalty">Penalty</button>
 </div>
+
+<div id="noResults">Nenhum produto encontrado para sua busca. 🔍</div>
 
 <main id="mainContainer">
     <section class="brand-section" data-brand="nike">
@@ -136,116 +178,12 @@
 </main>
 
 <footer>
-    <p>&copy; 2026 samuel Fashion . Todos os direitos reservados.</p>
+    <p>&copy; 2026 Samuel Fashion. Todos os direitos reservados.</p>
 </footer>
 
 <script>
-    // 1. LISTA DE PRODUTOS COMPLETA
     const produtos = [
-        // --- NIKE ---
-        { marca: 'nike', titulo: "Air Force branco classico", preco: "759,99", img: "https://imgnike-a.akamaihd.net/768x768/01113751A2.jpg", keywords: "nike tenis branco casual air force 1 masculino feminino", link: "https://www.nike.com.br/tenis-nike-air-force-1-07-masculino-011137.html" },
-        { marca: 'nike', titulo: "Moletom Sportswear Club", preco: "284,99 ", img: "https://imgnike-a.akamaihd.net/1024x1024/0957727TA2.jpg", keywords: "nike moletom blusa frio preto esporte roupa", link: "https://www.nike.com.br/blusao-nike-park-fleece-infantil-095772.html?cor=7T" },
-        { marca: 'nike', titulo: "Dunk Low 'Panda'", preco: "854,99 ", img: "https://imgnike-a.akamaihd.net/1920x1920/05847553A2.jpg", keywords: "nike tenis dunk low preto e branco panda casual", link: "https://www.nike.com.br/tenis-nike-dunk-low-retro-panda-masculino-058475.html?cor=53" },
-        { marca: 'nike', titulo: "Jaqueta Corta-Vento Windrunner", preco: "759,99", img: "https://imgnike-a.akamaihd.net/768x768/028202IDA1.jpg", keywords: "nike jaqueta frio corta vento esporte corrida", link: "https://www.nike.com.br/jaqueta-nike-run-energy-windrunner-masculina-028202.html?cor=ID" },
-        { marca: 'nike', titulo: "tenis TN", preco: "1.329,99 ", img: "https://imgnike-a.akamaihd.net/768x768/022147IHA2.jpg", keywords: "nike TN corrida esporte azul", link: "https://www.nike.com.br/tenis-nike-air-max-plus-masculino-022147.html?cor=IH" },
-        { marca: 'nike', titulo: "air max dn se", preco: "1.006,99", img: "https://imgnike-a.akamaihd.net/768x768/098427NDA5.jpg", keywords: "nike tenis corrida branco se air max", link: "https://www.nike.com.br/air-max-dn-se-098427.html?cor=ND" },
-
-        // --- ADIDAS ---
-        { marca: 'adidas', titulo: "Tênis ULTRABOOST 5", preco: "1.099,99", img: "https://assets.adidas.com/images/w_600,f_auto,q_auto/a284c05789e64be281506dbda3204ed0_9366/Tenis_Ultraboost_5_Turquesa_JQ2911_HM1.jpg", keywords: "adidas ultraboost corrida azul", link: "https://www.adidas.com.br/tenis-ultraboost-5/JQ2911.html" },
-        { marca: 'adidas', titulo: "Superstar Originals", preco: "599,99", img: "https://assets.adidas.com/images/w_600,f_auto,q_auto/19bb876160da48f9b261741f4512ea9f_9366/Tenis_SUPERSTAR_ST_Cinza_KI4208_00_plp_standard.jpg", keywords: "adidas tenis branco superstar classico casual", link: "https://www.adidas.com.br/tenis-superstar-st/KI4208.html" },
-        { marca: 'adidas', titulo: "Camisa Real Madrid 25/26", preco: "399,99", img: "https://assets.adidas.com/images/h_2000,f_auto,q_auto,fl_lossy,c_fill,g_auto/6781a185b37a4e508590bf5c35993725_9366/Camisa_III_Real_Madrid_25-26_Azul_JV5845_01_laydown.jpg", keywords: "adidas camisa real madrid futebol esporte azul", link: "https://www.adidas.com.br/camisa-iii-real-madrid-25-26/JV5845.html" },
-        { marca: 'adidas', titulo: "Calça de treino Tiro 25 Essentials", preco: "249,99", img: "https://assets.adidas.com/images/h_2000,f_auto,q_auto,fl_lossy,c_fill,g_auto/f2e72ecc59fe450ebcd2b3104c64b8b2_9366/Calca_de_treino_Tiro_25_Essentials_Verde_JM5981_01_laydown.jpg", keywords: "adidas calca moletom jogger verde treino", link: "https://www.adidas.com.br/calca-de-treino-tiro-25-essentials/JM5981.html" },
-        { marca: 'adidas', titulo: "Adicolor Clássico Mochila", preco: "279,99", img: "https://assets.adidas.com/images/h_2000,f_auto,q_auto,fl_lossy,c_fill,g_auto/fca8c91408ce4aa09709fec8d74fb7d7_9366/Adicolor_Classico_Mochila_Bege_KD7808_04_standard.jpg", keywords: "adidas mochila bolsa preta acessorio escola", link: "https://www.adidas.com.br/adicolor-classico-mochila/KD7808.html" },
-        { marca: 'adidas', titulo: "Camisa II CR Flamengo 25 Authentic", preco: "699,99", img: "https://assets.adidas.com/images/h_2000,f_auto,q_auto,fl_lossy,c_fill,g_auto/6829af4cafd44227a1857d48bb6a5426_9366/Camisa_II_CR_Flamengo_25_Authentic_Branco_IV6045_01_laydown.jpg", keywords: "adidas flamengo camisa branca futebol mengo", link: "https://www.adidas.com.br/camisa-ii-cr-flamengo-25-authentic/IV6045.html" },
-        { marca: 'adidas', titulo: "Blusa Capuz CR Flamengo DNA", preco: "399,99", img: "https://assets.adidas.com/images/h_2000,f_auto,q_auto,fl_lossy,c_fill,g_auto/d1ee7b100e6e48a1a8233fb097877aa8_9366/Blusa_Capuz_CR_Flamengo_DNA_Preto_JZ2805_01_laydown.jpg", keywords: "adidas flamengo moletom preto casaco blusa", link: "https://www.adidas.com.br/blusa-capuz-cr-flamengo-dna/JZ2805.html" },
-
-        // --- LACOSTE ---
-        { marca: 'lacoste', titulo: "Camisa Polo Original", preco: "699,00", img: "https://imagesa1.lacoste.com/dw/image/v2/BCWL_PRD/on/demandware.static/-/Sites-master/default/dwc5ccbfaf/L1212_HBP_24.jpg?imwidth=1920&impolicy=zoom", keywords: "lacoste camisa polo verde casual roupa", link: "https://www.lacoste.com/br/lacoste/masculino/vestu%C3%A1rio/polos/L1212-23.html?color=HBP" },
-        { marca: 'lacoste', titulo: "Tênis Masculino Lineshot", preco: "929,00", img: "https://imagesa1.lacoste.com/dw/image/v2/BCWL_PRD/on/demandware.static/-/Sites-master/default/dweba3204a/48SMA0026_AAT_01.jpg?imwidth=960&impolicy=pctp&imdensity=1", keywords: "lacoste tenis branco couro casual", link: "https://www.lacoste.com/br/48SMA0026.html?color=AAT" },
-        { marca: 'lacoste', titulo: "Boné Gabardine", preco: "199,00", img: "https://imagesa1.lacoste.com/dw/image/v2/BCWL_PRD/on/demandware.static/-/Sites-master/default/dw328b605f/RK4313_4XA_24.jpg?imwidth=1920&impolicy=zoom", keywords: "lacoste bone acessorio preto crocodilo", link: "https://www.lacoste.com/br/lacoste/masculino/acess%C3%B3rios/bones-chapeus/RK4313-23.html?color=4XA" },
-        { marca: 'lacoste', titulo: "Relógio LC33", preco: "449,00", img: "https://imagesa1.lacoste.com/dw/image/v2/BCWL_PRD/on/demandware.static/-/Sites-master/default/dw3d3ab1e6/2011365_000_32.jpg?imwidth=1920&impolicy=zoom", keywords: "lacoste relogio prata acessorio luxo pulso", link: "https://www.lacoste.com/br/relogio-masculino-lacoste-lc33/2011365.html" },
-        { marca: 'lacoste', titulo: "L.12.12 Blanc 100ml", preco: "539,00", img: "https://imagesa1.lacoste.com/dw/image/v2/BCWL_PRD/on/demandware.static/-/Sites-master/default/dwab91a70e/LC001A01_000_31.jpg?imwidth=960&impolicy=pctp&imdensity=1", keywords: "lacoste perfume branco cheiro higiene beleza", link: "https://www.lacoste.com/br/lacoste/masculino/acess%C3%B3rios/perfumes/LC001A01.html?color=000" },
-
-        // --- PENALTY ---
-        { marca: 'penalty', titulo: "Bola Penalty S11 Ecoknit", preco: "599,99", img: "https://cambuci.vtexassets.com/arquivos/ids/1505567-1200-auto?v=638962390747600000", keywords: "penalty bola futebol campo esporte equipamento", link: "https://www.penalty.com.br/bola-de-futebol-de-campo-penalty-s11-ecoknit-xxv/p" },
-        { marca: 'penalty', titulo: "Chuteira Society Storm Y-3", preco: "269,99", img: "https://cambuci.vtexassets.com/arquivos/ids/1555564-1200-auto?v=638906130667100000", keywords: "penalty chuteira society salao quadra laranja", link: "https://www.penalty.com.br/chuteira-society-penalty-storm-y-3/p" },
-        { marca: 'penalty', titulo: "Luva Delta Fit Training", preco: "99,99", img: "https://cambuci.vtexassets.com/arquivos/ids/1297303-1200-auto?v=638500909549730000", keywords: "penalty luva goleiro futebol", link: "https://www.penalty.com.br/luva-goleiro-penalty-delta-indoor-training-juvenil/p" },
-        { marca: 'penalty', titulo: "Meião Penalty Storm", preco: "24,99", img: "https://cambuci.vtexassets.com/arquivos/ids/1532216-1200-auto?v=638957158784170000", keywords: "penalty meiao meia futebol azul esporte", link: "https://www.penalty.com.br/meiao-penalty-storm-t-39-44/p" },
-        { marca: 'penalty', titulo: "Bomba De Ar Big", preco: "69,99", img: "https://cambuci.vtexassets.com/arquivos/ids/1487863-1200-auto?v=638838758768200000", keywords: "penalty bomba ar bola acessorio encher", link:"https://www.penalty.com.br/bomba-de-ar-penalty-big/p" }
-    ];
-
-    // 2. FUNÇÃO QUE DESENHA OS PRODUTOS
-    function renderizarProdutos() {
-        const containers = ['grid-nike', 'grid-adidas', 'grid-lacoste', 'grid-penalty'];
-        containers.forEach(id => document.getElementById(id).innerHTML = ''); // Limpa antes de renderizar
-
-        produtos.forEach(produto => {
-            const cardHTML = `
-                <article class="product-card" data-keywords="${produto.keywords}">
-                    <img src="${produto.img}" alt="${produto.titulo}" loading="lazy">
-                    <div class="product-info">
-                        <span class="brand-name">${produto.marca}</span>
-                        <h3 class="product-title">${produto.titulo}</h3>
-                        <div class="product-price">R$ ${produto.preco}</div>
-                        <a href="${produto.link}" target="_blank" rel="noopener noreferrer" class="btn-buy">Ver na Loja</a>
-                    </div>
-                </article>
-            `;
-            const grid = document.getElementById(`grid-${produto.marca}`);
-            if(grid) grid.innerHTML += cardHTML;
-        });
-    }
-
-    // Inicializa
-    renderizarProdutos();
-
-    // 3. LÓGICA DA BARRA DE PESQUISA
-    document.getElementById('searchInput').addEventListener('input', function(e) {
-        const searchTerm = e.target.value.toLowerCase();
-        const productCards = document.querySelectorAll('.product-card');
-
-        if(searchTerm !== '') {
-            document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-        } else {
-            document.querySelector('.filter-btn[data-filter="todos"]').classList.add('active');
-        }
-
-        productCards.forEach(card => {
-            const keywords = card.getAttribute('data-keywords').toLowerCase();
-            if(keywords.includes(searchTerm)) {
-                card.style.display = 'flex'; 
-            } else {
-                card.style.display = 'none'; 
-            }
-        });
-
-        document.querySelectorAll('.brand-section').forEach(section => {
-            const visibleCards = section.querySelectorAll('.product-card:not([style*="display: none"])');
-            section.style.display = visibleCards.length > 0 ? 'block' : 'none';
-        });
-    });
-
-    // 4. LÓGICA DOS BOTÕES DE FILTRO
-    const filterBtns = document.querySelectorAll('.filter-btn');
-    const brandSections = document.querySelectorAll('.brand-section');
-
-    filterBtns.forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.getElementById('searchInput').value = '';
-            document.querySelectorAll('.product-card').forEach(card => card.style.display = 'flex');
-            
-            filterBtns.forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-
-            const filterValue = btn.getAttribute('data-filter');
-
-            brandSections.forEach(section => {
-                const sectionBrand = section.getAttribute('data-brand');
-                section.style.display = (filterValue === 'todos' || sectionBrand === filterValue) ? 'block' : 'none';
-            });
-        });
-    });
-</script>
-
-</body>
-</html>
+        { marca: 'nike', titulo: "Air Force branco classico", preco: "759,99", img: "https://imgnike-a.akamaihd.net/768x768/01113751A2.jpg", keywords: "nike tenis branco air force", badge: "MAIS VENDIDO", link: "https://www.nike.com.br" },
+        { marca: 'nike', titulo: "Moletom Sportswear Club", preco: "284,99", img: "https://imgnike-a.akamaihd.net/1024x1024/0957727TA2.jpg", keywords: "nike moletom preto", link: "https://www.nike.com.br" },
+        { marca: 'nike', titulo: "Dunk Low 'Panda'", preco: "854,99", img: "https://imgnike-a.akamaihd.net/1920x1920/05847553A2.jpg", keywords: "nike dunk panda preto branco", badge: "QUENTE", link: "https://www.nike.com.br" },
+        { marca: 'adidas', titulo: "Tênis ULTRABOOST 5", preco: "1.099,99", img: "https://assets.adidas.com/images/w_600,f_auto,q_auto/a284c05789e64be281506dbda3204ed0_9366/Tenis_Ultraboost_5_Turquesa_JQ2911_HM1.jpg", keywords: "adidas ultraboost azul

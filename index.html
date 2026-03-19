@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Samuel Fashion | Site para facilitar suas compras online</title>
+    <title>Samuel fashion | site para facilitar suas compras online</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -13,21 +13,18 @@
             --card-bg: #ffffff;
             --transition-speed: 0.3s;
             --accent: #2ecc71;
-            --heart-color: #ccc;
         }
 
-        /* Variáveis para o Modo Escuro */
+        /* Tema Escuro */
         body.dark-theme {
             --bg: #121212;
             --card-bg: #1e1e1e;
             --primary: #ffffff;
             --secondary: #b0b0b0;
-            --heart-color: #555;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        html { scroll-behavior: smooth; }
-        body { background-color: var(--bg); color: var(--primary); transition: background var(--transition-speed); }
+        body { background-color: var(--bg); color: var(--primary); transition: background 0.3s; }
 
         header {
             padding: 20px 5%; display: flex; justify-content: space-between;
@@ -36,98 +33,76 @@
         }
 
         .logo { font-weight: 800; font-size: 1.5rem; letter-spacing: -1px; }
-
-        /* Botão Dark Mode */
+        
         #themeToggle {
-            background: none; border: 1px solid var(--primary); color: var(--primary);
-            padding: 5px 15px; border-radius: 20px; cursor: pointer; font-size: 0.8rem;
+            background: var(--primary); color: var(--bg); border: none;
+            padding: 8px 15px; border-radius: 20px; cursor: pointer; font-weight: 600;
         }
 
         .hero {
             padding: 50px 5%; text-align: center;
-            background: linear-gradient(to bottom, var(--card-bg), var(--bg)); margin-bottom: 20px;
+            background: linear-gradient(to bottom, var(--card-bg), var(--bg));
         }
 
-        .hero h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 10px; }
-        .hero p { color: var(--secondary); margin-bottom: 30px; }
-
-        .search-container { max-width: 600px; margin: 0 auto; position: relative; }
-
+        .search-container { max-width: 600px; margin: 20px auto 0; }
         #searchInput {
-            width: 100%; padding: 16px 25px; border-radius: 50px;
-            border: 2px solid #e1e1e1; font-size: 1rem; outline: none;
-            transition: border-color var(--transition-speed);
-            background: var(--card-bg); color: var(--primary);
+            width: 100%; padding: 15px 25px; border-radius: 50px;
+            border: 2px solid #e1e1e1; background: var(--card-bg); color: var(--primary); outline: none;
         }
-        #searchInput:focus { border-color: var(--primary); }
 
         .filters-container {
-            display: flex; justify-content: center; gap: 15px;
-            margin-bottom: 40px; flex-wrap: wrap; padding: 0 5%;
+            display: flex; justify-content: center; gap: 10px;
+            margin: 20px 0 40px; flex-wrap: wrap;
         }
 
         .filter-btn {
-            padding: 10px 24px; border: 2px solid var(--primary);
+            padding: 8px 20px; border: 2px solid var(--primary);
             background: transparent; color: var(--primary);
             border-radius: 50px; font-weight: 600; cursor: pointer;
-            transition: all var(--transition-speed);
         }
-        .filter-btn:hover, .filter-btn.active { background: var(--primary); color: var(--bg); }
+        .filter-btn.active { background: var(--primary); color: var(--bg); }
 
         .brand-section { max-width: 1300px; margin: 0 auto 40px; padding: 0 5%; }
-        .section-title {
-            font-size: 1.5rem; font-weight: 800; text-transform: uppercase;
-            letter-spacing: -0.5px; margin-bottom: 20px; padding-bottom: 10px;
-            border-bottom: 2px solid #eaeaea;
-        }
+        .section-title { font-size: 1.5rem; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
 
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 30px; }
+        .product-grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); 
+            gap: 25px; 
+        }
 
         .product-card {
             background: var(--card-bg); border-radius: 12px; overflow: hidden;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.04); display: flex;
-            flex-direction: column; border: 1px solid #eee; position: relative;
-            transition: transform var(--transition-speed), box-shadow var(--transition-speed);
+            border: 1px solid #eee; position: relative; display: flex; flex-direction: column;
+            transition: transform 0.3s;
         }
-        .product-card:hover { transform: translateY(-8px); box-shadow: 0 12px 25px rgba(0,0,0,0.1); }
+        .product-card:hover { transform: translateY(-5px); }
 
-        /* Imagem com Zoom */
+        /* Zoom na Imagem */
         .img-container { width: 100%; height: 250px; overflow: hidden; }
-        .product-card img { 
-            width: 100%; height: 100%; object-fit: cover; background: #f0f0f0; 
-            transition: transform 0.5s ease;
-        }
+        .product-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
         .product-card:hover img { transform: scale(1.1); }
 
-        /* Badge e Coração */
         .badge {
             position: absolute; top: 10px; left: 10px; background: #ff3e3e;
-            color: white; padding: 4px 10px; border-radius: 4px; font-size: 0.7rem;
-            font-weight: 800; z-index: 10;
+            color: white; padding: 4px 10px; border-radius: 4px; font-size: 0.7rem; font-weight: 800; z-index: 5;
         }
+
         .btn-heart {
             position: absolute; top: 10px; right: 10px; background: white;
-            border: none; border-radius: 50%; width: 35px; height: 35px;
-            display: flex; align-items: center; justify-content: center;
-            cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.1); z-index: 10;
-            color: var(--heart-color); font-size: 1.2rem; transition: 0.2s;
+            border: none; border-radius: 50%; width: 30px; height: 30px; cursor: pointer; z-index: 5;
         }
-        .btn-heart.active { color: #ff3e3e; }
 
-        .product-info { padding: 20px; display: flex; flex-direction: column; flex-grow: 1; }
-        .brand-name { font-size: 0.75rem; color: var(--secondary); text-transform: uppercase; font-weight: 700; margin-bottom: 5px; }
-        .product-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 10px; }
-        .product-price { font-size: 1.25rem; font-weight: 800; margin-bottom: 20px; margin-top: auto; color: var(--accent); }
+        .product-info { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; }
+        .product-price { font-size: 1.2rem; font-weight: 800; color: var(--accent); margin: 10px 0; }
 
         .btn-buy {
-            text-align: center; padding: 12px; background: var(--primary);
-            color: var(--bg); text-decoration: none; border-radius: 8px;
-            font-weight: 600; transition: background var(--transition-speed);
+            text-align: center; padding: 10px; background: var(--primary);
+            color: var(--bg); text-decoration: none; border-radius: 8px; font-weight: 600;
         }
 
-        #noResults { display: none; text-align: center; padding: 50px; color: var(--secondary); font-weight: 600; }
-
-        footer { text-align: center; padding: 40px; color: #999; font-size: 0.9rem; }
+        #noResults { display: none; text-align: center; padding: 40px; grid-column: 1/-1; }
+        footer { text-align: center; padding: 40px; color: #999; }
     </style>
 </head>
 <body>
@@ -139,9 +114,8 @@
 
 <section class="hero">
     <h1>Itens Especiais das Maiores Marcas</h1>
-    <p>Navegue pelas coleções exclusivas e encontre o seu estilo.</p>
     <div class="search-container">
-        <input type="text" id="searchInput" placeholder="Busque por produtos..." autocomplete="off">
+        <input type="text" id="searchInput" placeholder="O que você está procurando hoje?">
     </div>
 </section>
 
@@ -153,37 +127,9 @@
     <button class="filter-btn" data-filter="penalty">Penalty</button>
 </div>
 
-<div id="noResults">Nenhum produto encontrado para sua busca. 🔍</div>
-
 <main id="mainContainer">
+    <div id="noResults">Ops! Não encontramos esse produto. 🔍</div>
+
     <section class="brand-section" data-brand="nike">
         <h2 class="section-title">🔥 Destaques: Nike</h2>
-        <div class="product-grid" id="grid-nike"></div>
-    </section>
-
-    <section class="brand-section" data-brand="adidas">
-        <h2 class="section-title">⚡ Destaques: Adidas</h2>
-        <div class="product-grid" id="grid-adidas"></div>
-    </section>
-
-    <section class="brand-section" data-brand="lacoste">
-        <h2 class="section-title">🐊 Destaques: Lacoste</h2>
-        <div class="product-grid" id="grid-lacoste"></div>
-    </section>
-
-    <section class="brand-section" data-brand="penalty">
-        <h2 class="section-title">⚽ Destaques: Penalty</h2>
-        <div class="product-grid" id="grid-penalty"></div>
-    </section>
-</main>
-
-<footer>
-    <p>&copy; 2026 Samuel Fashion. Todos os direitos reservados.</p>
-</footer>
-
-<script>
-    const produtos = [
-        { marca: 'nike', titulo: "Air Force branco classico", preco: "759,99", img: "https://imgnike-a.akamaihd.net/768x768/01113751A2.jpg", keywords: "nike tenis branco air force", badge: "MAIS VENDIDO", link: "https://www.nike.com.br" },
-        { marca: 'nike', titulo: "Moletom Sportswear Club", preco: "284,99", img: "https://imgnike-a.akamaihd.net/1024x1024/0957727TA2.jpg", keywords: "nike moletom preto", link: "https://www.nike.com.br" },
-        { marca: 'nike', titulo: "Dunk Low 'Panda'", preco: "854,99", img: "https://imgnike-a.akamaihd.net/1920x1920/05847553A2.jpg", keywords: "nike dunk panda preto branco", badge: "QUENTE", link: "https://www.nike.com.br" },
-        { marca: 'adidas', titulo: "Tênis ULTRABOOST 5", preco: "1.099,99", img: "https://assets.adidas.com/images/w_600,f_auto,q_auto/a284c05789e64be281506dbda3204ed0_9366/Tenis_Ultraboost_5_Turquesa_JQ2911_HM1.jpg", keywords: "adidas ultraboost azul
+        <div class="product-grid" id="grid-nike

@@ -236,6 +236,123 @@
     });
 
     renderizar();
-</script>
-</body>
-</html>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Samuel fashion | Meus Favoritos</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #000;
+            --secondary: #666;
+            --bg: #f4f5f7;
+            --card-bg: #ffffff;
+            --transition-speed: 0.3s;
+            --accent: #2ecc71;
+            --heart-red: #ff3e3e;
+        }
+
+        body.dark-theme {
+            --bg: #121212;
+            --card-bg: #1e1e1e;
+            --primary: #ffffff;
+            --secondary: #b0b0b0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg); color: var(--primary); transition: background 0.3s; }
+
+        header {
+            padding: 20px 5%; display: flex; justify-content: space-between;
+            align-items: center; background: var(--card-bg); box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            position: sticky; top: 0; z-index: 1000;
+        }
+
+        .logo { font-weight: 800; font-size: 1.5rem; letter-spacing: -1px; }
+        
+        #themeToggle {
+            background: var(--primary); color: var(--bg); border: none;
+            padding: 8px 15px; border-radius: 20px; cursor: pointer; font-weight: 600;
+        }
+
+        .hero { padding: 50px 5%; text-align: center; background: linear-gradient(to bottom, var(--card-bg), var(--bg)); }
+
+        .search-container { max-width: 600px; margin: 20px auto 0; }
+        #searchInput {
+            width: 100%; padding: 15px 25px; border-radius: 50px;
+            border: 2px solid #e1e1e1; background: var(--card-bg); color: var(--primary); outline: none;
+        }
+
+        .filters-container { display: flex; justify-content: center; gap: 10px; margin: 20px 0 40px; flex-wrap: wrap; }
+
+        .filter-btn {
+            padding: 8px 20px; border: 2px solid var(--primary);
+            background: transparent; color: var(--primary);
+            border-radius: 50px; font-weight: 600; cursor: pointer; transition: 0.2s;
+        }
+        .filter-btn.active { background: var(--primary); color: var(--bg); }
+        .filter-btn[data-filter="favoritos"] { border-color: var(--heart-red); color: var(--heart-red); }
+        .filter-btn[data-filter="favoritos"].active { background: var(--heart-red); color: white; }
+
+        .brand-section { max-width: 1300px; margin: 0 auto 40px; padding: 0 5%; }
+        .section-title { font-size: 1.5rem; margin-bottom: 20px; border-bottom: 2px solid #eee; padding-bottom: 10px; }
+
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 25px; }
+
+        .product-card {
+            background: var(--card-bg); border-radius: 12px; overflow: hidden;
+            border: 1px solid #eee; position: relative; display: flex; flex-direction: column;
+            transition: transform 0.3s;
+        }
+        .product-card:hover { transform: translateY(-5px); }
+
+        .img-container { width: 100%; height: 250px; overflow: hidden; }
+        .product-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .product-card:hover img { transform: scale(1.1); }
+
+        .badge {
+            position: absolute; top: 10px; left: 10px; background: var(--heart-red);
+            color: white; padding: 4px 10px; border-radius: 4px; font-size: 0.7rem; font-weight: 800; z-index: 5;
+        }
+
+        .btn-heart {
+            position: absolute; top: 10px; right: 10px; background: white;
+            border: none; border-radius: 50%; width: 35px; height: 35px; cursor: pointer; 
+            z-index: 5; font-size: 1.2rem; color: #ccc; display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1); transition: 0.3s;
+        }
+        .btn-heart.is-fav { color: var(--heart-red); }
+
+        .product-info { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; }
+        .product-price { font-size: 1.2rem; font-weight: 800; color: var(--accent); margin: 10px 0; }
+
+        .btn-buy {
+            text-align: center; padding: 10px; background: var(--primary);
+            color: var(--bg); text-decoration: none; border-radius: 8px; font-weight: 600;
+        }
+
+        #noResults { display: none; text-align: center; padding: 40px; font-weight: bold; }
+        footer { text-align: center; padding: 40px; color: #999; }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="logo">Samuel fashion</div>
+    <button id="themeToggle">MODO ESCURO</button>
+</header>
+
+<section class="hero">
+    <h1>Encontre seu estilo único</h1>
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="O que você está procurando?">
+    </div>
+</section>
+
+<div class="filters-container">
+    <button class="filter-btn active" data-filter="todos">Todos</button>
+    <button class="filter-btn" data-filter="nike">Nike</button>
+    <button class="filter-btn" data-filter="adidas">Adidas</button>
+    <button class="filter-btn" data

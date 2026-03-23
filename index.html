@@ -1,50 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Samuel Fashion | Ultimate Store</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #000;
+            --secondary: #666;
+            --bg: #f4f5f7;
+            --card-bg: #ffffff;
+            --accent: #2ecc71;
+            --header-bg: rgba(255, 255, 255, 0.9);
+            --text: #000;
+            --border: rgba(0,0,0,0.1);
+        }
+
+        body.dark-theme {
+            --bg: #121212;
+            --card-bg: #1e1e1e;
+            --primary: #ffffff;
+            --secondary: #b0b0b0;
+            --header-bg: rgba(18, 18, 18, 0.9);
+            --text: #ffffff;
+            --border: rgba(255,255,255,0.1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
+        body { background-color: var(--bg); color: var(--text); transition: 0.3s; overflow-x: hidden; }
+
+        header {
+            padding: 15px 5%; display: flex; justify-content: space-between; align-items: center;
+            background: var(--header-bg); backdrop-filter: blur(10px);
+            position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--border);
+        }
+
+        .logo { font-weight: 800; font-size: 1.5rem; letter-spacing: -1px; }
+        .header-actions { display: flex; gap: 15px; align-items: center; }
+
+        .btn-icon { 
+            background: var(--primary); color: var(--bg); border: none; 
+            padding: 10px 18px; border-radius: 50px; cursor: pointer; 
+            font-weight: 600; transition: 0.3s; display: flex; align-items: center; gap: 8px;
+        }
+
+        #cartCount { background: #ff3e3e; color: white; padding: 2px 8px; border-radius: 20px; font-size: 0.75rem; }
+
+        #cartDrawer {
+            position: fixed; top: 0; right: -400px; width: 100%; max-width: 380px; height: 100%;
+            background: var(--card-bg); z-index: 2000; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: -10px 0 30px rgba(0,0,0,0.2); padding: 30px; display: flex; flex-direction: column;
+        }
+        #cartDrawer.active { right: 0; }
+        .cart-items { flex-grow: 1; overflow-y: auto; margin-top: 20px; }
+        .cart-item { display: flex; gap: 15px; margin-bottom: 20px; align-items: center; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
+        .cart-item img { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; }
+        .cart-total { font-weight: 800; font-size: 1.3rem; margin-top: 20px; padding-top: 20px; border-top: 2px solid var(--primary); }
+
+        .hero { padding: 60px 5% 40px; text-align: center; }
+        .hero h1 { font-size: 2.2rem; font-weight: 800; margin-bottom: 20px; }
+        
+        #searchInput { 
+            width: 100%; max-width: 600px; padding: 18px 30px; border-radius: 50px; 
+            border: 2px solid var(--border); background: var(--card-bg); color: var(--text); 
+            outline: none; font-size: 1rem; transition: 0.3s;
+        }
+
+        .filters-container { display: flex; justify-content: center; gap: 10px; margin-bottom: 50px; flex-wrap: wrap; padding: 0 5%; }
+        .filter-btn { padding: 10px 25px; border: 2px solid var(--primary); background: transparent; color: var(--primary); border-radius: 50px; cursor: pointer; font-weight: 600; transition: 0.3s; }
+        .filter-btn.active { background: var(--primary); color: var(--bg); }
+
+        .brand-section { max-width: 1300px; margin: 0 auto 60px; padding: 0 5%; }
+        .section-title { font-size: 1.8rem; margin-bottom: 30px; display: flex; align-items: center; gap: 10px; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
+
+        .product-card { 
+            background: var(--card-bg); border-radius: 20px; overflow: hidden; border: 1px solid var(--border);
+            transition: 0.3s; display: flex; flex-direction: column; position: relative;
+        }
+        .product-card:hover { transform: translateY(-10px); box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
+        
+        .img-container { height: 280px; overflow: hidden; position: relative; background: #eee; }
+        .product-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.8s; }
+
+        .btn-heart {
+            position: absolute; top: 15px; right: 15px; background: white; border: none;
+            width: 40px; height: 40px; border-radius: 50%; cursor: pointer; z-index: 10;
+            display: flex; align-items: center; justify-content: center; font-size: 1.2rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); color: #ccc;
+        }
+        .btn-heart.active { color: #ff3e3e; }
+
+        .product-info { padding: 25px; flex-grow: 1; display: flex; flex-direction: column; gap: 10px; }
+        .product-price { font-size: 1.5rem; font-weight: 800; color: var(--accent); }
+        
+        .card-buttons { display: flex; flex-direction: column; gap: 12px; margin-top: 15px; }
+        
+        .btn-add { 
+            background: var(--primary); color: var(--bg); border: none; 
+            padding: 14px; border-radius: 12px; font-weight: 700; cursor: pointer; 
+            transition: 0.2s; font-size: 0.95rem;
+        }
+
+        .btn-store { 
+            background: transparent; color: var(--primary); border: 2px solid var(--primary); 
+            padding: 12px; border-radius: 12px; text-decoration: none; 
+            text-align: center; font-size: 0.9rem; font-weight: 700; transition: 0.3s;
+        }
+        .btn-store:hover { background: var(--primary); color: var(--bg); }
+
+        #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: none; z-index: 1500; backdrop-filter: blur(4px); }
+        #overlay.active { display: block; }
+
+        footer { text-align: center; padding: 60px; color: var(--secondary); border-top: 1px solid var(--border); margin-top: 100px; }
+    </style>
+</head>
+<body>
+
+<div id="overlay" onclick="toggleCart()"></div>
+
+<header>
+    <div class="logo">SAMUEL FASHION</div>
+    <div class="header-actions">
+        <button class="btn-icon" id="themeToggle" onclick="toggleTheme()" style="background:none; border:1px solid var(--border); color:var(--text)">🌓</button>
+        <button class="btn-icon" onclick="toggleCart()">
+            <span>🛒 Carrinho</span>
+            <span id="cartCount">0</span>
+        </button>
+    </div>
+</header>
+
+<div id="cartDrawer">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+        <h2>Meu Carrinho</h2>
+        <button onclick="toggleCart()" style="background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--text)">✕</button>
+    </div>
+    <div class="cart-items" id="cartItems"></div>
+    <div class="cart-total">
+        <div style="display:flex; justify-content:space-between">
+            <span>Total:</span>
+            <span id="cartTotal">R$ 0,00</span>
+        </div>
+    </div>
+    <button class="btn-add" style="margin-top: 25px; width: 100%;" onclick="alert('Pedido finalizado!')">Fechar Pedido</button>
+</div>
+
+<section class="hero">
+    <h1>Coleções Premium 2026</h1>
+    <input type="text" id="searchInput" placeholder="O que você está procurando?">
+</section>
+
+<div class="filters-container">
+    <button class="filter-btn active" data-filter="todos">Todos</button>
+    <button class="filter-btn" data-filter="nike">Nike</button>
+    <button class="filter-btn" data-filter="adidas">Adidas</button>
+    <button class="filter-btn" data-filter="lacoste">Lacoste</button>
+    <button class="filter-btn" data-filter="penalty">Penalty</button>
+</div>
+
+<main id="mainContainer">
+    <section class="brand-section" data-brand="nike">
+        <h2 class="section-title">🔥 Nike Performance</h2>
+        <div class="product-grid" id="grid-nike"></div>
+    </section>
+
+    <section class="brand-section" data-brand="adidas">
+        <h2 class="section-title">⚡ Adidas Originals</h2>
+        <div class="product-grid" id="grid-adidas"></div>
+    </section>
+
+    <section class="brand-section" data-brand="lacoste">
+        <h2 class="section-title">🐊 Lacoste Heritage</h2>
+        <div class="product-grid" id="grid-lacoste"></div>
+    </section>
+
+    <section class="brand-section" data-brand="penalty">
+        <h2 class="section-title">⚽ Penalty Pro</h2>
+        <div class="product-grid" id="grid-penalty"></div>
+    </section>
+</main>
+
 <script>
     const produtos = [
         // --- NIKE ---
-        { id: 1, marca: 'nike', titulo: "Air Force 1 '07", preco: 759.99, img: "https://imgnike-a.akamaihd.net/768x768/01113751A2.jpg", keywords: "nike tenis branco casual air force 1 masculino", link: "https://www.nike.com.br/tenis-nike-air-force-1-07-masculino-011137.html" },
+        { id: 1, marca: 'nike', titulo: "Air Force branco classico", preco: 759.99, img: "https://imgnike-a.akamaihd.net/768x768/01113751A2.jpg", keywords: "nike tenis branco casual air force 1 masculino feminino", link: "https://www.nike.com.br/tenis-nike-air-force-1-07-masculino-011137.html" },
         { id: 2, marca: 'nike', titulo: "Moletom Sportswear Club", preco: 284.99, img: "https://imgnike-a.akamaihd.net/1024x1024/0957727TA2.jpg", keywords: "nike moletom blusa frio preto esporte roupa", link: "https://www.nike.com.br/blusao-nike-park-fleece-infantil-095772.html?cor=7T" },
         { id: 3, marca: 'nike', titulo: "Dunk Low 'Panda'", preco: 854.99, img: "https://imgnike-a.akamaihd.net/1920x1920/05847553A2.jpg", keywords: "nike tenis dunk low preto e branco panda casual", link: "https://www.nike.com.br/tenis-nike-dunk-low-retro-panda-masculino-058475.html?cor=53" },
-        { id: 4, marca: 'nike', titulo: "Air Max Plus TN Blue", preco: 1329.99, img: "https://imgnike-a.akamaihd.net/768x768/022147IHA2.jpg", keywords: "nike TN corrida esporte azul", link: "https://www.nike.com.br/tenis-nike-air-max-plus-masculino-022147.html?cor=IH" },
-        { id: 12, marca: 'nike', titulo: "Air Max Dn SE", preco: 1099.99, img: "https://imgnike-a.akamaihd.net/768x768/028569IDA1.jpg", keywords: "nike air max dn se preto roxo futurista", link: "https://www.nike.com.br/" },
-        { id: 13, marca: 'nike', titulo: "Air Jordan 1 Retro High", preco: 1299.99, img: "https://imgnike-a.akamaihd.net/768x768/02542151A1.jpg", keywords: "nike jordan 1 high basquete preto branco vermelho", link: "https://www.nike.com.br/" },
-        { id: 14, marca: 'nike', titulo: "Calça Nike Tech Fleece", preco: 549.99, img: "https://imgnike-a.akamaihd.net/768x768/026857IDA1.jpg", keywords: "nike calca moletom cinza tech fleece frio", link: "https://www.nike.com.br/" },
+        { id: 4, marca: 'nike', titulo: "tenis TN Blue", preco: 1329.99, img: "https://imgnike-a.akamaihd.net/768x768/022147IHA2.jpg", keywords: "nike TN corrida esporte azul", link: "https://www.nike.com.br/tenis-nike-air-max-plus-masculino-022147.html?cor=IH" },
 
         // --- ADIDAS ---
         { id: 5, marca: 'adidas', titulo: "Tênis ULTRABOOST 5", preco: 1099.99, img: "https://assets.adidas.com/images/w_600,f_auto,q_auto/a284c05789e64be281506dbda3204ed0_9366/Tenis_Ultraboost_5_Turquesa_JQ2911_HM1.jpg", keywords: "adidas ultraboost corrida azul", link: "https://www.adidas.com.br/tenis-ultraboost-5/JQ2911.html" },
         { id: 6, marca: 'adidas', titulo: "Superstar Originals", preco: 599.99, img: "https://assets.adidas.com/images/w_600,f_auto,q_auto/19bb876160da48f9b261741f4512ea9f_9366/Tenis_SUPERSTAR_ST_Cinza_KI4208_00_plp_standard.jpg", keywords: "adidas tenis branco superstar classico casual", link: "https://www.adidas.com.br/tenis-superstar-st/KI4208.html" },
         { id: 7, marca: 'adidas', titulo: "Camisa Real Madrid 25/26", preco: 399.99, img: "https://assets.adidas.com/images/h_2000,f_auto,q_auto/6781a185b37a4e508590bf5c35993725_9366/Camisa_III_Real_Madrid_25-26_Azul_JV5845_01_laydown.jpg", keywords: "adidas camisa real madrid futebol esporte azul", link: "https://www.adidas.com.br/camisa-iii-real-madrid-25-26/JV5845.html" },
-        { id: 15, marca: 'adidas', titulo: "Tênis Adidas Samba OG", preco: 699.99, img: "https://assets.adidas.com/images/w_600,f_auto,q_auto/2536bc932a3f47e09647af460064560b_9366/Tenis_Samba_OG_Branco_B75806_01_standard.jpg", keywords: "adidas samba og branco casual retro", link: "https://www.adidas.com.br/" },
-        { id: 16, marca: 'adidas', titulo: "Jaqueta Corta-Vento Terrex", preco: 499.99, img: "https://assets.adidas.com/images/w_600,f_auto,q_auto/711202ec0947477b9499af7400bc710c_9366/Jaqueta_Corta-Vento_Terrex_Preto_HN5462_01_laydown.jpg", keywords: "adidas jaqueta terrex trilha preto corta vento", link: "https://www.adidas.com.br/" },
-        { id: 17, marca: 'adidas', titulo: "Camisa Treino Tiro 24", preco: 179.99, img: "https://assets.adidas.com/images/w_600,f_auto,q_auto/99723a9616424707963faf8e010f9687_9366/Camisa_de_Treino_Tiro_24_Azul_IR9366_01_laydown.jpg", keywords: "adidas camisa treino azul futebol esporte", link: "https://www.adidas.com.br/" },
 
         // --- LACOSTE ---
-        { id: 8, marca: 'lacoste', titulo: "Camisa Polo Classic Fit", preco: 699.00, img: "https://imagesa1.lacoste.com/dw/image/v2/BCWL_PRD/on/demandware.static/-/Sites-master/default/dwc5ccbfaf/L1212_HBP_24.jpg?imwidth=960", keywords: "lacoste camisa polo verde casual roupa", link: "https://www.lacoste.com/br" },
+        { id: 8, marca: 'lacoste', titulo: "Camisa Polo Original", preco: 699.00, img: "https://imagesa1.lacoste.com/dw/image/v2/BCWL_PRD/on/demandware.static/-/Sites-master/default/dwc5ccbfaf/L1212_HBP_24.jpg?imwidth=960", keywords: "lacoste camisa polo verde casual roupa", link: "https://www.lacoste.com/br" },
         { id: 9, marca: 'lacoste', titulo: "Tênis Masculino Lineshot", preco: 929.00, img: "https://imagesa1.lacoste.com/dw/image/v2/BCWL_PRD/on/demandware.static/-/Sites-master/default/dweba3204a/48SMA0026_AAT_01.jpg?imwidth=960", keywords: "lacoste tenis branco couro casual", link: "https://www.lacoste.com/br" },
-        { id: 18, marca: 'lacoste', titulo: "Moletom Crocodilo Oversized", preco: 849.00, img: "https://imagesa1.lacoste.com/dw/image/v2/BCWL_PRD/on/demandware.static/-/Sites-master/default/dw06616421/SH9623_166_24.jpg?imwidth=960", keywords: "lacoste moletom azul marinho casaco", link: "https://www.lacoste.com/br" },
-        { id: 19, marca: 'lacoste', titulo: "Bermuda Chino Sport", preco: 489.00, img: "https://imagesa1.lacoste.com/dw/image/v2/BCWL_PRD/on/demandware.static/-/Sites-master/default/dw782be1e7/GH0840_031_24.jpg?imwidth=960", keywords: "lacoste bermuda shorts bege casual", link: "https://www.lacoste.com/br" },
-        { id: 20, marca: 'lacoste', titulo: "Mochila Neocroc Lona", preco: 599.00, img: "https://imagesa1.lacoste.com/dw/image/v2/BCWL_PRD/on/demandware.static/-/Sites-master/default/dwf8194a8d/NH4099NZ_000_24.jpg?imwidth=960", keywords: "lacoste mochila preto acessorio bolsa", link: "https://www.lacoste.com/br" },
 
         // --- PENALTY ---
-        { id: 10, marca: 'penalty', titulo: "Bola Penalty S11 Ecoknit", preco: 599.99, img: "https://cambuci.vtexassets.com/arquivos/ids/1505567-1200-auto", keywords: "penalty bola futebol campo esporte equipamento", link: "https://www.penalty.com.br" },
-        { id: 11, marca: 'penalty', titulo: "Chuteira Society Storm", preco: 269.99, img: "https://cambuci.vtexassets.com/arquivos/ids/1555564-1200-auto", keywords: "penalty chuteira society salao quadra laranja", link: "https://www.penalty.com.br" },
-        { id: 21, marca: 'penalty', titulo: "Bola Futsal Max 1000", preco: 449.99, img: "https://cambuci.vtexassets.com/arquivos/ids/1487856-1200-auto", keywords: "penalty bola futsal max 1000 profissional", link: "https://www.penalty.com.br" },
-        { id: 22, marca: 'penalty', titulo: "Camiseta Térmica Matis", preco: 89.90, img: "https://cambuci.vtexassets.com/arquivos/ids/1532185-1200-auto", keywords: "penalty camiseta termica segunda pele preto esporte", link: "https://www.penalty.com.br" },
-        { id: 23, marca: 'penalty', titulo: "Caneleira Matis X", preco: 49.90, img: "https://cambuci.vtexassets.com/arquivos/ids/1297298-1200-auto", keywords: "penalty caneleira protecao futebol", link: "https://www.penalty.com.br" }
+        { id: 10, marca: 'penalty', titulo: "Bola Penalty S11", preco: 599.99, img: "https://cambuci.vtexassets.com/arquivos/ids/1505567-1200-auto", keywords: "penalty bola futebol campo esporte equipamento", link: "https://www.penalty.com.br" },
+        { id: 11, marca: 'penalty', titulo: "Chuteira Society Storm", preco: 269.99, img: "https://cambuci.vtexassets.com/arquivos/ids/1555564-1200-auto", keywords: "penalty chuteira society salao quadra laranja", link: "https://www.penalty.com.br" }
     ];
 
     let carrinho = JSON.parse(localStorage.getItem('cart_data')) || [];
 
     function render() {
-        ['nike', 'adidas', 'lacoste', 'penalty'].forEach(m => {
-            const grid = document.getElementById(`grid-${m}`);
-            if(grid) grid.innerHTML = '';
-        });
+        ['nike', 'adidas', 'lacoste', 'penalty'].forEach(m => document.getElementById(`grid-${m}`).innerHTML = '');
 
         produtos.forEach(p => {
             const html = `
                 <article class="product-card" data-keywords="${p.keywords} ${p.marca} ${p.titulo}">
                     <button class="btn-heart" onclick="this.classList.toggle('active')">❤</button>
-                    <div class="img-container"><img src="${p.img}" alt="${p.titulo}" onerror="this.src='https://via.placeholder.com/300x300?text=Produto+Indisponivel'"></div>
+                    <div class="img-container"><img src="${p.img}" alt="${p.titulo}"></div>
                     <div class="product-info">
                         <small style="color:var(--secondary); font-weight:700">${p.marca.toUpperCase()}</small>
                         <h3 style="font-size:1.1rem">${p.titulo}</h3>
@@ -114,31 +282,16 @@
         }
     }
 
-    // Filtros e Busca
     document.getElementById('searchInput').addEventListener('input', (e) => {
         const term = e.target.value.toLowerCase();
         document.querySelectorAll('.product-card').forEach(card => {
             card.style.display = card.getAttribute('data-keywords').toLowerCase().includes(term) ? 'flex' : 'none';
-        });
-        
-        // Esconder seções vazias durante a busca
-        document.querySelectorAll('.brand-section').forEach(section => {
-            const hasVisible = Array.from(section.querySelectorAll('.product-card')).some(c => c.style.display !== 'none');
-            section.style.display = hasVisible ? 'block' : 'none';
-        });
-    });
-
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            const filter = btn.getAttribute('data-filter');
-            document.querySelectorAll('.brand-section').forEach(sec => {
-                sec.style.display = (filter === 'todos' || sec.getAttribute('data-brand') === filter) ? 'block' : 'none';
-            });
         });
     });
 
     if(localStorage.getItem('theme') === 'dark') document.body.classList.add('dark-theme');
     render();
 </script>
+
+</body>
+</html>

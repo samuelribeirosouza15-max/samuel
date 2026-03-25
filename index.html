@@ -3,94 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Samuel Fashion | Store 2026</title>
+    <title>Samuel Fashion | Oficial 2026</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary: #000000;
-            --secondary: #64748b;
-            --bg: #f8fafc;
-            --card-bg: #ffffff;
-            --accent: #10b981;
-            --header-bg: rgba(255, 255, 255, 0.85);
-            --text: #0f172a;
-            --border: #e2e8f0;
+            --primary: #000000; --secondary: #64748b; --bg: #f8fafc;
+            --card-bg: #ffffff; --accent: #10b981; --text: #0f172a;
+            --border: #e2e8f0; --header-bg: rgba(255, 255, 255, 0.85);
         }
-
+        /* Tema Escuro Ativado pela Classe .dark-theme */
         body.dark-theme {
-            --bg: #0f172a;
-            --card-bg: #1e293b;
-            --primary: #ffffff;
-            --secondary: #94a3b8;
+            --bg: #0f172a; --card-bg: #1e293b; --primary: #ffffff;
+            --secondary: #94a3b8; --text: #f1f5f9; --border: #334155;
             --header-bg: rgba(15, 23, 42, 0.9);
-            --text: #f1f5f9;
-            --border: #334155;
         }
-
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
         body { background-color: var(--bg); color: var(--text); transition: 0.3s; overflow-x: hidden; }
 
-        /* Header */
         header {
             padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center;
             background: var(--header-bg); backdrop-filter: blur(12px);
             position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--border);
         }
-
-        .logo { font-weight: 800; font-size: 1.4rem; letter-spacing: -1px; text-transform: uppercase; cursor: pointer; }
-
-        .nav-actions { display: flex; align-items: center; gap: 15px; }
-
+        .logo { font-weight: 800; font-size: 1.4rem; cursor: pointer; text-transform: uppercase; }
+        .nav-right { display: flex; align-items: center; gap: 15px; }
+        
         .btn-icon { 
             background: var(--primary); color: var(--bg); border: none; 
-            padding: 10px 18px; border-radius: 50px; cursor: pointer; 
-            font-weight: 600; transition: 0.3s; display: flex; align-items: center; gap: 8px;
+            padding: 10px 18px; border-radius: 50px; cursor: pointer; font-weight: 600; 
+            display: flex; align-items: center; gap: 8px; transition: 0.3s;
         }
 
-        #cartCount { background: #ef4444; color: white; padding: 2px 8px; border-radius: 20px; font-size: 0.75rem; }
-
-        /* Auth/Login UI */
-        #userStatus { font-size: 0.9rem; font-weight: 600; cursor: pointer; }
-
-        /* Modal Login */
-        .auth-modal {
+        .modal {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.6); z-index: 3000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px);
+            background: rgba(0,0,0,0.7); z-index: 3000; display: none; align-items: center; justify-content: center;
         }
-        .auth-content {
-            background: var(--card-bg); padding: 40px; border-radius: 24px; width: 90%; max-width: 400px;
-            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
-        }
-        .auth-content h2 { margin-bottom: 20px; text-align: center; }
-        .auth-form { display: flex; flex-direction: column; gap: 15px; }
-        .auth-input { padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg); color: var(--text); }
-        
-        /* Grid & Cards (Igual ao anterior) */
+        .modal-content { background: var(--card-bg); padding: 30px; border-radius: 20px; width: 90%; max-width: 400px; }
+        .input-group { display: flex; flex-direction: column; gap: 10px; margin: 20px 0; }
+        .input-group input { padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg); color: var(--text); }
+
         .hero { padding: 4rem 5% 2rem; text-align: center; }
-        #searchInput { width: 100%; max-width: 600px; padding: 1.2rem 2rem; border-radius: 100px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text); outline: none; }
+        #searchInput { width: 100%; max-width: 600px; padding: 1.2rem; border-radius: 50px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text); outline: none; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
         
-        .filters-container { display: flex; justify-content: center; gap: 10px; margin-bottom: 3rem; flex-wrap: wrap; padding: 0 5%; }
-        .filter-btn { padding: 10px 22px; border: 1px solid var(--border); background: var(--card-bg); border-radius: 50px; cursor: pointer; font-weight: 600; }
+        .filters { display: flex; justify-content: center; gap: 10px; margin-bottom: 3rem; flex-wrap: wrap; }
+        .filter-btn { padding: 8px 20px; border: 1px solid var(--border); background: var(--card-bg); border-radius: 50px; cursor: pointer; font-weight: 600; color: var(--text); }
         .filter-btn.active { background: var(--primary); color: var(--bg); }
 
-        .brand-section { max-width: 1300px; margin: 0 auto 4rem; padding: 0 5%; }
-        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
+        .brand-section { max-width: 1300px; margin: 0 auto 3rem; padding: 0 5%; }
+        .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 25px; }
+        
+        .card { background: var(--card-bg); border-radius: 20px; border: 1px solid var(--border); overflow: hidden; display: flex; flex-direction: column; height: 100%; transition: 0.3s; }
+        .card:hover { transform: translateY(-8px); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+        .img-box { height: 280px; background: #f1f5f9; overflow: hidden; }
+        .img-box img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .card:hover .img-box img { scale: 1.1; }
+        
+        .info { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; gap: 10px; }
+        .price { font-size: 1.3rem; font-weight: 800; color: var(--accent); }
+        .btn-buy { background: var(--primary); color: var(--bg); border: none; padding: 12px; border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.2s; }
+        .btn-buy:active { transform: scale(0.95); }
 
-        .product-card { background: var(--card-bg); border-radius: 20px; overflow: hidden; border: 1px solid var(--border); transition: 0.3s; display: flex; flex-direction: column; height: 100%; }
-        .product-card:hover { transform: translateY(-10px); }
-        .img-container { height: 300px; overflow: hidden; }
-        .product-card img { width: 100%; height: 100%; object-fit: cover; }
-
-        .product-info { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; gap: 8px; }
-        .btn-add { background: var(--primary); color: var(--bg); border: none; padding: 12px; border-radius: 12px; font-weight: 700; cursor: pointer; }
-
-        /* Carrinho Lateral */
-        #cartDrawer { position: fixed; top: 0; right: -450px; width: 100%; max-width: 400px; height: 100%; background: var(--card-bg); z-index: 2000; transition: 0.4s; padding: 25px; display: flex; flex-direction: column; }
-        #cartDrawer.active { right: 0; }
-        .cart-items { flex-grow: 1; overflow-y: auto; margin: 15px 0; }
-        .shipping-box { background: var(--bg); padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px dashed var(--secondary); }
-
-        #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; z-index: 1500; }
+        #cart { position: fixed; top: 0; right: -450px; width: 100%; max-width: 400px; height: 100%; background: var(--card-bg); z-index: 2000; transition: 0.4s; padding: 25px; display: flex; flex-direction: column; box-shadow: -10px 0 30px rgba(0,0,0,0.1); }
+        #cart.active { right: 0; }
+        .cart-items { flex-grow: 1; overflow-y: auto; margin: 20px 0; }
+        
+        #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; z-index: 1500; backdrop-filter: blur(4px); }
         #overlay.active { display: block; }
     </style>
 </head>
@@ -98,212 +75,222 @@
 
 <div id="overlay" onclick="closeAll()"></div>
 
-<div id="authModal" class="auth-modal">
-    <div class="auth-content">
-        <h2 id="authTitle">Acessar Conta</h2>
-        <div class="auth-form">
-            <input type="text" id="regName" class="auth-input" placeholder="Seu Nome Completo" style="display: none;">
-            <input type="email" id="authEmail" class="auth-input" placeholder="E-mail">
-            <input type="password" id="authPass" class="auth-input" placeholder="Senha">
-            <button class="btn-add" id="authSubmit" onclick="handleAuth()">Entrar</button>
-            <p style="text-align: center; font-size: 0.8rem; cursor: pointer; color: var(--secondary)" onclick="toggleAuthMode()" id="authSwitch">Não tem conta? Cadastre-se</p>
-            <button onclick="closeAuth()" style="background:none; border:none; color:var(--secondary); cursor:pointer">Cancelar</button>
+<div id="loginModal" class="modal">
+    <div class="modal-content">
+        <h2 id="modalTitle">Entrar</h2>
+        <div class="input-group">
+            <input type="text" id="userName" placeholder="Nome Completo" style="display:none">
+            <input type="email" id="userEmail" placeholder="E-mail">
+            <input type="password" id="userPass" placeholder="Senha">
+            <button class="btn-buy" onclick="handleAuth()">Confirmar</button>
+            <p id="switchAuth" style="text-align:center; font-size:0.8rem; cursor:pointer; color:var(--secondary)" onclick="toggleAuthMode()">Não tem conta? Cadastre-se</p>
         </div>
+        <button onclick="closeAll()" style="width:100%; background:none; border:none; color:var(--secondary)">Fechar</button>
     </div>
 </div>
 
 <header>
-    <div class="logo" onclick="location.reload()">Samuel Fashion</div>
-    <div class="nav-actions">
-        <div id="userStatus" onclick="openAuth()">👤 Fazer Login</div>
-        <button class="btn-icon" onclick="toggleCart()">
-            🛒 <span id="cartCount">0</span>
-        </button>
+    <div class="logo">Samuel Fashion</div>
+    <div class="nav-right">
+        <button class="btn-icon" style="background:none; color:var(--text); border:1px solid var(--border)" onclick="toggleTheme()">🌓 Mode</button>
+        <div id="userLabel" style="font-weight:600; cursor:pointer" onclick="openLogin()">👤 Login</div>
+        <button class="btn-icon" onclick="toggleCart()">🛒 <span id="count">0</span></button>
     </div>
 </header>
 
-<div id="cartDrawer">
-    <div style="display: flex; justify-content: space-between; align-items: center;">
-        <h2>Carrinho</h2>
-        <button onclick="toggleCart()" style="background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--text)">✕</button>
-    </div>
-    <div class="cart-items" id="cartItems"></div>
-    <div class="shipping-box">
-        <label style="font-size: 0.7rem; font-weight: 800;">CALCULAR FRETE</label>
-        <div style="display:flex; gap:5px; margin-top:5px">
-            <input type="text" id="cepInput" placeholder="CEP" style="flex:1; padding:8px; border-radius:8px; border:1px solid var(--border)">
-            <button onclick="calculateShipping()" style="padding:0 10px; border-radius:8px; border:none; background:var(--secondary); color:white">OK</button>
-        </div>
-        <div id="shipMsg" style="font-size:0.7rem; margin-top:5px; color:var(--accent)"></div>
-    </div>
-    <div id="cartSummary" style="font-weight: 800; font-size: 1.2rem; border-top: 2px solid var(--primary); padding-top: 15px;">
+<div id="cart">
+    <h2>Seu Carrinho</h2>
+    <div class="cart-items" id="cartList"></div>
+    <div id="shipRes" style="margin-bottom:10px; color:var(--accent); font-weight:700"></div>
+    <div style="font-size:1.2rem; font-weight:800; border-top:1px solid var(--border); padding-top:10px">
         Total: <span id="cartTotal">R$ 0,00</span>
     </div>
-    <button class="btn-add" style="margin-top: 15px;" onclick="checkLoginToFinalize()">Finalizar Pedido</button>
+    <button class="btn-buy" style="margin-top:15px" onclick="finish()">Finalizar Pedido</button>
 </div>
 
 <section class="hero">
-    <h1>Estilo Premium 2026</h1>
-    <input type="text" id="searchInput" placeholder="O que você está procurando?">
+    <h1>Coleção Premium 2026</h1>
+    <p style="margin-bottom: 20px; opacity: 0.7;">As melhores marcas em um só lugar.</p>
+    <input type="text" id="searchInput" placeholder="O que você está procurando hoje?">
 </section>
 
-<div class="filters-container">
-    <button class="filter-btn active" data-filter="todos">Todos</button>
-    <button class="filter-btn" data-filter="nike">Nike</button>
-    <button class="filter-btn" data-filter="adidas">Adidas</button>
-    <button class="filter-btn" data-filter="lacoste">Lacoste</button>
+<div class="filters">
+    <button class="filter-btn active" onclick="filter('todos', this)">Todos</button>
+    <button class="filter-btn" onclick="filter('nike', this)">Nike</button>
+    <button class="filter-btn" onclick="filter('adidas', this)">Adidas</button>
+    <button class="filter-btn" onclick="filter('lacoste', this)">Lacoste</button>
+    <button class="filter-btn" onclick="filter('outros', this)">Outros</button>
 </div>
 
-<main id="mainContainer"></main>
+<main id="container"></main>
 
 <script>
-    // --- LÓGICA DE PRODUTOS ---
+    // LISTA DE PRODUTOS ATUALIZADA
     const produtos = [
-        { id: 1, marca: 'nike', titulo: "Air Force 1 Branco", preco: 759.99, img: "https://imgnike-a.akamaihd.net/768x768/01113751A2.jpg" },
-        { id: 2, marca: 'nike', titulo: "Moletom Sportswear Club", preco: 284.99, img: "https://imgnike-a.akamaihd.net/1024x1024/0957727TA2.jpg" },
-        { id: 3, marca: 'nike', titulo: "Dunk Low 'Panda'", preco: 854.99, img: "https://imgnike-a.akamaihd.net/1920x1920/05847553A2.jpg" },
-        { id: 4, marca: 'nike', titulo: "Tênis Nike TN Blue", preco: 1329.99, img: "https://imgnike-a.akamaihd.net/768x768/022147IHA2.jpg" },
-        { id: 5, marca: 'adidas', titulo: "Tênis Ultraboost 5", preco: 1099.99, img: "https://assets.adidas.com/images/w_600,f_auto,q_auto/a284c05789e64be281506dbda3204ed0_9366/Tenis_Ultraboost_5_Turquesa_JQ2911_HM1.jpg" },
-        { id: 6, marca: 'adidas', titulo: "Superstar Originals", preco: 599.99, img: "https://assets.adidas.com/images/w_600,f_auto,q_auto/19bb876160da48f9b261741f4512ea9f_9366/Tenis_SUPERSTAR_ST_Cinza_KI4208_00_plp_standard.jpg" },
-        { id: 7, marca: 'adidas', titulo: "Camisa Real Madrid 25/26", preco: 399.99, img: "https://assets.adidas.com/images/h_2000,f_auto,q_auto/6781a185b37a4e508590bf5c35993725_9366/Camisa_III_Real_Madrid_25-26_Azul_JV5845_01_laydown.jpg" },
-        { id: 8, marca: 'lacoste', titulo: "Camisa Polo L1212", preco: 699.00, img: "https://imagesa1.lacoste.com/dw/image/v2/BCWL_PRD/on/demandware.static/-/Sites-master/default/dwc5ccbfaf/L1212_HBP_24.jpg?imwidth=960" },
-        { id: 9, marca: 'lacoste', titulo: "Tênis Lineshot Couro", preco: 929.00, img: "https://imagesa1.lacoste.com/dw/image/v2/BCWL_PRD/on/demandware.static/-/Sites-master/default/dweba3204a/48SMA0026_AAT_01.jpg?imwidth=960" },
-        { id: 10, marca: 'penalty', titulo: "Bola Penalty S11", preco: 599.99, img: "https://cambuci.vtexassets.com/arquivos/ids/1505567-1200-auto" },
-        { id: 11, marca: 'penalty', titulo: "Chuteira Society Storm", preco: 269.99, img: "https://cambuci.vtexassets.com/arquivos/ids/1555564-1200-auto" },
-        { id: 12, marca: 'shein', titulo: "Vestido Floral Verão", preco: 159.99, img: "https://images.unsplash.com/photo-1572804013307-a9a11117bb41?q=80&w=400" },
-        { id: 13, marca: 'shein', titulo: "Cropped Manga Longa", preco: 89.99, img: "https://images.unsplash.com/photo-1554568218-0f1715e72254?q=80&w=400" },
-        { id: 14, marca: 'shein', titulo: "Tênis Chunky Feminino", preco: 199.99, img: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=400" }
+        { id: 1, marca: 'nike', titulo: "Nike Air Force 1 '07", preco: 799.99, img: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=500" },
+        { id: 2, marca: 'nike', titulo: "Air Jordan 1 Retro Low", preco: 1199.90, img: "https://images.unsplash.com/photo-1584735175315-9d5df23860e6?q=80&w=500" },
+        { id: 3, marca: 'adidas', titulo: "Adidas Forum Low Classic", preco: 599.99, img: "https://images.unsplash.com/photo-1552346154-21d32810aba3?q=80&w=500" },
+        { id: 4, marca: 'lacoste', titulo: "Polo Lacoste Classic Fit", preco: 489.00, img: "https://images.unsplash.com/photo-1628911774602-74a0cfee9b0d?q=80&w=500" },
+        { id: 5, marca: 'nike', titulo: "Corta Vento Nike Sportswear", preco: 349.99, img: "https://images.unsplash.com/photo-1544923246-77307dd654ca?q=80&w=500" },
+        { id: 6, marca: 'adidas', titulo: "Tênis Ultraboost Light", preco: 1299.99, img: "https://images.unsplash.com/photo-1608231387042-66d1773070a5?q=80&w=500" },
+        { id: 7, marca: 'outros', titulo: "Conjunto Moletom Minimalist", preco: 259.90, img: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=500" },
+        { id: 8, marca: 'lacoste', titulo: "Boné Gabardine Croco", preco: 229.00, img: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?q=80&w=500" }
     ];
 
     let carrinho = JSON.parse(localStorage.getItem('sf_cart')) || [];
-    let currentUser = JSON.parse(localStorage.getItem('sf_active_user')) || null;
-    let isRegisterMode = false;
+    let logado = JSON.parse(localStorage.getItem('sf_user')) || null;
+    let modoRegistro = false;
 
-    // --- LÓGICA DE LOGIN/CADASTRO ---
-    function openAuth() {
-        if(currentUser) {
-            if(confirm(`Olá ${currentUser.name}, deseja sair da conta?`)) {
-                localStorage.removeItem('sf_active_user');
-                location.reload();
-            }
-        } else {
-            document.getElementById('authModal').style.display = 'flex';
-            document.getElementById('overlay').classList.add('active');
-        }
+    // TEMA ESCURO
+    function toggleTheme() {
+        document.body.classList.toggle('dark-theme');
+        const isDark = document.body.classList.contains('dark-theme');
+        localStorage.setItem('sf_theme', isDark ? 'dark' : 'light');
     }
 
-    function closeAuth() {
-        document.getElementById('authModal').style.display = 'none';
-        document.getElementById('overlay').classList.remove('active');
+    // Carregar tema salvo
+    if (localStorage.getItem('sf_theme') === 'dark') {
+        document.body.classList.add('dark-theme');
     }
 
-    function toggleAuthMode() {
-        isRegisterMode = !isRegisterMode;
-        document.getElementById('authTitle').innerText = isRegisterMode ? "Criar Conta" : "Acessar Conta";
-        document.getElementById('regName').style.display = isRegisterMode ? "block" : "none";
-        document.getElementById('authSubmit').innerText = isRegisterMode ? "Cadastrar" : "Entrar";
-        document.getElementById('authSwitch').innerText = isRegisterMode ? "Já tem conta? Entre aqui" : "Não tem conta? Cadastre-se";
-    }
-
-    function handleAuth() {
-        const email = document.getElementById('authEmail').value;
-        const pass = document.getElementById('authPass').value;
-        const name = document.getElementById('regName').value;
-
-        if(!email || !pass) return alert("Preencha os campos!");
-
-        let users = JSON.parse(localStorage.getItem('sf_users')) || [];
-
-        if(isRegisterMode) {
-            if(users.find(u => u.email === email)) return alert("E-mail já cadastrado!");
-            const newUser = { name, email, pass };
-            users.push(newUser);
-            localStorage.setItem('sf_users', JSON.stringify(users));
-            alert("Conta criada com sucesso! Faça seu login.");
-            toggleAuthMode();
-        } else {
-            const user = users.find(u => u.email === email && u.pass === pass);
-            if(user) {
-                localStorage.setItem('sf_active_user', JSON.stringify(user));
-                location.reload();
-            } else {
-                alert("E-mail ou senha incorretos!");
-            }
-        }
-    }
-
-    function updateHeader() {
-        if(currentUser) {
-            document.getElementById('userStatus').innerText = `Olá, ${currentUser.name.split(' ')[0]} 👋`;
-        }
-    }
-
-    function checkLoginToFinalize() {
-        if(!currentUser) {
-            alert("Você precisa estar logado para finalizar a compra!");
-            openAuth();
-        } else {
-            alert(`Parabéns ${currentUser.name}! Pedido enviado.`);
-        }
-    }
-
-    // --- RESTANTE DAS FUNÇÕES (IGUAL AO ANTERIOR) ---
-    function render() {
-        const main = document.getElementById('mainContainer');
+    // RENDERIZAR
+    function render(lista = produtos) {
+        const main = document.getElementById('container');
         main.innerHTML = '';
-        const marcas = ['nike', 'adidas', 'lacoste'];
+        
+        const marcas = [...new Set(lista.map(p => p.marca))];
+
         marcas.forEach(marca => {
-            const section = document.createElement('section');
-            section.className = 'brand-section';
-            section.innerHTML = `<h2 style="margin-bottom:20px">${marca.toUpperCase()}</h2><div class="product-grid" id="grid-${marca}"></div>`;
-            main.appendChild(section);
+            const sec = document.createElement('section');
+            sec.className = 'brand-section';
+            sec.innerHTML = `<h2 style="margin-bottom:20px; border-left: 4px solid var(--accent); padding-left: 15px;">${marca.toUpperCase()}</h2><div class="product-grid" id="grid-${marca}"></div>`;
+            main.appendChild(sec);
             const grid = document.getElementById(`grid-${marca}`);
-            produtos.filter(p => p.marca === marca).forEach(p => {
+            
+            lista.filter(p => p.marca === marca).forEach(p => {
                 grid.innerHTML += `
-                <div class="product-card">
-                    <div class="img-container"><img src="${p.img}"></div>
-                    <div class="product-info">
-                        <h3>${p.titulo}</h3>
-                        <div style="font-weight:800; color:var(--accent)">R$ ${p.preco}</div>
-                        <button class="btn-add" onclick="addToCart(${p.id})">Adicionar</button>
+                <div class="card">
+                    <div class="img-box"><img src="${p.img}" loading="lazy"></div>
+                    <div class="info">
+                        <small style="text-transform: uppercase; color: var(--secondary)">${p.marca}</small>
+                        <h3 style="font-size: 1.1rem">${p.titulo}</h3>
+                        <div class="price">R$ ${p.preco.toLocaleString('pt-BR', {minimumFractionDigits: 2})}</div>
+                        <button class="btn-buy" onclick="add(${p.id})">Adicionar ao Carrinho</button>
                     </div>
                 </div>`;
             });
         });
-        updateHeader();
-        updateCartUI();
+        updateUI();
     }
 
-    function addToCart(id) {
-        const prod = produtos.find(p => p.id === id);
-        carrinho.push(prod);
+    // FILTROS
+    function filter(marca, btn) {
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        if (marca === 'todos') render(produtos);
+        else render(produtos.filter(p => p.marca === marca));
+    }
+
+    // BUSCA DINÂMICA
+    document.getElementById('searchInput').addEventListener('input', (e) => {
+        const t = e.target.value.toLowerCase();
+        const filtrados = produtos.filter(p => p.titulo.toLowerCase().includes(t) || p.marca.toLowerCase().includes(t));
+        render(filtrados);
+    });
+
+    // SISTEMA DE LOGIN (Mesma lógica sua, mantida)
+    function openLogin() {
+        if(logado) { if(confirm("Deseja sair da conta?")) { localStorage.removeItem('sf_user'); location.reload(); } }
+        else { document.getElementById('loginModal').style.display = 'flex'; document.getElementById('overlay').classList.add('active'); }
+    }
+
+    function toggleAuthMode() {
+        modoRegistro = !modoRegistro;
+        document.getElementById('modalTitle').innerText = modoRegistro ? "Criar Conta" : "Entrar";
+        document.getElementById('userName').style.display = modoRegistro ? "block" : "none";
+        document.getElementById('switchAuth').innerText = modoRegistro ? "Já tem conta? Entre" : "Não tem conta? Cadastre-se";
+    }
+
+    function handleAuth() {
+        const email = document.getElementById('userEmail').value;
+        const pass = document.getElementById('userPass').value;
+        const name = document.getElementById('userName').value;
+        if(!email || !pass) return alert("Preencha todos os campos!");
+
+        let usuarios = JSON.parse(localStorage.getItem('sf_users_db')) || [];
+
+        if(modoRegistro) {
+            usuarios.push({name, email, pass});
+            localStorage.setItem('sf_users_db', JSON.stringify(usuarios));
+            alert("Cadastro realizado!");
+            toggleAuthMode();
+        } else {
+            const u = usuarios.find(x => x.email === email && x.pass === pass);
+            if(u) { localStorage.setItem('sf_user', JSON.stringify(u)); location.reload(); }
+            else alert("E-mail ou senha inválidos.");
+        }
+    }
+
+    // CARRINHO
+    function add(id) {
+        const p = produtos.find(x => x.id === id);
+        carrinho.push(p);
         localStorage.setItem('sf_cart', JSON.stringify(carrinho));
-        updateCartUI();
+        updateUI();
+        // Feedback visual simples
+        const btn = event.target;
+        btn.innerText = "✓ Adicionado";
+        btn.style.background = "var(--accent)";
+        setTimeout(() => { btn.innerText = "Adicionar ao Carrinho"; btn.style.background = "var(--primary)"; }, 1000);
     }
 
-    function updateCartUI() {
-        const container = document.getElementById('cartItems');
-        container.innerHTML = '';
+    function updateUI() {
+        const list = document.getElementById('cartList');
+        list.innerHTML = '';
         let total = 0;
         carrinho.forEach((item, index) => {
             total += item.preco;
-            container.innerHTML += `<div style="display:flex; justify-content:space-between; margin-bottom:10px">
-                <span>${item.titulo}</span>
-                <span>R$ ${item.preco}</span>
+            list.innerHTML += `
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px; background:var(--bg); padding:10px; border-radius:10px">
+                <div style="font-size:0.85rem">
+                    <div style="font-weight:700">${item.titulo}</div>
+                    <div style="color:var(--accent)">R$ ${item.preco.toFixed(2)}</div>
+                </div>
+                <button onclick="remove(${index})" style="background:none; border:none; cursor:pointer; font-size:1.2rem">×</button>
             </div>`;
         });
-        document.getElementById('cartCount').innerText = carrinho.length;
-        document.getElementById('cartTotal').innerText = `R$ ${total.toFixed(2)}`;
+        document.getElementById('count').innerText = carrinho.length;
+        document.getElementById('cartTotal').innerText = `R$ ${total.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+        if(logado) document.getElementById('userLabel').innerText = `Olá, ${logado.name.split(' ')[0]}`;
+    }
+
+    function remove(i) {
+        carrinho.splice(i, 1);
+        localStorage.setItem('sf_cart', JSON.stringify(carrinho));
+        updateUI();
     }
 
     function toggleCart() {
-        document.getElementById('cartDrawer').classList.toggle('active');
+        document.getElementById('cart').classList.toggle('active');
         document.getElementById('overlay').classList.toggle('active');
     }
 
     function closeAll() {
-        closeAuth();
-        document.getElementById('cartDrawer').classList.remove('active');
+        document.getElementById('cart').classList.remove('active');
+        document.getElementById('loginModal').style.display = 'none';
+        document.getElementById('overlay').classList.remove('active');
+    }
+
+    function finish() {
+        if(carrinho.length === 0) return alert("Seu carrinho está vazio!");
+        if(!logado) { alert("Faça login para finalizar!"); openLogin(); }
+        else {
+            alert(`Obrigado, ${logado.name}! Pedido realizado com sucesso.`);
+            carrinho = [];
+            localStorage.removeItem('sf_cart');
+            updateUI();
+            closeAll();
+        }
     }
 
     render();

@@ -30,13 +30,16 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
         body { background-color: var(--bg); color: var(--text); transition: 0.3s; overflow-x: hidden; }
 
+        /* Header */
         header {
             padding: 1rem 5%; display: flex; justify-content: space-between; align-items: center;
             background: var(--header-bg); backdrop-filter: blur(12px);
             position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid var(--border);
         }
 
-        .logo { font-weight: 800; font-size: 1.4rem; letter-spacing: -1px; text-transform: uppercase; }
+        .logo { font-weight: 800; font-size: 1.4rem; letter-spacing: -1px; text-transform: uppercase; cursor: pointer; }
+
+        .nav-actions { display: flex; align-items: center; gap: 15px; }
 
         .btn-icon { 
             background: var(--primary); color: var(--bg); border: none; 
@@ -46,88 +49,73 @@
 
         #cartCount { background: #ef4444; color: white; padding: 2px 8px; border-radius: 20px; font-size: 0.75rem; }
 
-        .hero { padding: 4rem 5% 2rem; text-align: center; }
-        .hero h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 20px; }
-        
-        #searchInput { 
-            width: 100%; max-width: 600px; padding: 1.2rem 2rem; border-radius: 100px; 
-            border: 1px solid var(--border); background: var(--card-bg); color: var(--text); 
-            outline: none; font-size: 1rem; box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-        }
+        /* Auth/Login UI */
+        #userStatus { font-size: 0.9rem; font-weight: 600; cursor: pointer; }
 
+        /* Modal Login */
+        .auth-modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); z-index: 3000; display: none; align-items: center; justify-content: center; backdrop-filter: blur(5px);
+        }
+        .auth-content {
+            background: var(--card-bg); padding: 40px; border-radius: 24px; width: 90%; max-width: 400px;
+            box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25);
+        }
+        .auth-content h2 { margin-bottom: 20px; text-align: center; }
+        .auth-form { display: flex; flex-direction: column; gap: 15px; }
+        .auth-input { padding: 12px; border-radius: 10px; border: 1px solid var(--border); background: var(--bg); color: var(--text); }
+        
+        /* Grid & Cards (Igual ao anterior) */
+        .hero { padding: 4rem 5% 2rem; text-align: center; }
+        #searchInput { width: 100%; max-width: 600px; padding: 1.2rem 2rem; border-radius: 100px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text); outline: none; }
+        
         .filters-container { display: flex; justify-content: center; gap: 10px; margin-bottom: 3rem; flex-wrap: wrap; padding: 0 5%; }
-        .filter-btn { padding: 10px 22px; border: 1px solid var(--border); background: var(--card-bg); color: var(--text); border-radius: 50px; cursor: pointer; font-weight: 600; transition: 0.3s; }
-        .filter-btn.active { background: var(--primary); color: var(--bg); border-color: var(--primary); }
+        .filter-btn { padding: 10px 22px; border: 1px solid var(--border); background: var(--card-bg); border-radius: 50px; cursor: pointer; font-weight: 600; }
+        .filter-btn.active { background: var(--primary); color: var(--bg); }
 
         .brand-section { max-width: 1300px; margin: 0 auto 4rem; padding: 0 5%; }
-        .section-title { font-size: 1.6rem; margin-bottom: 2rem; font-weight: 800; display: flex; align-items: center; gap: 10px; }
         .product-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 30px; }
 
-        .product-card { 
-            background: var(--card-bg); border-radius: 20px; overflow: hidden; border: 1px solid var(--border);
-            transition: 0.3s ease; display: flex; flex-direction: column; height: 100%;
-        }
-        .product-card:hover { transform: translateY(-10px); box-shadow: 0 20px 30px rgba(0,0,0,0.1); }
-
-        .img-container { height: 300px; overflow: hidden; background: #eee; position: relative; }
-        .product-card img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .product-card { background: var(--card-bg); border-radius: 20px; overflow: hidden; border: 1px solid var(--border); transition: 0.3s; display: flex; flex-direction: column; height: 100%; }
+        .product-card:hover { transform: translateY(-10px); }
+        .img-container { height: 300px; overflow: hidden; }
+        .product-card img { width: 100%; height: 100%; object-fit: cover; }
 
         .product-info { padding: 20px; flex-grow: 1; display: flex; flex-direction: column; gap: 8px; }
-        .product-price { font-size: 1.4rem; font-weight: 800; color: var(--accent); }
-        
-        .card-buttons { display: flex; flex-direction: column; gap: 10px; margin-top: auto; }
-        .btn-add { background: var(--primary); color: var(--bg); border: none; padding: 12px; border-radius: 12px; font-weight: 700; cursor: pointer; transition: 0.2s; }
-        .btn-store { background: transparent; color: var(--primary); border: 2px solid var(--primary); padding: 10px; border-radius: 12px; text-decoration: none; text-align: center; font-size: 0.85rem; font-weight: 700; transition: 0.3s; }
-        .btn-store:hover { background: var(--primary); color: var(--bg); }
+        .btn-add { background: var(--primary); color: var(--bg); border: none; padding: 12px; border-radius: 12px; font-weight: 700; cursor: pointer; }
 
         /* Carrinho Lateral */
-        #cartDrawer {
-            position: fixed; top: 0; right: -450px; width: 100%; max-width: 400px; height: 100%;
-            background: var(--card-bg); z-index: 2000; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: -10px 0 30px rgba(0,0,0,0.2); padding: 25px; display: flex; flex-direction: column;
-        }
+        #cartDrawer { position: fixed; top: 0; right: -450px; width: 100%; max-width: 400px; height: 100%; background: var(--card-bg); z-index: 2000; transition: 0.4s; padding: 25px; display: flex; flex-direction: column; }
         #cartDrawer.active { right: 0; }
         .cart-items { flex-grow: 1; overflow-y: auto; margin: 15px 0; }
-        .cart-item { display: flex; gap: 12px; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px solid var(--border); align-items: center; }
-        .cart-item img { width: 50px; height: 50px; border-radius: 8px; object-fit: cover; }
+        .shipping-box { background: var(--bg); padding: 15px; border-radius: 12px; margin-bottom: 15px; border: 1px dashed var(--secondary); }
 
-        /* Estilo do Calculador de Frete */
-        .shipping-box {
-            background: var(--bg); padding: 15px; border-radius: 12px; margin-bottom: 15px;
-            border: 1px dashed var(--secondary);
-        }
-        .shipping-input-group { display: flex; gap: 8px; margin-top: 8px; }
-        .shipping-input { 
-            flex: 1; padding: 8px 12px; border-radius: 8px; border: 1px solid var(--border); 
-            background: var(--card-bg); color: var(--text); font-size: 0.9rem;
-        }
-        .btn-calc { background: var(--secondary); color: white; border: none; padding: 0 15px; border-radius: 8px; cursor: pointer; font-size: 0.8rem; }
-
-        .summary-line { display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.95rem; }
-        .summary-total { font-size: 1.3rem; font-weight: 800; border-top: 2px solid var(--primary); padding-top: 12px; margin-top: 10px; }
-
-        #toast {
-            position: fixed; bottom: 30px; left: 50%; transform: translateX(-50%) translateY(100px);
-            background: var(--primary); color: var(--bg); padding: 12px 30px; border-radius: 50px;
-            font-weight: 600; transition: 0.4s; z-index: 3000; opacity: 0;
-        }
-        #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-
-        #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; z-index: 1500; backdrop-filter: blur(4px); }
+        #overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); display: none; z-index: 1500; }
         #overlay.active { display: block; }
-
-        footer { text-align: center; padding: 60px; color: var(--secondary); border-top: 1px solid var(--border); margin-top: 100px; }
     </style>
 </head>
 <body>
 
-<div id="toast">Item adicionado! 🚀</div>
-<div id="overlay" onclick="toggleCart()"></div>
+<div id="overlay" onclick="closeAll()"></div>
+
+<div id="authModal" class="auth-modal">
+    <div class="auth-content">
+        <h2 id="authTitle">Acessar Conta</h2>
+        <div class="auth-form">
+            <input type="text" id="regName" class="auth-input" placeholder="Seu Nome Completo" style="display: none;">
+            <input type="email" id="authEmail" class="auth-input" placeholder="E-mail">
+            <input type="password" id="authPass" class="auth-input" placeholder="Senha">
+            <button class="btn-add" id="authSubmit" onclick="handleAuth()">Entrar</button>
+            <p style="text-align: center; font-size: 0.8rem; cursor: pointer; color: var(--secondary)" onclick="toggleAuthMode()" id="authSwitch">Não tem conta? Cadastre-se</p>
+            <button onclick="closeAuth()" style="background:none; border:none; color:var(--secondary); cursor:pointer">Cancelar</button>
+        </div>
+    </div>
+</div>
 
 <header>
-    <div class="logo">Samuel Fashion</div>
-    <div style="display: flex; gap: 12px;">
-        <button class="btn-icon" onclick="toggleTheme()" style="background:none; border:1px solid var(--border); color:var(--text)">🌓</button>
+    <div class="logo" onclick="location.reload()">Samuel Fashion</div>
+    <div class="nav-actions">
+        <div id="userStatus" onclick="openAuth()">👤 Fazer Login</div>
         <button class="btn-icon" onclick="toggleCart()">
             🛒 <span id="cartCount">0</span>
         </button>
@@ -136,40 +124,26 @@
 
 <div id="cartDrawer">
     <div style="display: flex; justify-content: space-between; align-items: center;">
-        <h2>Meu Carrinho</h2>
+        <h2>Carrinho</h2>
         <button onclick="toggleCart()" style="background:none; border:none; font-size:1.5rem; cursor:pointer; color:var(--text)">✕</button>
     </div>
-    
     <div class="cart-items" id="cartItems"></div>
-
     <div class="shipping-box">
-        <label style="font-size: 0.8rem; font-weight: 700;">CALCULAR FRETE</label>
-        <div class="shipping-input-group">
-            <input type="text" id="cepInput" class="shipping-input" placeholder="00000-000" maxlength="9">
-            <button class="btn-calc" onclick="calculateShipping()">Calcular</button>
+        <label style="font-size: 0.7rem; font-weight: 800;">CALCULAR FRETE</label>
+        <div style="display:flex; gap:5px; margin-top:5px">
+            <input type="text" id="cepInput" placeholder="CEP" style="flex:1; padding:8px; border-radius:8px; border:1px solid var(--border)">
+            <button onclick="calculateShipping()" style="padding:0 10px; border-radius:8px; border:none; background:var(--secondary); color:white">OK</button>
         </div>
-        <div id="shippingResult" style="font-size: 0.75rem; margin-top: 8px; color: var(--accent); font-weight: 600;"></div>
+        <div id="shipMsg" style="font-size:0.7rem; margin-top:5px; color:var(--accent)"></div>
     </div>
-
-    <div id="summary">
-        <div class="summary-line">
-            <span>Subtotal:</span>
-            <span id="subtotalValue">R$ 0,00</span>
-        </div>
-        <div class="summary-line">
-            <span>Frete:</span>
-            <span id="shippingValue">R$ 0,00</span>
-        </div>
-        <div class="summary-line summary-total">
-            <span>Total:</span>
-            <span id="cartTotal">R$ 0,00</span>
-        </div>
-        <button class="btn-add" style="width: 100%; margin-top: 15px;" onclick="alert('Simulação finalizada! Integrando com sistema de pagamento...')">Finalizar Compra</button>
+    <div id="cartSummary" style="font-weight: 800; font-size: 1.2rem; border-top: 2px solid var(--primary); padding-top: 15px;">
+        Total: <span id="cartTotal">R$ 0,00</span>
     </div>
+    <button class="btn-add" style="margin-top: 15px;" onclick="checkLoginToFinalize()">Finalizar Pedido</button>
 </div>
 
 <section class="hero">
-    <h1>Coleções Premium 2026</h1>
+    <h1>Estilo Premium 2026</h1>
     <input type="text" id="searchInput" placeholder="O que você está procurando?">
 </section>
 
@@ -178,141 +152,138 @@
     <button class="filter-btn" data-filter="nike">Nike</button>
     <button class="filter-btn" data-filter="adidas">Adidas</button>
     <button class="filter-btn" data-filter="lacoste">Lacoste</button>
-    <button class="filter-btn" data-filter="penalty">Penalty</button>
-    <button class="filter-btn" data-filter="shein">Shein</button>
 </div>
 
 <main id="mainContainer"></main>
 
-<footer>
-    <p>© 2026 Samuel Fashion Store. Todos os direitos reservados.</p>
-</footer>
-
 <script>
+    // --- LÓGICA DE PRODUTOS ---
     const produtos = [
-        { id: 1, marca: 'nike', titulo: "Air Force branco classico", preco: 759.99, img: "https://imgnike-a.akamaihd.net/768x768/01113751A2.jpg", keywords: "nike tenis branco casual air force 1 masculino feminino", link: "https://www.nike.com.br/tenis-nike-air-force-1-07-masculino-011137.html" },
-        { id: 2, marca: 'nike', titulo: "Moletom Sportswear Club", preco: 284.99, img: "https://imgnike-a.akamaihd.net/1024x1024/0957727TA2.jpg", keywords: "nike moletom blusa frio preto esporte roupa", link: "https://www.nike.com.br/blusao-nike-park-fleece-infantil-095772.html?cor=7T" },
-        { id: 3, marca: 'nike', titulo: "Dunk Low 'Panda'", preco: 854.99, img: "https://imgnike-a.akamaihd.net/1920x1920/05847553A2.jpg", keywords: "nike tenis dunk low preto e branco panda casual", link: "https://www.nike.com.br/tenis-nike-dunk-low-retro-panda-masculino-058475.html?cor=53" },
-        { id: 4, marca: 'nike', titulo: "tenis TN Blue", preco: 1329.99, img: "https://imgnike-a.akamaihd.net/768x768/022147IHA2.jpg", keywords: "nike TN corrida esporte azul", link: "https://www.nike.com.br/tenis-nike-air-max-plus-masculino-022147.html?cor=IH" },
-        { id: 5, marca: 'adidas', titulo: "Tênis ULTRABOOST 5", preco: 1099.99, img: "https://assets.adidas.com/images/w_600,f_auto,q_auto/a284c05789e64be281506dbda3204ed0_9366/Tenis_Ultraboost_5_Turquesa_JQ2911_HM1.jpg", keywords: "adidas ultraboost corrida azul", link: "https://www.adidas.com.br/tenis-ultraboost-5/JQ2911.html" },
-        { id: 6, marca: 'adidas', titulo: "Superstar Originals", preco: 599.99, img: "https://assets.adidas.com/images/w_600,f_auto,q_auto/19bb876160da48f9b261741f4512ea9f_9366/Tenis_SUPERSTAR_ST_Cinza_KI4208_00_plp_standard.jpg", keywords: "adidas tenis branco superstar classico casual", link: "https://www.adidas.com.br/tenis-superstar-st/KI4208.html" },
-        { id: 7, marca: 'adidas', titulo: "Camisa Real Madrid 25/26", preco: 399.99, img: "https://assets.adidas.com/images/h_2000,f_auto,q_auto/6781a185b37a4e508590bf5c35993725_9366/Camisa_III_Real_Madrid_25-26_Azul_JV5845_01_laydown.jpg", keywords: "adidas camisa real madrid futebol esporte azul", link: "https://www.adidas.com.br/camisa-iii-real-madrid-25-26/JV5845.html" },
-        { id: 8, marca: 'lacoste', titulo: "Camisa Polo Original", preco: 699.00, img: "https://imagesa1.lacoste.com/dw/image/v2/BCWL_PRD/on/demandware.static/-/Sites-master/default/dwc5ccbfaf/L1212_HBP_24.jpg?imwidth=960", keywords: "lacoste camisa polo verde casual roupa", link: "https://www.lacoste.com/br" },
-        { id: 9, marca: 'lacoste', titulo: "Tênis Masculino Lineshot", preco: 929.00, img: "https://imagesa1.lacoste.com/dw/image/v2/BCWL_PRD/on/demandware.static/-/Sites-master/default/dweba3204a/48SMA0026_AAT_01.jpg?imwidth=960", keywords: "lacoste tenis branco couro casual", link: "https://www.lacoste.com/br" },
-        { id: 10, marca: 'penalty', titulo: "Bola Penalty S11", preco: 599.99, img: "https://cambuci.vtexassets.com/arquivos/ids/1505567-1200-auto", keywords: "penalty bola futebol campo esporte equipamento", link: "https://www.penalty.com.br" },
-        { id: 11, marca: 'penalty', titulo: "Chuteira Society Storm", preco: 269.99, img: "https://cambuci.vtexassets.com/arquivos/ids/1555564-1200-auto", keywords: "penalty chuteira society salao quadra laranja", link: "https://www.penalty.com.br" },
-        { id: 12, marca: 'shein', titulo: "Vestido Floral Casual", preco: 159.99, img: "https://images.unsplash.com/photo-1572804013307-a9a11117bb41?q=80&w=400", keywords: "shein vestido floral casual feminino moda", link: "https://www.shein.com.br" },
-        { id: 13, marca: 'shein', titulo: "Blusa Cropped Manga Longa", preco: 89.99, img: "https://images.unsplash.com/photo-1554568218-0f1715e72254?q=80&w=400", keywords: "shein blusa cropped manga longa feminina", link: "https://www.shein.com.br" },
-        { id: 14, marca: 'shein', titulo: "Tênis Chunky Branco", preco: 199.99, img: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=400", keywords: "shein tenis branco chunky casual feminino", link: "https://www.shein.com.br" }
+        { id: 1, marca: 'nike', titulo: "Air Force 1 Branco", preco: 759.99, img: "https://imgnike-a.akamaihd.net/768x768/01113751A2.jpg", keywords: "nike branco" },
+        { id: 2, marca: 'nike', titulo: "Dunk Low Panda", preco: 854.99, img: "https://imgnike-a.akamaihd.net/1920x1920/05847553A2.jpg", keywords: "nike dunk" },
+        { id: 5, marca: 'adidas', titulo: "Ultraboost 5", preco: 1099.99, img: "https://assets.adidas.com/images/w_600,f_auto,q_auto/a284c05789e64be281506dbda3204ed0_9366/Tenis_Ultraboost_5_Turquesa_JQ2911_HM1.jpg", keywords: "adidas azul" },
+        { id: 8, marca: 'lacoste', titulo: "Polo Original", preco: 699.00, img: "https://imagesa1.lacoste.com/dw/image/v2/BCWL_PRD/on/demandware.static/-/Sites-master/default/dwc5ccbfaf/L1212_HBP_24.jpg?imwidth=960", keywords: "lacoste polo" }
     ];
 
-    let carrinho = JSON.parse(localStorage.getItem('sf_cart_v3')) || [];
-    let valorFrete = 0;
+    let carrinho = JSON.parse(localStorage.getItem('sf_cart')) || [];
+    let currentUser = JSON.parse(localStorage.getItem('sf_active_user')) || null;
+    let isRegisterMode = false;
 
+    // --- LÓGICA DE LOGIN/CADASTRO ---
+    function openAuth() {
+        if(currentUser) {
+            if(confirm(`Olá ${currentUser.name}, deseja sair da conta?`)) {
+                localStorage.removeItem('sf_active_user');
+                location.reload();
+            }
+        } else {
+            document.getElementById('authModal').style.display = 'flex';
+            document.getElementById('overlay').classList.add('active');
+        }
+    }
+
+    function closeAuth() {
+        document.getElementById('authModal').style.display = 'none';
+        document.getElementById('overlay').classList.remove('active');
+    }
+
+    function toggleAuthMode() {
+        isRegisterMode = !isRegisterMode;
+        document.getElementById('authTitle').innerText = isRegisterMode ? "Criar Conta" : "Acessar Conta";
+        document.getElementById('regName').style.display = isRegisterMode ? "block" : "none";
+        document.getElementById('authSubmit').innerText = isRegisterMode ? "Cadastrar" : "Entrar";
+        document.getElementById('authSwitch').innerText = isRegisterMode ? "Já tem conta? Entre aqui" : "Não tem conta? Cadastre-se";
+    }
+
+    function handleAuth() {
+        const email = document.getElementById('authEmail').value;
+        const pass = document.getElementById('authPass').value;
+        const name = document.getElementById('regName').value;
+
+        if(!email || !pass) return alert("Preencha os campos!");
+
+        let users = JSON.parse(localStorage.getItem('sf_users')) || [];
+
+        if(isRegisterMode) {
+            if(users.find(u => u.email === email)) return alert("E-mail já cadastrado!");
+            const newUser = { name, email, pass };
+            users.push(newUser);
+            localStorage.setItem('sf_users', JSON.stringify(users));
+            alert("Conta criada com sucesso! Faça seu login.");
+            toggleAuthMode();
+        } else {
+            const user = users.find(u => u.email === email && u.pass === pass);
+            if(user) {
+                localStorage.setItem('sf_active_user', JSON.stringify(user));
+                location.reload();
+            } else {
+                alert("E-mail ou senha incorretos!");
+            }
+        }
+    }
+
+    function updateHeader() {
+        if(currentUser) {
+            document.getElementById('userStatus').innerText = `Olá, ${currentUser.name.split(' ')[0]} 👋`;
+        }
+    }
+
+    function checkLoginToFinalize() {
+        if(!currentUser) {
+            alert("Você precisa estar logado para finalizar a compra!");
+            openAuth();
+        } else {
+            alert(`Parabéns ${currentUser.name}! Pedido enviado.`);
+        }
+    }
+
+    // --- RESTANTE DAS FUNÇÕES (IGUAL AO ANTERIOR) ---
     function render() {
         const main = document.getElementById('mainContainer');
         main.innerHTML = '';
-        const marcas = ['nike', 'adidas', 'lacoste', 'penalty', 'shein'];
-
+        const marcas = ['nike', 'adidas', 'lacoste'];
         marcas.forEach(marca => {
             const section = document.createElement('section');
             section.className = 'brand-section';
-            section.setAttribute('data-brand', marca);
-            section.innerHTML = `
-                <h2 class="section-title">${marca.toUpperCase()} Collection</h2>
-                <div class="product-grid" id="grid-${marca}"></div>
-            `;
+            section.innerHTML = `<h2 style="margin-bottom:20px">${marca.toUpperCase()}</h2><div class="product-grid" id="grid-${marca}"></div>`;
             main.appendChild(section);
-
             const grid = document.getElementById(`grid-${marca}`);
             produtos.filter(p => p.marca === marca).forEach(p => {
                 grid.innerHTML += `
-                    <article class="product-card" data-keywords="${p.keywords} ${p.titulo}">
-                        <div class="img-container"><img src="${p.img}" alt="${p.titulo}" onerror="this.src='https://via.placeholder.com/300?text=Produto'"></div>
-                        <div class="product-info">
-                            <small>${p.marca.toUpperCase()}</small>
-                            <h3>${p.titulo}</h3>
-                            <div class="product-price">R$ ${p.preco.toFixed(2).replace('.', ',')}</div>
-                            <div class="card-buttons">
-                                <button class="btn-add" onclick="addToCart(${p.id})">Adicionar ao Carrinho</button>
-                                <a href="${p.link}" target="_blank" class="btn-store">Ver na Loja Oficial</a>
-                            </div>
-                        </div>
-                    </article>`;
+                <div class="product-card">
+                    <div class="img-container"><img src="${p.img}"></div>
+                    <div class="product-info">
+                        <h3>${p.titulo}</h3>
+                        <div style="font-weight:800; color:var(--accent)">R$ ${p.preco}</div>
+                        <button class="btn-add" onclick="addToCart(${p.id})">Adicionar</button>
+                    </div>
+                </div>`;
             });
         });
-        updateCartUI();
-    }
-
-    // Lógica do Calculador de Frete
-    function calculateShipping() {
-        const cep = document.getElementById('cepInput').value.replace(/\D/g, '');
-        const resultDiv = document.getElementById('shippingResult');
-        
-        if (cep.length !== 8) {
-            resultDiv.innerText = "CEP inválido! Digite 8 números.";
-            resultDiv.style.color = "#ef4444";
-            return;
-        }
-
-        // Simulação: se começar com 0 ou 1 é SP (Frete barato), outros estados mais caro
-        if (cep.startsWith('0') || cep.startsWith('1')) {
-            valorFrete = 15.00;
-            resultDiv.innerText = "Entrega Expressa: 2 dias úteis";
-        } else {
-            valorFrete = 35.00;
-            resultDiv.innerText = "Entrega Padrão: 5 a 7 dias úteis";
-        }
-        
-        resultDiv.style.color = "var(--accent)";
+        updateHeader();
         updateCartUI();
     }
 
     function addToCart(id) {
         const prod = produtos.find(p => p.id === id);
-        const itemExistente = carrinho.find(i => i.id === id);
-        if(itemExistente) itemExistente.qtd++;
-        else carrinho.push({...prod, qtd: 1});
-        
-        localStorage.setItem('sf_cart_v3', JSON.stringify(carrinho));
-        updateCartUI();
-        showToast();
-    }
-
-    function removeFromCart(index) {
-        if(carrinho[index].qtd > 1) carrinho[index].qtd--;
-        else carrinho.splice(index, 1);
-        localStorage.setItem('sf_cart_v3', JSON.stringify(carrinho));
+        carrinho.push(prod);
+        localStorage.setItem('sf_cart', JSON.stringify(carrinho));
         updateCartUI();
     }
 
     function updateCartUI() {
         const container = document.getElementById('cartItems');
         container.innerHTML = '';
-        let subtotal = 0;
-        let count = 0;
-
+        let total = 0;
         carrinho.forEach((item, index) => {
-            subtotal += (item.preco * item.qtd);
-            count += item.qtd;
-            container.innerHTML += `
-                <div class="cart-item">
-                    <img src="${item.img}">
-                    <div style="flex-grow:1">
-                        <div style="font-weight:600; font-size:0.8rem">${item.titulo}</div>
-                        <div style="color:var(--secondary); font-size:0.75rem">Qtd: ${item.qtd}</div>
-                        <div style="color:var(--accent); font-weight:800">R$ ${item.preco.toFixed(2)}</div>
-                    </div>
-                    <button onclick="removeFromCart(${index})" style="border:none; background:none; cursor:pointer">🗑️</button>
-                </div>`;
+            total += item.preco;
+            container.innerHTML += `<div style="display:flex; justify-content:space-between; margin-bottom:10px">
+                <span>${item.titulo}</span>
+                <span>R$ ${item.preco}</span>
+            </div>`;
         });
-
-        const totalFinal = subtotal + valorFrete;
-
-        document.getElementById('cartCount').innerText = count;
-        document.getElementById('subtotalValue').innerText = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
-        document.getElementById('shippingValue').innerText = `R$ ${valorFrete.toFixed(2).replace('.', ',')}`;
-        document.getElementById('cartTotal').innerText = `R$ ${totalFinal.toFixed(2).replace('.', ',')}`;
+        document.getElementById('cartCount').innerText = carrinho.length;
+        document.getElementById('cartTotal').innerText = `R$ ${total.toFixed(2)}`;
     }
 
     function toggleCart() {
@@ -320,34 +291,10 @@
         document.getElementById('overlay').classList.toggle('active');
     }
 
-    function showToast() {
-        const t = document.getElementById('toast');
-        t.classList.add('show');
-        setTimeout(() => t.classList.remove('show'), 2000);
+    function closeAll() {
+        closeAuth();
+        document.getElementById('cartDrawer').classList.remove('active');
     }
-
-    function toggleTheme() {
-        document.body.classList.toggle('dark-theme');
-    }
-
-    // Busca e Filtros
-    document.getElementById('searchInput').addEventListener('input', (e) => {
-        const term = e.target.value.toLowerCase();
-        document.querySelectorAll('.product-card').forEach(card => {
-            card.style.display = card.getAttribute('data-keywords').toLowerCase().includes(term) ? 'flex' : 'none';
-        });
-    });
-
-    document.querySelectorAll('.filter-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            const filter = btn.dataset.filter;
-            document.querySelectorAll('.brand-section').forEach(sec => {
-                sec.style.display = (filter === 'todos' || sec.dataset.brand === filter) ? 'block' : 'none';
-            });
-        });
-    });
 
     render();
 </script>

@@ -1,1 +1,18 @@
+<title>Financeiro</title>
+<div style="padding: 5%">
+    <h2>💰 Relatório de Vendas</h2>
+    <div id="vendasLista"></div>
+    <h3 id="total" style="margin-top:20px"></h3>
+</div>
 
+<script>
+    const vendas = JSON.parse(localStorage.getItem('sf_vendas')) || [];
+    let total = 0;
+
+    document.getElementById('vendasLista').innerHTML = vendas.map(v => {
+        total += v.preco;
+        return `<p>${v.data} - ${v.titulo}: <b>R$ ${v.preco}</b></p>`;
+    }).join('');
+
+    document.getElementById('total').innerText = `Faturamento Total: R$ ${total.toFixed(2)}`;
+</script>

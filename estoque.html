@@ -36,3 +36,40 @@
     }
     render();
 </script>
+<div style="margin: 20px 0; display: flex; gap: 10px; flex-wrap: wrap;">
+    <input type="text" id="t" placeholder="Nome do Produto">
+    <input type="number" id="p" placeholder="Preço">
+    <input type="number" id="q" placeholder="Qtd. em Estoque" min="1">
+    <button class="btn btn-primary" onclick="add()">Cadastrar Produto</button>
+</div>
+
+<script>
+    function add() {
+        const nt = document.getElementById('t').value;
+        const np = document.getElementById('p').value;
+        const nq = document.getElementById('q').value;
+
+        if(!nt || !np || !nq) return alert("Preencha todos os campos!");
+
+        const novoProduto = {
+            id: Date.now(),
+            titulo: nt,
+            preco: parseFloat(np),
+            quantidade: parseInt(nq), // Salvando a quantidade
+            marca: 'Geral',
+            img: 'https://via.placeholder.com/150'
+        };
+
+        produtos.push(novoProduto);
+        localStorage.setItem('sf_estoque', JSON.stringify(produtos));
+        render();
+        
+        // Limpar campos
+        document.getElementById('t').value = '';
+        document.getElementById('p').value = '';
+        document.getElementById('q').value = '';
+    }
+    
+    // Na função render() do estoque, adicione a exibição da quantidade:
+    // ${p.titulo} - R$ ${p.preco} | Estoque: <b>${p.quantidade}</b>
+</script>

@@ -11,7 +11,6 @@
             --card-bg: #ffffff; --accent: #10b981; --text: #0f172a;
             --border: #e2e8f0; --header-bg: rgba(255, 255, 255, 0.85);
         }
-        /* Tema Escuro Ativado pela Classe .dark-theme */
         body.dark-theme {
             --bg: #0f172a; --card-bg: #1e293b; --primary: #ffffff;
             --secondary: #94a3b8; --text: #f1f5f9; --border: #334155;
@@ -119,22 +118,29 @@
     <button class="filter-btn" onclick="filter('nike', this)">Nike</button>
     <button class="filter-btn" onclick="filter('adidas', this)">Adidas</button>
     <button class="filter-btn" onclick="filter('lacoste', this)">Lacoste</button>
-    <button class="filter-btn" onclick="filter('outros', this)">Outros</button>
+    <button class="filter-btn" onclick="filter('penalty', this)">Penalty</button>
+    <button class="filter-btn" onclick="filter('shein', this)">Shein</button>
 </div>
 
 <main id="container"></main>
 
 <script>
-    // LISTA DE PRODUTOS ATUALIZADA
+    // LISTA DE PRODUTOS RESTAURADA DO CÓDIGO BASE
     const produtos = [
-        { id: 1, marca: 'nike', titulo: "Nike Air Force 1 '07", preco: 799.99, img: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=500" },
-        { id: 2, marca: 'nike', titulo: "Air Jordan 1 Retro Low", preco: 1199.90, img: "https://images.unsplash.com/photo-1584735175315-9d5df23860e6?q=80&w=500" },
-        { id: 3, marca: 'adidas', titulo: "Adidas Forum Low Classic", preco: 599.99, img: "https://images.unsplash.com/photo-1552346154-21d32810aba3?q=80&w=500" },
-        { id: 4, marca: 'lacoste', titulo: "Polo Lacoste Classic Fit", preco: 489.00, img: "https://images.unsplash.com/photo-1628911774602-74a0cfee9b0d?q=80&w=500" },
-        { id: 5, marca: 'nike', titulo: "Corta Vento Nike Sportswear", preco: 349.99, img: "https://images.unsplash.com/photo-1544923246-77307dd654ca?q=80&w=500" },
-        { id: 6, marca: 'adidas', titulo: "Tênis Ultraboost Light", preco: 1299.99, img: "https://images.unsplash.com/photo-1608231387042-66d1773070a5?q=80&w=500" },
-        { id: 7, marca: 'outros', titulo: "Conjunto Moletom Minimalist", preco: 259.90, img: "https://images.unsplash.com/photo-1556821840-3a63f95609a7?q=80&w=500" },
-        { id: 8, marca: 'lacoste', titulo: "Boné Gabardine Croco", preco: 229.00, img: "https://images.unsplash.com/photo-1588850561407-ed78c282e89b?q=80&w=500" }
+        { id: 1, marca: 'nike', titulo: "Air Force 1 Branco", preco: 759.99, img: "https://imgnike-a.akamaihd.net/768x768/01113751A2.jpg" },
+        { id: 2, marca: 'nike', titulo: "Moletom Sportswear Club", preco: 284.99, img: "https://imgnike-a.akamaihd.net/1024x1024/0957727TA2.jpg" },
+        { id: 3, marca: 'nike', titulo: "Dunk Low 'Panda'", preco: 854.99, img: "https://imgnike-a.akamaihd.net/1920x1920/05847553A2.jpg" },
+        { id: 4, marca: 'nike', titulo: "Tênis Nike TN Blue", preco: 1329.99, img: "https://imgnike-a.akamaihd.net/768x768/022147IHA2.jpg" },
+        { id: 5, marca: 'adidas', titulo: "Tênis Ultraboost 5", preco: 1099.99, img: "https://assets.adidas.com/images/w_600,f_auto,q_auto/a284c05789e64be281506dbda3204ed0_9366/Tenis_Ultraboost_5_Turquesa_JQ2911_HM1.jpg" },
+        { id: 6, marca: 'adidas', titulo: "Superstar Originals", preco: 599.99, img: "https://assets.adidas.com/images/w_600,f_auto,q_auto/19bb876160da48f9b261741f4512ea9f_9366/Tenis_SUPERSTAR_ST_Cinza_KI4208_00_plp_standard.jpg" },
+        { id: 7, marca: 'adidas', titulo: "Camisa Real Madrid 25/26", preco: 399.99, img: "https://assets.adidas.com/images/h_2000,f_auto,q_auto/6781a185b37a4e508590bf5c35993725_9366/Camisa_III_Real_Madrid_25-26_Azul_JV5845_01_laydown.jpg" },
+        { id: 8, marca: 'lacoste', titulo: "Camisa Polo L1212", preco: 699.00, img: "https://imagesa1.lacoste.com/dw/image/v2/BCWL_PRD/on/demandware.static/-/Sites-master/default/dwc5ccbfaf/L1212_HBP_24.jpg?imwidth=960" },
+        { id: 9, marca: 'lacoste', titulo: "Tênis Lineshot Couro", preco: 929.00, img: "https://imagesa1.lacoste.com/dw/image/v2/BCWL_PRD/on/demandware.static/-/Sites-master/default/dweba3204a/48SMA0026_AAT_01.jpg?imwidth=960" },
+        { id: 10, marca: 'penalty', titulo: "Bola Penalty S11", preco: 599.99, img: "https://cambuci.vtexassets.com/arquivos/ids/1505567-1200-auto" },
+        { id: 11, marca: 'penalty', titulo: "Chuteira Society Storm", preco: 269.99, img: "https://cambuci.vtexassets.com/arquivos/ids/1555564-1200-auto" },
+        { id: 12, marca: 'shein', titulo: "Vestido Floral Verão", preco: 159.99, img: "https://images.unsplash.com/photo-1572804013307-a9a11117bb41?q=80&w=400" },
+        { id: 13, marca: 'shein', titulo: "Cropped Manga Longa", preco: 89.99, img: "https://images.unsplash.com/photo-1554568218-0f1715e72254?q=80&w=400" },
+        { id: 14, marca: 'shein', titulo: "Tênis Chunky Feminino", preco: 199.99, img: "https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?q=80&w=400" }
     ];
 
     let carrinho = JSON.parse(localStorage.getItem('sf_cart')) || [];
@@ -148,7 +154,6 @@
         localStorage.setItem('sf_theme', isDark ? 'dark' : 'light');
     }
 
-    // Carregar tema salvo
     if (localStorage.getItem('sf_theme') === 'dark') {
         document.body.classList.add('dark-theme');
     }
@@ -157,7 +162,6 @@
     function render(lista = produtos) {
         const main = document.getElementById('container');
         main.innerHTML = '';
-        
         const marcas = [...new Set(lista.map(p => p.marca))];
 
         marcas.forEach(marca => {
@@ -198,7 +202,7 @@
         render(filtrados);
     });
 
-    // SISTEMA DE LOGIN (Mesma lógica sua, mantida)
+    // SISTEMA DE LOGIN
     function openLogin() {
         if(logado) { if(confirm("Deseja sair da conta?")) { localStorage.removeItem('sf_user'); location.reload(); } }
         else { document.getElementById('loginModal').style.display = 'flex'; document.getElementById('overlay').classList.add('active'); }
@@ -237,11 +241,12 @@
         carrinho.push(p);
         localStorage.setItem('sf_cart', JSON.stringify(carrinho));
         updateUI();
-        // Feedback visual simples
+        
         const btn = event.target;
+        const originalText = btn.innerText;
         btn.innerText = "✓ Adicionado";
         btn.style.background = "var(--accent)";
-        setTimeout(() => { btn.innerText = "Adicionar ao Carrinho"; btn.style.background = "var(--primary)"; }, 1000);
+        setTimeout(() => { btn.innerText = originalText; btn.style.background = "var(--primary)"; }, 1000);
     }
 
     function updateUI() {

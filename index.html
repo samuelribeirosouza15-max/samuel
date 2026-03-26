@@ -56,6 +56,11 @@
         alert("Pedido realizado! Veja no Financeiro.");
     }
     render();
+    function comprar(id) {
+    let estoque = JSON.parse(localStorage.getItem('sf_estoque')) || [];
+    const index = estoque.findIndex(x => x.id === id);
+
+    if (index !== -1)
 </script>
 </body>
 </html>

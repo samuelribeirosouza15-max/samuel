@@ -1,1 +1,38 @@
+<title>Gerenciar Estoque</title>
+<div style="padding: 5%">
+    <h2>📦 Gerenciar Estoque</h2>
+    <div style="margin: 20px 0; display: flex; gap: 10px;">
+        <input type="text" id="t" placeholder="Nome">
+        <input type="number" id="p" placeholder="Preço">
+        <button onclick="add()">Adicionar Produto</button>
+    </div>
+    <div id="lista"></div>
+</div>
 
+<script>
+    let produtos = JSON.parse(localStorage.getItem('sf_estoque')) || [];
+
+    function render() {
+        document.getElementById('lista').innerHTML = produtos.map((p, i) => `
+            <div style="border-bottom: 1px solid #ccc; padding: 10px;">
+                ${p.titulo} - R$ ${p.preco} 
+                <button onclick="remover(${i})">Remover</button>
+            </div>
+        `).join('');
+    }
+
+    function add() {
+        const nt = document.getElementById('t').value;
+        const np = document.getElementById('p').value;
+        produtos.push({id: Date.now(), titulo: nt, preco: parseFloat(np), marca: 'geral', img: 'https://via.placeholder.com/150'});
+        localStorage.setItem('sf_estoque', JSON.stringify(produtos));
+        render();
+    }
+
+    function remover(i) {
+        produtos.splice(i, 1);
+        localStorage.setItem('sf_estoque', JSON.stringify(produtos));
+        render();
+    }
+    render();
+</script>

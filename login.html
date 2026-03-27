@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Samuel Fashion | Login</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        .login-box { max-width: 400px; margin: 100px auto; padding: 30px; background: white; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+    </style>
+</head>
+<body>
+    <div class="login-box">
+        <h2 style="text-align:center">Entrar no Sistema</h2>
+        <div style="display:flex; flex-direction:column; gap:15px; margin-top:20px">
+            <input type="text" id="lName" placeholder="Seu Nome">
+            <input type="email" id="lEmail" placeholder="E-mail">
+            <button class="btn btn-buy" onclick="entrar()">Acessar Loja</button>
+            <p style="font-size:0.8rem; color:gray; text-align:center">
+                Dica: Use <b>admin@samuel.com</b> para gerenciar.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        function entrar() {
+            const name = document.getElementById('lName').value;
+            const email = document.getElementById('lEmail').value;
+
+            if(!name || !email) return alert("Preencha tudo!");
+
+            const user = { name: name, email: email };
+            localStorage.setItem('sf_user', JSON.stringify(user));
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

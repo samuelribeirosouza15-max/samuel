@@ -1,82 +1,116 @@
-<title>Gerenciar Estoque</title>
-<div style="padding: 5%">
-    <h2>📦 Gerenciar Estoque</h2>
-    <div style="margin: 20px 0; display: flex; gap: 10px;">
-        <input type="text" id="t" placeholder="Nome">
-        <input type="number" id="p" placeholder="Preço">
-        <button onclick="add()">Adicionar Produto</button>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Samuel Fashion | Gerenciar Estoque</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<script>
+    // BLOQUEIO DE SEGURANÇA (Primeira coisa que o site faz)
+    const usuarioLogado = JSON.parse(localStorage.getItem('sf_user'));
+    if (!usuarioLogado || usuarioLogado.email !== "admin@samuel.com") {
+        alert("Acesso negado! Área restrita ao administrador.");
+        window.location.href = 'login.html';
+    }
+</script>
+
+<header>
+    <div class="logo">PAINEL ADMIN</div>
+    <nav>
+        <a href="index.html">VOLTAR À LOJA</a>
+        <a href="financeiro.html">FINANCEIRO</a>
+    </nav>
+</header>
+
+<div class="container">
+    <div class="card" style="margin-bottom: 20px; padding: 20px;">
+        <h2>📦 Cadastrar Produto</h2>
+        <div style="margin-top: 15px; display: flex; gap: 10px; flex-wrap: wrap;">
+            <input type="text" id="nomeProd" placeholder="Nome do Produto">
+            <input type="number" id="precoProd" placeholder="Preço (R$)">
+            <input type="number" id="qtdProd" placeholder="Quantidade" min="1">
+            <input type="text" id="imgProd" placeholder="Link da Imagem (URL)">
+            <button class="btn btn-buy" onclick="add()" style="width: auto;">Salvar no Estoque</button>
+        </div>
     </div>
-    <div id="lista"></div>
+
+    <div class="card" style="padding: 20px;">
+        <h3>Lista de Produtos</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Produto</th>
+                    <th>Preço</th>
+                    <th>Qtd.</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody id="lista"></tbody>
+        </table>
+    </div>
 </div>
 
 <script>
     let produtos = JSON.parse(localStorage.getItem('sf_estoque')) || [];
 
     function render() {
-        document.getElementById('lista').innerHTML = produtos.map((p, i) => `
-            <div style="border-bottom: 1px solid #ccc; padding: 10px;">
-                ${p.titulo} - R$ ${p.preco} 
-                <button onclick="remover(${i})">Remover</button>
-            </div>
+        const corpoTabela = document.getElementById('lista');
+        corpoTabela.innerHTML = produtos.map((p, i) => `
+            <tr>
+                <td>${p.titulo}</td>
+                <td>R$ ${p.preco.toFixed(2)}</td>
+                <td style="font-weight: bold; color: ${p.qtd < 3 ? 'red' : 'black'}">${p.qtd}</td>
+                <td>
+                    <button onclick="remover(${i})" style="color:red; background:none; border:none; cursor:pointer">Excluir</button>
+                </td>
+            </tr>
         `).join('');
     }
 
     function add() {
-        const nt = document.getElementById('t').value;
-        const np = document.getElementById('p').value;
-        produtos.push({id: Date.now(), titulo: nt, preco: parseFloat(np), marca: 'geral', img: 'https://via.placeholder.com/150'});
-        localStorage.setItem('sf_estoque', JSON.stringify(produtos));
-        render();
-    }
+        const nome = document.getElementById('nomeProd').value;
+        const preco = document.getElementById('precoProd').value;
+        const qtd = document.getElementById('qtdProd').value;
+        const img = document.getElementById('imgProd').value || 'https://via.placeholder.com/150';
 
-    function remover(i) {
-        produtos.splice(i, 1);
-        localStorage.setItem('sf_estoque', JSON.stringify(produtos));
-        render();
-    }
-    render();
-</script>
-<div style="margin: 20px 0; display: flex; gap: 10px; flex-wrap: wrap;">
-    <input type="text" id="t" placeholder="Nome do Produto">
-    <input type="number" id="p" placeholder="Preço">
-    <input type="number" id="q" placeholder="Qtd. em Estoque" min="1">
-    <button class="btn btn-primary" onclick="add()">Cadastrar Produto</button>
-</div>
-
-<script>
-    function add() {
-        const nt = document.getElementById('t').value;
-        const np = document.getElementById('p').value;
-        const nq = document.getElementById('q').value;
-
-        if(!nt || !np || !nq) return alert("Preencha todos os campos!");
+        if(!nome || !preco || !qtd) {
+            alert("Erro: Preencha todos os campos obrigatórios!");
+            return;
+        }
 
         const novoProduto = {
             id: Date.now(),
-            titulo: nt,
-            preco: parseFloat(np),
-            quantidade: parseInt(nq), // Salvando a quantidade
-            marca: 'Geral',
-            img: 'https://via.placeholder.com/150'
+            titulo: nome,
+            preco: parseFloat(preco),
+            qtd: parseInt(qtd), // Usando 'qtd' para bater com a lógica da loja
+            img: img
         };
 
         produtos.push(novoProduto);
         localStorage.setItem('sf_estoque', JSON.stringify(produtos));
-        render();
         
-        // Limpar campos
-        document.getElementById('t').value = '';
-        document.getElementById('p').value = '';
-        document.getElementById('q').value = '';
+        // Limpa os campos
+        document.getElementById('nomeProd').value = '';
+        document.getElementById('precoProd').value = '';
+        document.getElementById('qtdProd').value = '';
+        document.getElementById('imgProd').value = '';
+
+        render();
     }
-    
-    // Na função render() do estoque, adicione a exibição da quantidade:
-    // ${p.titulo} - R$ ${p.preco} | Estoque: <b>${p.quantidade}</b>
-<script>
-    const user = JSON.parse(localStorage.getItem('sf_user'));
-    // Se não for o admin@samuel.com, expulsa ele para a loja
-    if (!user || user.email !== "admin@samuel.com") {
-        alert("Acesso negado! Área restrita ao administrador.");
-        window.location.href = 'index.html';
+
+    function remover(index) {
+        if(confirm("Deseja realmente excluir este produto?")) {
+            produtos.splice(index, 1);
+            localStorage.setItem('sf_estoque', JSON.stringify(produtos));
+            render();
+        }
     }
+
+    // Inicia a tabela ao abrir a página
+    render();
 </script>
+
+</body>
+</html>

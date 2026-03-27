@@ -85,6 +85,10 @@
 
     checkAuth();
     render();
+    // Onde você cria o botão no index.html:
+<button class="btn btn-buy" ${p.qtd <= 0 ? 'disabled' : ''} onclick="comprar(${p.id})">
+    ${p.qtd > 0 ? 'Comprar' : 'Esgotado'}
+</button>
 </script>
 </body>
 </html>

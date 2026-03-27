@@ -110,6 +110,13 @@
 
     // Inicia a tabela ao abrir a página
     render();
+    const novoProduto = {
+    id: Date.now(),
+    titulo: nt,
+    preco: parseFloat(np),
+    qtd: parseInt(nq), // Use 'qtd' e não 'quantidade'
+    img: ni
+};
 </script>
 
 </body>

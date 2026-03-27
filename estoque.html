@@ -72,4 +72,11 @@
     
     // Na função render() do estoque, adicione a exibição da quantidade:
     // ${p.titulo} - R$ ${p.preco} | Estoque: <b>${p.quantidade}</b>
+<script>
+    const user = JSON.parse(localStorage.getItem('sf_user'));
+    // Se não for o admin@samuel.com, expulsa ele para a loja
+    if (!user || user.email !== "admin@samuel.com") {
+        alert("Acesso negado! Área restrita ao administrador.");
+        window.location.href = 'index.html';
+    }
 </script>

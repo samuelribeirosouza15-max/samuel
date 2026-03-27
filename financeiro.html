@@ -1,25 +1,91 @@
-<title>Financeiro</title>
-<div style="padding: 5%">
-    <h2>💰 Relatório de Vendas</h2>
-    <div id="vendasLista"></div>
-    <h3 id="total" style="margin-top:20px"></h3>
-</div>
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Samuel Fashion | Financeiro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
 
 <script>
-    const vendas = JSON.parse(localStorage.getItem('sf_vendas')) || [];
-    let total = 0;
-
-    document.getElementById('vendasLista').innerHTML = vendas.map(v => {
-        total += v.preco;
-        return `<p>${v.data} - ${v.titulo}: <b>R$ ${v.preco}</b></p>`;
-    }).join('');
-
-    document.getElementById('total').innerText = `Faturamento Total: R$ ${total.toFixed(2)}`;
-<script>
-    const user = JSON.parse(localStorage.getItem('sf_user'));
-    // Se não for o admin@samuel.com, expulsa ele para a loja
-    if (!user || user.email !== "admin@samuel.com") {
-        alert("Acesso negado! Área restrita ao administrador.");
+    // BLOQUEIO DE SEGURANÇA: Só entra se for o Admin
+    const usuario = JSON.parse(localStorage.getItem('sf_user'));
+    if (!usuario || usuario.email !== "admin@samuel.com") {
+        alert("Acesso restrito!");
         window.location.href = 'index.html';
     }
 </script>
+
+<header>
+    <div class="logo">RELATÓRIO DE VENDAS</div>
+    <nav>
+        <a href="index.html">LOJA</a>
+        <a href="estoque.html">ESTOQUE</a>
+    </nav>
+</header>
+
+<div class="container">
+    <div class="card" style="margin-bottom: 20px; background: #10b981; color: white;">
+        <h1 id="totalVendido">R$ 0,00</h1>
+        <p>Lucro Bruto Total</p>
+    </div>
+
+    <div class="card">
+        <h3>Histórico de Pedidos</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Data/Hora</th>
+                    <th>Produto</th>
+                    <th>Valor Unitário</th>
+                </tr>
+            </thead>
+            <tbody id="listaVendas">
+                </tbody>
+        </table>
+        <button class="btn" onclick="limparVendas()" style="margin-top:20px; background:#ef4444; color:white; width:auto">Zerar Relatório</button>
+    </div>
+</div>
+
+<script>
+    function carregarFinanceiro() {
+        // Puxa as vendas do banco de dados (localStorage)
+        const vendas = JSON.parse(localStorage.getItem('sf_vendas')) || [];
+        const tabela = document.getElementById('listaVendas');
+        let somaTotal = 0;
+
+        if (vendas.length === 0) {
+            tabela.innerHTML = "<tr><td colspan='3' style='text-align:center'>Nenhuma venda realizada ainda.</td></tr>";
+            document.getElementById('totalVendido').innerText = "R$ 0,00";
+            return;
+        }
+
+        // Preenche a tabela (do mais novo para o mais antigo)
+        tabela.innerHTML = vendas.reverse().map(v => {
+            somaTotal += v.preco;
+            return `
+                <tr>
+                    <td>${v.data}</td>
+                    <td>${v.titulo}</td>
+                    <td>R$ ${v.preco.toFixed(2)}</td>
+                </tr>
+            `;
+        }).join('');
+
+        // Atualiza o valor do card verde
+        document.getElementById('totalVendido').innerText = `R$ ${somaTotal.toLocaleString('pt-BR', {minimumFractionDigits: 2})}`;
+    }
+
+    function limparVendas() {
+        if(confirm("Deseja apagar todo o histórico de vendas?")) {
+            localStorage.removeItem('sf_vendas');
+            location.reload();
+        }
+    }
+
+    // Inicia a página
+    carregarFinanceiro();
+</script>
+
+</body>
+</html>

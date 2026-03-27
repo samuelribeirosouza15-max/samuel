@@ -2,122 +2,89 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Samuel Fashion | Gerenciar Estoque</title>
+    <title>Estoque | Admin</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
-
 <script>
-    // BLOQUEIO DE SEGURANÇA (Primeira coisa que o site faz)
-    const usuarioLogado = JSON.parse(localStorage.getItem('sf_user'));
-    if (!usuarioLogado || usuarioLogado.email !== "admin@samuel.com") {
-        alert("Acesso negado! Área restrita ao administrador.");
-        window.location.href = 'login.html';
+    const user = JSON.parse(localStorage.getItem('sf_user'));
+    if (!user || user.email !== "admin@samuel.com") {
+        window.location.href = 'index.html';
     }
 </script>
 
-<header>
-    <div class="logo">PAINEL ADMIN</div>
-    <nav>
-        <a href="index.html">VOLTAR À LOJA</a>
-        <a href="financeiro.html">FINANCEIRO</a>
-    </nav>
-</header>
-
 <div class="container">
-    <div class="card" style="margin-bottom: 20px; padding: 20px;">
-        <h2>📦 Cadastrar Produto</h2>
-        <div style="margin-top: 15px; display: flex; gap: 10px; flex-wrap: wrap;">
-            <input type="text" id="nomeProd" placeholder="Nome do Produto">
-            <input type="number" id="precoProd" placeholder="Preço (R$)">
-            <input type="number" id="qtdProd" placeholder="Quantidade" min="1">
-            <input type="text" id="imgProd" placeholder="Link da Imagem (URL)">
-            <button class="btn btn-buy" onclick="add()" style="width: auto;">Salvar no Estoque</button>
-        </div>
+    <h2>📦 Gerenciar Estoque</h2>
+    <div class="card" style="margin: 20px 0; display: flex; gap: 10px; flex-wrap: wrap;">
+        <input type="text" id="t" placeholder="Nome do Produto">
+        <input type="number" id="p" placeholder="Preço">
+        <input type="number" id="q" placeholder="Quantidade">
+        <input type="text" id="img" placeholder="Link da Imagem">
+        <button class="btn btn-buy" onclick="add()" style="width:auto">Adicionar</button>
+        <button class="btn" onclick="limparTudo()" style="width:auto; background:#ef4444; color:white">Resetar Banco</button>
     </div>
-
-    <div class="card" style="padding: 20px;">
-        <h3>Lista de Produtos</h3>
-        <table>
-            <thead>
-                <tr>
-                    <th>Produto</th>
-                    <th>Preço</th>
-                    <th>Qtd.</th>
-                    <th>Ações</th>
-                </tr>
-            </thead>
-            <tbody id="lista"></tbody>
-        </table>
-    </div>
+    
+    <table>
+        <thead>
+            <tr>
+                <th>Produto</th>
+                <th>Preço</th>
+                <th>Qtd</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody id="lista"></tbody>
+    </table>
 </div>
 
 <script>
-    let produtos = JSON.parse(localStorage.getItem('sf_estoque')) || [];
-
     function render() {
-        const corpoTabela = document.getElementById('lista');
-        corpoTabela.innerHTML = produtos.map((p, i) => `
+        const produtos = JSON.parse(localStorage.getItem('sf_estoque')) || [];
+        document.getElementById('lista').innerHTML = produtos.map((p, i) => `
             <tr>
                 <td>${p.titulo}</td>
                 <td>R$ ${p.preco.toFixed(2)}</td>
-                <td style="font-weight: bold; color: ${p.qtd < 3 ? 'red' : 'black'}">${p.qtd}</td>
-                <td>
-                    <button onclick="remover(${i})" style="color:red; background:none; border:none; cursor:pointer">Excluir</button>
-                </td>
+                <td style="font-weight:bold; color:${p.qtd <= 0 ? 'red' : 'green'}">${p.qtd}</td>
+                <td><button onclick="remover(${i})">Remover</button></td>
             </tr>
         `).join('');
     }
 
     function add() {
-        const nome = document.getElementById('nomeProd').value;
-        const preco = document.getElementById('precoProd').value;
-        const qtd = document.getElementById('qtdProd').value;
-        const img = document.getElementById('imgProd').value || 'https://via.placeholder.com/150';
+        const nt = document.getElementById('t').value;
+        const np = document.getElementById('p').value;
+        const nq = document.getElementById('q').value;
+        const ni = document.getElementById('img').value || 'https://via.placeholder.com/150';
 
-        if(!nome || !preco || !qtd) {
-            alert("Erro: Preencha todos os campos obrigatórios!");
-            return;
-        }
+        if(!nt || !np || !nq) return alert("Preencha tudo!");
 
-        const novoProduto = {
+        let produtos = JSON.parse(localStorage.getItem('sf_estoque')) || [];
+        produtos.push({
             id: Date.now(),
-            titulo: nome,
-            preco: parseFloat(preco),
-            qtd: parseInt(qtd), // Usando 'qtd' para bater com a lógica da loja
-            img: img
-        };
+            titulo: nt,
+            preco: parseFloat(np),
+            qtd: parseInt(nq), // NOME PADRÃO: qtd
+            img: ni
+        });
 
-        produtos.push(novoProduto);
         localStorage.setItem('sf_estoque', JSON.stringify(produtos));
-        
-        // Limpa os campos
-        document.getElementById('nomeProd').value = '';
-        document.getElementById('precoProd').value = '';
-        document.getElementById('qtdProd').value = '';
-        document.getElementById('imgProd').value = '';
+        location.reload();
+    }
 
+    function remover(i) {
+        let produtos = JSON.parse(localStorage.getItem('sf_estoque'));
+        produtos.splice(i, 1);
+        localStorage.setItem('sf_estoque', JSON.stringify(produtos));
         render();
     }
 
-    function remover(index) {
-        if(confirm("Deseja realmente excluir este produto?")) {
-            produtos.splice(index, 1);
-            localStorage.setItem('sf_estoque', JSON.stringify(produtos));
-            render();
+    function limparTudo() {
+        if(confirm("Isso vai apagar TODOS os produtos para corrigir o erro. Deseja continuar?")) {
+            localStorage.removeItem('sf_estoque');
+            location.reload();
         }
     }
-
-    // Inicia a tabela ao abrir a página
     render();
-    const novoProduto = {
-    id: Date.now(),
-    titulo: nt,
-    preco: parseFloat(np),
-    qtd: parseInt(nq), // Use 'qtd' e não 'quantidade'
-    img: ni
-};
 </script>
-
 </body>
 </html>

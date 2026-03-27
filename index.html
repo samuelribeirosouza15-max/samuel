@@ -2,45 +2,26 @@
 <html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Samuel Fashion | Home</title>
+    <title>Loja Samuel</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <header>
     <div class="logo">SAMUEL FASHION</div>
-    <nav id="menu">
-        <a href="index.html">LOJA</a>
-        </nav>
-    <div id="userArea">
-        <button class="btn" style="width:auto; padding:5px 15px" onclick="logout()">Sair</button>
-    </div>
+    <nav id="menu"><a href="index.html">LOJA</a></nav>
 </header>
 
 <div class="container">
-    <h2 id="welcome">Bem-vindo!</h2>
     <div class="product-grid" id="grid"></div>
 </div>
 
 <script>
-    // CONFIGURAÇÃO DO ADMIN (Mude aqui o e-mail do patrão)
-    const EMAIL_ADMIN = "admin@samuel.com";
-
-    function checkAuth() {
+    function checkAdmin() {
         const user = JSON.parse(localStorage.getItem('sf_user'));
-        if (!user) {
-            window.location.href = 'login.html'; // Se não tiver logado, vai pro login
-            return;
-        }
-
-        document.getElementById('welcome').innerText = `Olá, ${user.name}!`;
-
-        // Se for ADMIN, mostra os botões secretos
-        if (user.email === EMAIL_ADMIN) {
-            const nav = document.getElementById('menu');
-            nav.innerHTML += `
-                <a href="estoque.html" style="color:var(--accent)">📦 ESTOQUE</a>
-                <a href="financeiro.html" style="color:var(--accent)">💰 FINANCEIRO</a>
-            `;
+        if(user && user.email === "admin@samuel.com") {
+            document.getElementById('menu').innerHTML += `
+                <a href="estoque.html">ESTOQUE</a>
+                <a href="financeiro.html">FINANCEIRO</a>`;
         }
     }
 
@@ -52,8 +33,8 @@
             <div class="card">
                 <img src="${p.img}">
                 <h3>${p.titulo}</h3>
-                <p style="color:var(--accent); font-weight:800">R$ ${p.preco.toFixed(2)}</p>
-                <p><small>Disponível: ${p.qtd}</small></p>
+                <p>R$ ${p.preco.toFixed(2)}</p>
+                <p><small>Estoque: ${p.qtd}</small></p>
                 <button class="btn btn-buy" ${p.qtd <= 0 ? 'disabled' : ''} onclick="comprar(${p.id})">
                     ${p.qtd > 0 ? 'Comprar' : 'Esgotado'}
                 </button>
@@ -68,27 +49,19 @@
         if (estoque[idx].qtd > 0) {
             estoque[idx].qtd -= 1;
             localStorage.setItem('sf_estoque', JSON.stringify(estoque));
-
+            
+            // Registrar venda
             let vendas = JSON.parse(localStorage.getItem('sf_vendas')) || [];
             vendas.push({ titulo: estoque[idx].titulo, preco: estoque[idx].preco, data: new Date().toLocaleString() });
             localStorage.setItem('sf_vendas', JSON.stringify(vendas));
 
-            alert("Sucesso! Item reservado.");
+            alert("Vendido!");
             render();
         }
     }
 
-    function logout() {
-        localStorage.removeItem('sf_user');
-        window.location.href = 'login.html';
-    }
-
-    checkAuth();
+    checkAdmin();
     render();
-    // Onde você cria o botão no index.html:
-<button class="btn btn-buy" ${p.qtd <= 0 ? 'disabled' : ''} onclick="comprar(${p.id})">
-    ${p.qtd > 0 ? 'Comprar' : 'Esgotado'}
-</button>
 </script>
 </body>
 </html>
